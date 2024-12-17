@@ -30,7 +30,6 @@ namespace WindowsFormsApp1
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_ChatBox));
             this.tblUser = new System.Windows.Forms.DataGridView();
             this.Online = new System.Windows.Forms.DataGridViewButtonColumn();
             this.tblGroup = new System.Windows.Forms.DataGridView();
@@ -66,11 +65,11 @@ namespace WindowsFormsApp1
             this.tblUser.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tblUser.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Online});
-            this.tblUser.Location = new System.Drawing.Point(12, 43);
+            this.tblUser.Location = new System.Drawing.Point(10, 37);
             this.tblUser.Name = "tblUser";
             this.tblUser.ReadOnly = true;
             this.tblUser.RowTemplate.Height = 25;
-            this.tblUser.Size = new System.Drawing.Size(152, 201);
+            this.tblUser.Size = new System.Drawing.Size(130, 174);
             this.tblUser.TabIndex = 4;
             // 
             // Online
@@ -89,11 +88,11 @@ namespace WindowsFormsApp1
             this.tblGroup.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.tblGroup.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Group});
-            this.tblGroup.Location = new System.Drawing.Point(12, 250);
+            this.tblGroup.Location = new System.Drawing.Point(10, 217);
             this.tblGroup.Name = "tblGroup";
             this.tblGroup.ReadOnly = true;
             this.tblGroup.RowTemplate.Height = 25;
-            this.tblGroup.Size = new System.Drawing.Size(152, 201);
+            this.tblGroup.Size = new System.Drawing.Size(130, 174);
             this.tblGroup.TabIndex = 3;
             // 
             // Group
@@ -107,37 +106,37 @@ namespace WindowsFormsApp1
             // 
             // rtbDialog
             // 
-            this.rtbDialog.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.rtbDialog.Location = new System.Drawing.Point(179, 43);
+            this.rtbDialog.Font = new System.Drawing.Font("Times New Roman", 12F);
+            this.rtbDialog.Location = new System.Drawing.Point(153, 37);
             this.rtbDialog.Name = "rtbDialog";
-            this.rtbDialog.Size = new System.Drawing.Size(609, 372);
+            this.rtbDialog.Size = new System.Drawing.Size(523, 323);
             this.rtbDialog.TabIndex = 2;
             this.rtbDialog.Text = "";
             // 
             // btnPicture
             // 
             this.btnPicture.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnPicture.Location = new System.Drawing.Point(179, 457);
+            this.btnPicture.Location = new System.Drawing.Point(153, 396);
             this.btnPicture.Name = "btnPicture";
-            this.btnPicture.Size = new System.Drawing.Size(30, 30);
+            this.btnPicture.Size = new System.Drawing.Size(26, 26);
             this.btnPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnPicture.TabIndex = 2;
             this.btnPicture.TabStop = false;
             // 
             // txtMessage
             // 
-            this.txtMessage.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtMessage.Location = new System.Drawing.Point(215, 458);
+            this.txtMessage.Font = new System.Drawing.Font("Times New Roman", 14.25F);
+            this.txtMessage.Location = new System.Drawing.Point(184, 397);
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(538, 29);
+            this.txtMessage.Size = new System.Drawing.Size(462, 29);
             this.txtMessage.TabIndex = 1;
             // 
             // btnSend
             // 
             this.btnSend.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnSend.Location = new System.Drawing.Point(759, 457);
+            this.btnSend.Location = new System.Drawing.Point(651, 396);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(30, 30);
+            this.btnSend.Size = new System.Drawing.Size(26, 26);
             this.btnSend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnSend.TabIndex = 2;
             this.btnSend.TabStop = false;
@@ -145,9 +144,9 @@ namespace WindowsFormsApp1
             // lblWelcome
             // 
             this.lblWelcome.AutoSize = true;
-            this.lblWelcome.Font = new System.Drawing.Font("Times New Roman", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point);
+            this.lblWelcome.Font = new System.Drawing.Font("Times New Roman", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
             this.lblWelcome.ForeColor = System.Drawing.Color.Maroon;
-            this.lblWelcome.Location = new System.Drawing.Point(12, 9);
+            this.lblWelcome.Location = new System.Drawing.Point(10, 8);
             this.lblWelcome.Name = "lblWelcome";
             this.lblWelcome.Size = new System.Drawing.Size(106, 22);
             this.lblWelcome.TabIndex = 4;
@@ -155,21 +154,21 @@ namespace WindowsFormsApp1
             // 
             // txtReceiver
             // 
-            this.txtReceiver.Font = new System.Drawing.Font("Times New Roman", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
-            this.txtReceiver.Location = new System.Drawing.Point(179, 7);
+            this.txtReceiver.Font = new System.Drawing.Font("Times New Roman", 14.25F);
+            this.txtReceiver.Location = new System.Drawing.Point(153, 6);
             this.txtReceiver.Name = "txtReceiver";
-            this.txtReceiver.Size = new System.Drawing.Size(111, 29);
+            this.txtReceiver.Size = new System.Drawing.Size(96, 29);
             this.txtReceiver.TabIndex = 0;
             // 
             // btnCreateGroup
             // 
             this.btnCreateGroup.BackColor = System.Drawing.Color.RosyBrown;
             this.btnCreateGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreateGroup.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.btnCreateGroup.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
             this.btnCreateGroup.ForeColor = System.Drawing.Color.Maroon;
-            this.btnCreateGroup.Location = new System.Drawing.Point(12, 458);
+            this.btnCreateGroup.Location = new System.Drawing.Point(10, 397);
             this.btnCreateGroup.Name = "btnCreateGroup";
-            this.btnCreateGroup.Size = new System.Drawing.Size(152, 29);
+            this.btnCreateGroup.Size = new System.Drawing.Size(130, 25);
             this.btnCreateGroup.TabIndex = 5;
             this.btnCreateGroup.Text = "Create Group";
             this.btnCreateGroup.UseVisualStyleBackColor = false;
@@ -178,11 +177,11 @@ namespace WindowsFormsApp1
             // 
             this.button1.BackColor = System.Drawing.Color.DarkRed;
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.button1.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Bold);
             this.button1.ForeColor = System.Drawing.Color.LightCoral;
-            this.button1.Location = new System.Drawing.Point(701, 6);
+            this.button1.Location = new System.Drawing.Point(601, 5);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(88, 29);
+            this.button1.Size = new System.Drawing.Size(75, 25);
             this.button1.TabIndex = 29;
             this.button1.Text = "Logout";
             this.button1.UseVisualStyleBackColor = false;
@@ -190,10 +189,9 @@ namespace WindowsFormsApp1
             // btnLike
             // 
             this.btnLike.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLike.Image = ((System.Drawing.Image)(resources.GetObject("btnLike.Image")));
-            this.btnLike.Location = new System.Drawing.Point(179, 421);
+            this.btnLike.Location = new System.Drawing.Point(153, 365);
             this.btnLike.Name = "btnLike";
-            this.btnLike.Size = new System.Drawing.Size(30, 30);
+            this.btnLike.Size = new System.Drawing.Size(26, 26);
             this.btnLike.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLike.TabIndex = 2;
             this.btnLike.TabStop = false;
@@ -201,10 +199,9 @@ namespace WindowsFormsApp1
             // btnLove
             // 
             this.btnLove.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLove.Image = ((System.Drawing.Image)(resources.GetObject("btnLove.Image")));
-            this.btnLove.Location = new System.Drawing.Point(229, 421);
+            this.btnLove.Location = new System.Drawing.Point(196, 365);
             this.btnLove.Name = "btnLove";
-            this.btnLove.Size = new System.Drawing.Size(30, 30);
+            this.btnLove.Size = new System.Drawing.Size(26, 26);
             this.btnLove.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLove.TabIndex = 2;
             this.btnLove.TabStop = false;
@@ -212,10 +209,9 @@ namespace WindowsFormsApp1
             // btnLaugh
             // 
             this.btnLaugh.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLaugh.Image = ((System.Drawing.Image)(resources.GetObject("btnLaugh.Image")));
-            this.btnLaugh.Location = new System.Drawing.Point(279, 421);
+            this.btnLaugh.Location = new System.Drawing.Point(239, 365);
             this.btnLaugh.Name = "btnLaugh";
-            this.btnLaugh.Size = new System.Drawing.Size(30, 30);
+            this.btnLaugh.Size = new System.Drawing.Size(26, 26);
             this.btnLaugh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLaugh.TabIndex = 2;
             this.btnLaugh.TabStop = false;
@@ -223,10 +219,9 @@ namespace WindowsFormsApp1
             // btnCry
             // 
             this.btnCry.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnCry.Image = ((System.Drawing.Image)(resources.GetObject("btnCry.Image")));
-            this.btnCry.Location = new System.Drawing.Point(329, 421);
+            this.btnCry.Location = new System.Drawing.Point(282, 365);
             this.btnCry.Name = "btnCry";
-            this.btnCry.Size = new System.Drawing.Size(30, 30);
+            this.btnCry.Size = new System.Drawing.Size(26, 26);
             this.btnCry.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnCry.TabIndex = 2;
             this.btnCry.TabStop = false;
@@ -234,19 +229,18 @@ namespace WindowsFormsApp1
             // btnDevil
             // 
             this.btnDevil.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnDevil.Image = ((System.Drawing.Image)(resources.GetObject("btnDevil.Image")));
-            this.btnDevil.Location = new System.Drawing.Point(379, 421);
+            this.btnDevil.Location = new System.Drawing.Point(325, 365);
             this.btnDevil.Name = "btnDevil";
-            this.btnDevil.Size = new System.Drawing.Size(30, 30);
+            this.btnDevil.Size = new System.Drawing.Size(26, 26);
             this.btnDevil.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnDevil.TabIndex = 2;
             this.btnDevil.TabStop = false;
             // 
             // frm_ChatBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 497);
+            this.ClientSize = new System.Drawing.Size(686, 431);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.btnCreateGroup);
             this.Controls.Add(this.lblWelcome);
