@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -184,28 +184,11 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void dgvGroups_SelectionChanged(object sender, EventArgs e)
-        {
-            if (dgvGroups.SelectedRows.Count > 0)
-            {
-                // Lấy GroupID từ cột đầu tiên
-                selectedGroupId = Convert.ToInt32(dgvGroups.SelectedRows[0].Cells["GroupID"].Value);
-
-                // Gọi hàm để tải tin nhắn
-                LoadGroupMessages(selectedGroupId);
-            }
-        }
-
         private void dgvGroups_CellClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dgvGroups.SelectedRows.Count > 0)
-            {
-                // Lấy GroupID từ cột đầu tiên
-                selectedGroupId = Convert.ToInt32(dgvGroups.SelectedRows[0].Cells["GroupID"].Value);
-
-                // Gọi hàm để tải tin nhắn
-                LoadGroupMessages(selectedGroupId);
-            }
+            int rowSelected = e.RowIndex;
+            selectedGroupId = selectedGroupId = Convert.ToInt32(dgvGroups.Rows[rowSelected].Cells["GroupID"].Value);
+            LoadGroupMessages(selectedGroupId);
         }
     }
 }
