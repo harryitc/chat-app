@@ -54,11 +54,15 @@ namespace WindowsFormsApp1
                 dgvFriends.Rows.Add(listFriends[i].User.Username, listFriends[i].User.Status);
             }
 
+            dgvGroups.Columns.Add("GroupID", "Group ID");
+            dgvGroups.Columns["GroupID"].Visible = false; // Ẩn cột GroupID
+            dgvGroups.Columns.Add("GroupName", "Group Name");
+
             //Groups
             var groups = db.Groups.Where(g => g.CreatedBy == user.UserID).ToList();
             for (int i = 0; i < groups.Count; i++)
             {
-                dgvGroups.Rows.Add(groups[i].GroupName);
+                dgvGroups.Rows.Add(groups[i].GroupID, groups[i].GroupName);
             }
         }
 
@@ -106,7 +110,7 @@ namespace WindowsFormsApp1
             var groups = db.Groups.Where(g => g.CreatedBy == this.user.UserID).ToList();
             for (int i = 0; i < groups.Count; i++)
             {
-                dgvGroups.Rows.Add(groups[i].GroupName);
+                dgvGroups.Rows.Add(groups[i].GroupID, groups[i].GroupName);
             }
         }
 
@@ -196,6 +200,12 @@ namespace WindowsFormsApp1
             int rowSelected = e.RowIndex;
             selectedGroupId = selectedGroupId = Convert.ToInt32(dgvGroups.Rows[rowSelected].Cells["GroupID"].Value);
             LoadGroupMessages(selectedGroupId);
+            var groupSelected = db.Groups.FirstOrDefault(group => group.GroupID == selectedGroupId);
+            if (groupSelected != null)
+            {
+                lbGroupName.Text = groupSelected.GroupName;
+                ImageUtils.LoadImageFromUrlAsync(picGroup, groupSelected.GroupImage);
+            }
 
         }
 
