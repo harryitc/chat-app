@@ -95,7 +95,7 @@
       <DependentUpon>frm_Login.cs</DependentUpon>
     </Compile>
     <Compile Include="models\Attachment.cs" />
-    <Compile Include="models\ChatAppModel.cs" />
+    <Compile Include="models\ChatAppDBContext.cs" />
     <Compile Include="models\Friendship.cs" />
     <Compile Include="models\Group.cs" />
     <Compile Include="models\GroupMember.cs" />
@@ -148,5 +148,6 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
