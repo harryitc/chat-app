@@ -168,5 +168,14 @@
   <ItemGroup>
     <None Include="Resources\default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3467.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="assests\img\logout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assests\img\Close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assests\img\Close_Hover.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
