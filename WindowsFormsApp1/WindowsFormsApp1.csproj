@@ -70,6 +70,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="frm_Signin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="frm_Signin.Designer.cs">
+      <DependentUpon>frm_Signin.cs</DependentUpon>
+    </Compile>
     <Compile Include="frm_ChatBox.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,6 +107,7 @@
     <Compile Include="models\GroupMember.cs" />
     <Compile Include="models\GroupMessage.cs" />
     <Compile Include="models\GroupNotification.cs" />
+    <Compile Include="models\ChatAppDBContext.cs" />
     <Compile Include="models\ReadReceipt.cs" />
     <Compile Include="models\sysdiagram.cs" />
     <Compile Include="models\User.cs" />
@@ -113,6 +120,12 @@
     <EmbeddedResource Include="frm_GroupCreator.resx">
       <DependentUpon>frm_GroupCreator.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frm_Login.resx">
+      <DependentUpon>frm_Login.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="frm_Signin.resx">
+      <DependentUpon>frm_Signin.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -121,6 +134,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -148,6 +162,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\avatar-default-symbolic-icon-479x512-n8sg74wg.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-vector-illustration_561158-3467.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

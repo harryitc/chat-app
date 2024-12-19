@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.IO;
 
 namespace WindowsFormsApp1.utils
 {
@@ -49,7 +50,9 @@ namespace WindowsFormsApp1.utils
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Lỗi khi tải hình ảnh: {ex.Message}");
+                //MessageBox.Show($"Lỗi khi tải hình ảnh: {ex.Message}");
+                //Image image = Image.FromStream();
+                //pictureBox.Image = ;
             }
         }
 
