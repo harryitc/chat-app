@@ -20,6 +20,8 @@ namespace WindowsFormsApp1
         private int selectedGroupId;
         ChatAppDBContext db = new ChatAppDBContext();
 
+        User user = new User();
+
         public frm_ChatBox(int userID)
         {
             InitializeComponent();
@@ -31,7 +33,8 @@ namespace WindowsFormsApp1
             List<User> users = db.Users.ToList();
 
 
-            var user = users.FirstOrDefault(s => s.UserID == id);
+            this.user = users.FirstOrDefault(s => s.UserID == id);
+
             String imageURL = user.ProfilePicture;
             ImageUtils.LoadImageFromUrlAsync(pic_User, imageURL);
             /*if (imageURL == null || imageURL == "")
@@ -52,30 +55,10 @@ namespace WindowsFormsApp1
             }
 
             //Groups
-            List<GroupMember> members = new List<GroupMember>();
-            var group = db.GroupMembers.Where(g => g.UserID == id).ToList();
-            for (int i = 0; i < group.Count; i++)
+            var groups = db.Groups.Where(g => g.CreatedBy == user.UserID).ToList();
+            for (int i = 0; i < groups.Count; i++)
             {
-                dgvGroups.Rows.Add(group[i].Group.GroupName);
-            }
-
-            //tải tin nhắn vào rtbDialog
-            using (ChatAppDBContext dbChat = new ChatAppDBContext())
-            {
-                var groups = dbChat.GroupMembers
-                    .Where(g => g.UserID == id)
-                    .Select(g => g.Group)
-                    .ToList();
-
-                dgvGroups.Columns.Clear();
-                dgvGroups.Columns.Add("GroupID", "Group ID");
-                dgvGroups.Columns["GroupID"].Visible = false; // Ẩn cột GroupID
-                dgvGroups.Columns.Add("GroupName", "Group Name");
-
-                foreach (var i in groups)
-                {
-                    dgvGroups.Rows.Add(i.GroupID, i.GroupName);
-                }
+                dgvGroups.Rows.Add(groups[i].GroupName);
             }
         }
 
@@ -108,8 +91,23 @@ namespace WindowsFormsApp1
 
         private void btnCreateGroup_Click(object sender, EventArgs e)
         {
-            frm_GroupCreator groupCreator = new frm_GroupCreator();
+            frm_GroupCreator groupCreator = new frm_GroupCreator(this.id);
             groupCreator.ShowDialog();
+            if (DialogResult.OK == groupCreator.DialogResult)
+            {
+                loadListGroup();
+            }
+        }
+
+        private void loadListGroup()
+        {
+            this.dgvGroups.Rows.Clear();
+            //Groups
+            var groups = db.Groups.Where(g => g.CreatedBy == this.user.UserID).ToList();
+            for (int i = 0; i < groups.Count; i++)
+            {
+                dgvGroups.Rows.Add(groups[i].GroupName);
+            }
         }
 
         private void LoadGroupMessages(int groupId)

@@ -41,7 +41,6 @@ namespace WindowsFormsApp1
             this.lblWelcome = new System.Windows.Forms.Label();
             this.txtReceiver = new System.Windows.Forms.TextBox();
             this.btnCreateGroup = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.btn_LogOut = new System.Windows.Forms.Button();
             this.pic_User = new System.Windows.Forms.PictureBox();
             this.btnSend = new System.Windows.Forms.PictureBox();
@@ -53,6 +52,7 @@ namespace WindowsFormsApp1
             this.btnLove = new System.Windows.Forms.PictureBox();
             this.btnLike = new System.Windows.Forms.PictureBox();
             this.btnPicture = new System.Windows.Forms.PictureBox();
+            this.btnJoinGroup = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pic_User)).BeginInit();
@@ -106,12 +106,12 @@ namespace WindowsFormsApp1
             this.dgvGroups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvGroups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Group});
-            this.dgvGroups.Location = new System.Drawing.Point(10, 217);
+            this.dgvGroups.Location = new System.Drawing.Point(3, 216);
             this.dgvGroups.Name = "dgvGroups";
             this.dgvGroups.ReadOnly = true;
             this.dgvGroups.RowHeadersWidth = 51;
             this.dgvGroups.RowTemplate.Height = 25;
-            this.dgvGroups.Size = new System.Drawing.Size(130, 174);
+            this.dgvGroups.Size = new System.Drawing.Size(219, 174);
             this.dgvGroups.TabIndex = 3;
             this.dgvGroups.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGroups_CellClick);
             // 
@@ -128,7 +128,7 @@ namespace WindowsFormsApp1
             // rtbDialog
             // 
             this.rtbDialog.Font = new System.Drawing.Font("Times New Roman", 12F);
-            this.rtbDialog.Location = new System.Drawing.Point(204, 46);
+            this.rtbDialog.Location = new System.Drawing.Point(282, 51);
             this.rtbDialog.Margin = new System.Windows.Forms.Padding(4);
             this.rtbDialog.Name = "rtbDialog";
             this.rtbDialog.Size = new System.Drawing.Size(696, 397);
@@ -172,7 +172,7 @@ namespace WindowsFormsApp1
             this.btnCreateGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCreateGroup.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCreateGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnCreateGroup.Location = new System.Drawing.Point(13, 490);
+            this.btnCreateGroup.Location = new System.Drawing.Point(10, 429);
             this.btnCreateGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnCreateGroup.Name = "btnCreateGroup";
             this.btnCreateGroup.Size = new System.Drawing.Size(173, 35);
@@ -180,13 +180,6 @@ namespace WindowsFormsApp1
             this.btnCreateGroup.Text = "Create Group";
             this.btnCreateGroup.UseVisualStyleBackColor = false;
             this.btnCreateGroup.Click += new System.EventHandler(this.btnCreateGroup_Click);
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(0, 0);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 32;
             // 
             // btn_LogOut
             // 
@@ -316,15 +309,29 @@ namespace WindowsFormsApp1
             this.btnPicture.TabIndex = 2;
             this.btnPicture.TabStop = false;
             // 
+            // btnJoinGroup
+            // 
+            this.btnJoinGroup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(137)))), ((int)(((byte)(218)))));
+            this.btnJoinGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnJoinGroup.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnJoinGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnJoinGroup.Location = new System.Drawing.Point(10, 489);
+            this.btnJoinGroup.Margin = new System.Windows.Forms.Padding(4);
+            this.btnJoinGroup.Name = "btnJoinGroup";
+            this.btnJoinGroup.Size = new System.Drawing.Size(173, 35);
+            this.btnJoinGroup.TabIndex = 32;
+            this.btnJoinGroup.Text = "Join Group";
+            this.btnJoinGroup.UseVisualStyleBackColor = false;
+            // 
             // frm_ChatBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
-            this.ClientSize = new System.Drawing.Size(915, 534);
+            this.ClientSize = new System.Drawing.Size(1006, 721);
+            this.Controls.Add(this.btnJoinGroup);
             this.Controls.Add(this.btnNoti);
             this.Controls.Add(this.btnAdd);
-            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnCreateGroup);
             this.Controls.Add(this.lblWelcome);
             this.Controls.Add(this.pic_User);
@@ -345,7 +352,7 @@ namespace WindowsFormsApp1
             this.Name = "frm_ChatBox";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frm_ChatBox";
+            this.Text = resources.GetString("$this.Text");
             this.Load += new System.EventHandler(this.frm_ChatBox_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).EndInit();
@@ -375,7 +382,6 @@ namespace WindowsFormsApp1
         private Label lblWelcome;
         private TextBox txtReceiver;
         private Button btnCreateGroup;
-        private Button button1;
         private Button btn_LogOut;
         private DataGridViewButtonColumn Online;
         private DataGridViewButtonColumn Group;
@@ -389,5 +395,6 @@ namespace WindowsFormsApp1
         private PictureBox btnAdd;
         private PictureBox btnNoti;
         private PictureBox pic_User;
+        private Button btnJoinGroup;
     }
 }
