@@ -141,7 +141,7 @@ namespace WindowsFormsApp1
                     MessageBox.Show($"Welcome, {user.Username}!", "Login Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     
                     //Redirect the user to the chat box form.
-                    new Thread(() => Application.Run(new frm_ChatBox(user.Username))).Start();
+                    new Thread(() => Application.Run(new frm_ChatBox(user.UserID))).Start();
                     this.Close();
                 }
                 else

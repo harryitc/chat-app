@@ -17,7 +17,7 @@ namespace WindowsFormsApp1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frm_ChatBox(2));   
+            Application.Run(new frm_Login());   
         }
     }
 }
