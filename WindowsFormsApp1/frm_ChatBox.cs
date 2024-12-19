@@ -45,7 +45,7 @@ namespace WindowsFormsApp1
             }*/
             var listFriends = db.Friendships.Where(friend => friend.RequesterID == id && friend.Status == "accepted").ToList();
 
-            lblWelcome.Text = $"Welcome: {user.Username}";
+            lblWelcome.Text = $"{user.Username}";
             for (int i = 0; i < listFriends.Count; i++)
             {
                 dgvFriends.Rows.Add(listFriends[i].User.Username, listFriends[i].User.Status);
@@ -224,6 +224,26 @@ namespace WindowsFormsApp1
             {
                 MessageBox.Show("Logout canceled successfully!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+        }
+
+        private void btnClose_MouseHover(object sender, EventArgs e)
+        {
+            btnClose.Image = global::WindowsFormsApp1.Properties.Resources.Close_Hover;
+        }
+
+        private void btnClose_MouseLeave(object sender, EventArgs e)
+        {
+            btnClose.Image = global::WindowsFormsApp1.Properties.Resources.Close;
+        }
+
+        private void btnClose_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void btnNoti_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
