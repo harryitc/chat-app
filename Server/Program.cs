@@ -77,7 +77,7 @@ namespace Server
             int clientPort = clientEndPoint.Port;
 
             NetworkStream stream = client.GetStream();
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[4096];
 
             try
             {
@@ -86,6 +86,7 @@ namespace Server
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
                     if (bytesRead == 0)
                     {
+                        Console.WriteLine($"[bytesRead]: {clientIp}:{clientPort} disconnected!");
                         break; // Client disconnected
                     }
 
@@ -116,6 +117,18 @@ namespace Server
                             Log($"Unknown message type: {chatMessage.MessageType}");
                             break;
                     }
+
+
+                    foreach (var _client in clients)
+                    {
+                        if (!IsSocketConnected(_client))
+                        {
+                            Log($"Client disconnected: {((IPEndPoint)_client.Client.RemoteEndPoint).Address}");
+                            clients.Remove(_client);
+                            _client.Close();
+                        }
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -147,6 +160,8 @@ namespace Server
         private static void Broadcast(string message, TcpClient sender)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(message);
+            var disconnectedClients = new List<TcpClient>();
+
             foreach (var client in clients)
             {
                 if (client != sender)
@@ -158,19 +173,29 @@ namespace Server
                     }
                     catch
                     {
-                        // Nếu gửi thất bại, loại bỏ client
-                        clients.Remove(client);
+                        // Nếu gửi thất bại, thêm client vào danh sách bị ngắt kết nối
+                        disconnectedClients.Add(client);
                     }
                 }
             }
+
+            // Loại bỏ các client bị ngắt kết nối khỏi danh sách
+            foreach (var disconnectedClient in disconnectedClients)
+            {
+                clients.Remove(disconnectedClient);
+                disconnectedClient.Close();
+                Log("Removed disconnected client.");
+            }
+
+            // Gửi phản hồi lại cho sender (nếu cần)
             try
             {
-                NetworkStream stream2 = sender.GetStream();
-                stream2.Write(buffer, 0, buffer.Length);
+                NetworkStream stream = sender.GetStream();
+                stream.Write(buffer, 0, buffer.Length);
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine($"Error sending message to sender: {ex.Message}");
             }
         }
 
@@ -179,13 +204,10 @@ namespace Server
             var newGroupMessage = _groupMessage;
 
             using (var context = new ChatAppDBContext())
-
                 try
                 {
-
                     try
                     {
-
                         GroupMessage groupMessage = new GroupMessage
                         {
                             GroupID = _groupMessage.GroupID,
@@ -223,10 +245,23 @@ namespace Server
 
         }
 
-        private static void PrintJson(object obj)
+        private static bool IsSocketConnected(TcpClient client)
         {
-            Console.WriteLine(JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true }));
+            try
+            {
+                return !(client.Client.Poll(1, SelectMode.SelectRead) && client.Client.Available == 0);
+            }
+            catch (SocketException)
+            {
+                return false;
+            }
         }
+
+
+        //private static void PrintJson(object obj)
+        //{
+        //    Console.WriteLine(JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true }));
+        //}
 
     }
 }

@@ -22,9 +22,6 @@ namespace WindowsFormsApp1
     public partial class frm_ChatBox : Form
     {
         private int selectedGroupId;
-        private bool isDragging = false;
-        private Point startPoint = new Point(0, 0);
-        private string selectedBase64Image;
         ChatAppDBContext db = new ChatAppDBContext();
 
         User user = new User();
@@ -40,66 +37,14 @@ namespace WindowsFormsApp1
             InitializeComponent();
             this.user = user;
             ConnectToServer(this.serverIp, this.serverPort);
-
-
         }
 
         private void ConnectToServer(string serverIp, int serverPort)
         {
-
-            //try
-            //{
-            //    // Kết nối đến server
-            //    using (TcpClient client = new TcpClient())
-            //    {
-            //        Console.WriteLine("Attempting to connect to the server...");
-
-            //        // Thử kết nối với thời gian chờ 5 giây
-            //        IAsyncResult result = client.BeginConnect(serverIp, serverPort, null, null);
-            //        bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5));
-
-            //        if (!success)
-            //        {
-            //            throw new TimeoutException("Connection to the server timed out.");
-            //        }
-
-            //        // Đảm bảo kết nối thành công
-            //        client.EndConnect(result);
-            //        Console.WriteLine("Connected to the server!");
-
-            //        // Gửi dữ liệu JSON
-            //        using (NetworkStream stream = client.GetStream())
-            //        {
-            //            byte[] buffer = Encoding.UTF8.GetBytes(jsonMessage);
-            //            stream.Write(buffer, 0, buffer.Length);
-            //            Console.WriteLine("Sent to server: " + jsonMessage);
-            //        }
-            //    }
-            //}
-            //catch (SocketException ex)
-            //{
-            //    Console.WriteLine($"Socket error: {ex.Message}");
-            //    Console.WriteLine("Check if the server is running and reachable.");
-            //}
-            //catch (TimeoutException ex)
-            //{
-            //    Console.WriteLine($"Timeout error: {ex.Message}");
-            //    Console.WriteLine("The server might be too slow or not responding.");
-            //}
-            //catch (Exception ex)
-            //{
-            //    Console.WriteLine($"Unexpected error: {ex.Message}");
-            //}
-            //finally
-            //{
-            //    Console.WriteLine("Client connection process completed.");
-            //}
-
             try
             {
                 client = new TcpClient(serverIp, serverPort);
                 stream = client.GetStream();
-
             }
             catch (Exception ex)
             {
@@ -114,37 +59,50 @@ namespace WindowsFormsApp1
 
         private void ReceiveMessages()
         {
-            byte[] buffer = new byte[1024];
+            byte[] buffer = new byte[4096];
             while (true)
             {
+
+                string message = "";
+
                 try
                 {
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
 
-                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    //MessageBox.Show(this, message);
-                    GroupMessage chatMessage = JsonSerializer.Deserialize<GroupMessage>(message);
-
-                    var userRequest = this.db.GroupMessages.FirstOrDefault(x =>
-                    x.MessageID == chatMessage.MessageID
-                    );
-
-                    Invoke(new Action(() =>
-                    {
-                        if (chatMessage.MessageType == "text")
-                        {
-                            AppendMessageToRichTextBox(chatMessage.User.Username, chatMessage.Content, chatMessage.Timestamp);
-                        }
-                        else if (chatMessage.MessageType == "image")
-                        {
-                            DisplayImageInRichTextBox(chatMessage.User.Username, chatMessage.Content, chatMessage.Timestamp);
-                        }
-                    }));
+                    message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    //MessageBox.Show(message);
                 }
                 catch
                 {
                     MessageBox.Show("Disconnected from server.");
                     break;
+                }
+
+                GroupMessage chatMessage = JsonSerializer.Deserialize<GroupMessage>(message);
+
+                var userRequest = this.db.GroupMessages.FirstOrDefault(x =>
+                x.MessageID == chatMessage.MessageID &&
+                x.GroupID == chatMessage.GroupID &&
+                this.selectedGroupId == chatMessage.GroupID
+                );
+
+                if (userRequest != null)
+                {
+                    Invoke(new Action(() =>
+                    {
+                        if (chatMessage.MessageType == "text")
+                        {
+                            AppendMessageToRichTextBox(userRequest.User.Username, chatMessage.Content, chatMessage.Timestamp);
+                        }
+                        else if (chatMessage.MessageType == "image")
+                        {
+                            DisplayImageInRichTextBox(userRequest.User.Username, chatMessage.Content, chatMessage.Timestamp);
+                        }
+                    }));
+                }
+                else
+                {
+                    //MessageBox.Show("UserRequest bi null roi: " + message);
                 }
             }
         }
@@ -262,31 +220,6 @@ namespace WindowsFormsApp1
                 }
             }
         }
-
-        //private void AppendMessageToRichTextBox(string senderName, string content, DateTime? timestamp)
-        //{
-        //    string formattedMessage = $"[{timestamp:yyyy-MM-dd HH:mm:ss}] {senderName}: {content}\n";
-
-        //    // Định dạng tùy chỉnh cho tin nhắn của người gửi
-        //    rtbDialog.SelectionStart = rtbDialog.TextLength;
-        //    rtbDialog.SelectionLength = 0;
-
-        //    if (senderName == "Me") // Tin nhắn của bản thân
-        //    {
-        //        rtbDialog.SelectionColor = Color.Blue;
-        //        rtbDialog.SelectionFont = new Font(rtbDialog.Font, FontStyle.Bold);
-        //        rtbDialog.SelectionAlignment = HorizontalAlignment.Right;
-        //    }
-        //    else
-        //    {
-        //        rtbDialog.SelectionColor = Color.Black;
-        //        rtbDialog.SelectionFont = rtbDialog.Font;
-        //    }
-
-        //    rtbDialog.AppendText(formattedMessage);
-        //    rtbDialog.SelectionColor = rtbDialog.ForeColor; // Reset màu
-        //}
-
         private void AppendMessageToRichTextBox(string senderName, string content, DateTime? timestamp)
         {
             rtbDialog.BeginInvoke(new MethodInvoker(() =>
@@ -302,6 +235,11 @@ namespace WindowsFormsApp1
                 rtbDialog.SelectionFont = new Font(currentFont.FontFamily, currentFont.Size, FontStyle.Bold);
                 rtbDialog.AppendText(senderName);
                 rtbDialog.SelectionColor = rtbDialog.ForeColor;
+
+                if (senderName == this.user.Username) // Tin nhắn của bản thân
+                {
+                    rtbDialog.SelectionColor = Color.DarkBlue;
+                }
 
                 rtbDialog.AppendText(": ");
 
@@ -327,79 +265,6 @@ namespace WindowsFormsApp1
                 rtbDialog.AppendText(Environment.NewLine);
             }));
         }
-
-
-        //private void DisplayImageInRichTextBox(string senderName, string base64Image, DateTime? timestamp)
-        //{
-        //    byte[] imageBytes = Convert.FromBase64String(base64Image);
-        //    using (var ms = new MemoryStream(imageBytes))
-        //    {
-        //        string formattedMessage = $"[{timestamp:yyyy-MM-dd HH:mm:ss}] {senderName}\n";
-        //        if (senderName == "Me") // Tin nhắn của bản thân
-        //        {
-        //            rtbDialog.SelectionColor = Color.Blue;
-        //            rtbDialog.SelectionFont = new Font(rtbDialog.Font, FontStyle.Bold);
-        //            rtbDialog.SelectionAlignment = HorizontalAlignment.Right;
-        //        }
-        //        else
-        //        {
-        //            rtbDialog.SelectionColor = Color.Black;
-        //            rtbDialog.SelectionFont = rtbDialog.Font;
-        //        }
-
-        //        rtbDialog.AppendText(formattedMessage);
-        //        rtbDialog.SelectionColor = rtbDialog.ForeColor;
-
-        //        Clipboard.SetImage(Image.FromStream(ms)); // Sao chép ảnh vào Clipboard
-        //        rtbDialog.Paste();                        // Dán ảnh vào RichTextBox
-        //    }
-        //}
-
-
-        //private void DisplayImageInRichTextBox(string senderName, string base64Image, DateTime? timestamp)
-        //{
-        //    if (string.IsNullOrEmpty(base64Image) || base64Image.Length % 4 != 0 || !base64Image.All(c => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".Contains(c)))
-        //    {
-        //        // Handle invalid Base-64 string
-        //        MessageBox.Show("Invalid image data.");
-        //        return;
-        //    }
-
-        //    byte[] imageBytes = Convert.FromBase64String(base64Image);
-        //    using (var ms = new MemoryStream(imageBytes))
-        //    {
-        //        string formattedMessage = $"[{timestamp:yyyy-MM-dd HH:mm:ss}] {senderName}\n";
-        //        if (senderName == "Me")
-        //        {
-        //            rtbDialog.SelectionColor = Color.Blue;
-        //            rtbDialog.SelectionFont = new Font(rtbDialog.Font, FontStyle.Bold);
-        //            rtbDialog.SelectionAlignment = HorizontalAlignment.Right;
-        //        }
-        //        else
-        //        {
-        //            rtbDialog.SelectionColor = Color.Black;
-        //            rtbDialog.SelectionFont = rtbDialog.Font;
-        //        }
-
-        //        rtbDialog.AppendText(formattedMessage);
-        //        rtbDialog.SelectionColor = rtbDialog.ForeColor;
-
-        //        Clipboard.SetImage(Image.FromStream(ms));
-        //        rtbDialog.Paste();
-        //    }
-        //}
-
-
-        //private string ConvertToRtfImage(string base64Image)
-        //{
-        //    // Chuyển Base64 thành byte[] 
-        //    byte[] imageBytes = Convert.FromBase64String(base64Image);
-
-        //    // Đưa byte[] vào định dạng RTF
-        //    string rtfImage = @"{\rtf1\ansi{\pict\jpegblip " + BitConverter.ToString(imageBytes).Replace("-", "") + "}}";
-
-        //    return rtfImage;
-        //}
         private Image ConvertBase64ToImage(string base64Image)
         {
             try
@@ -448,8 +313,11 @@ namespace WindowsFormsApp1
                             {
                                 Thread thread = new Thread(() =>
                                {
-                                   Clipboard.Clear();
-                                   Clipboard.SetImage(image);
+                                   //this.Invoke(new Action(() =>
+                                   // {
+                                        Clipboard.Clear();
+                                        Clipboard.SetImage(image);
+                                    //}));
                                });
                                 thread.SetApartmentState(ApartmentState.STA);
                                 thread.Start();
@@ -484,49 +352,6 @@ namespace WindowsFormsApp1
                 })
         );
         }
-
-
-        //private void DisplayImageInRichTextBox(string senderName, string base64Image, DateTime? timestamp)
-        //{
-        //    if (rtbDialog.InvokeRequired)
-        //    {
-        //        rtbDialog.Invoke(new Action(() => DisplayImageInRichTextBox(senderName, base64Image, timestamp)));
-        //        return;
-        //    }
-
-        //    if (string.IsNullOrEmpty(base64Image) || base64Image.Length % 4 != 0 || !base64Image.All(c => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".Contains(c)))
-        //    {
-        //        // Handle invalid Base-64 string
-        //        MessageBox.Show("Invalid image data.");
-        //        return;
-        //    }
-
-        //    byte[] imageBytes = Convert.FromBase64String(base64Image);
-        //    using (var ms = new MemoryStream(imageBytes))
-        //    {
-        //        string formattedMessage = $"[{timestamp:yyyy-MM-dd HH:mm:ss}] {senderName}\n";
-        //        if (senderName == "Me")
-        //        {
-        //            rtbDialog.SelectionColor = Color.Blue;
-        //            rtbDialog.SelectionFont = new Font(rtbDialog.Font, FontStyle.Bold);
-        //            rtbDialog.SelectionAlignment = HorizontalAlignment.Right;
-        //        }
-        //        else
-        //        {
-        //            rtbDialog.SelectionColor = Color.Black;
-        //            rtbDialog.SelectionFont = rtbDialog.Font;
-        //        }
-
-        //        rtbDialog.AppendText(formattedMessage);
-        //        rtbDialog.SelectionColor = rtbDialog.ForeColor;
-
-        //        Clipboard.SetImage(Image.FromStream(ms));
-        //        rtbDialog.Paste();
-        //    }
-        //}
-
-
-
 
         private void btnSend_Click(object sender, EventArgs e)
         {
@@ -599,6 +424,8 @@ namespace WindowsFormsApp1
             {
                 MessageBox.Show("Logout successfully!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 new Thread(() => Application.Run(new frm_Login())).Start();
+                client.Close();
+                stream.Close();
                 this.Close();
             }
             else if (result == DialogResult.No)
@@ -645,7 +472,6 @@ namespace WindowsFormsApp1
 
         private void btnPicture_Click(object sender, EventArgs e)
         {
-
             Thread dialogThread = new Thread(() =>
             {
                 Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
@@ -667,17 +493,27 @@ namespace WindowsFormsApp1
                             Timestamp = DateTime.Now
                         };
 
-                        db.GroupMessages.Add(newMessage);
-                        db.SaveChanges();
-
-
-                        // Chuyển việc sao chép ảnh vào Clipboard sang UI thread
-                        this.Invoke(new Action(() =>
+                        try
                         {
-                            // Chèn hình ảnh vào RichTextBox
-                            DisplayImageInRichTextBox(this.user.Username, selectedBase64Image, DateTime.Now);
-                        }));
-                        // Display image in txtMessage
+                            // Serialize đối tượng thành JSON
+                            string jsonMessage = JsonSerializer.Serialize<GroupMessage>(newMessage);
+                            byte[] buffer = Encoding.UTF8.GetBytes(jsonMessage);
+
+                            stream.Write(buffer, 0, buffer.Length);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                            //PrintJson(ex);
+                        }
+
+                        //// Chuyển việc sao chép ảnh vào Clipboard sang UI thread
+                        //this.Invoke(new Action(() =>
+                        //{
+                        //    // Chèn hình ảnh vào RichTextBox
+                        //    DisplayImageInRichTextBox(this.user.Username, base64Image, DateTime.Now);
+                        //}));
+                        //// Display image in txtMessage
                     }
                 }
             });
