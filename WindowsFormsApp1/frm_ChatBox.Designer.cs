@@ -46,6 +46,8 @@ namespace WindowsFormsApp1
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.btnClose = new System.Windows.Forms.PictureBox();
             this.btnLogOut = new System.Windows.Forms.PictureBox();
+            this.lbGroupName = new System.Windows.Forms.Label();
+            this.picGroup = new System.Windows.Forms.PictureBox();
             this.btnNoti = new System.Windows.Forms.PictureBox();
             this.btnAdd = new System.Windows.Forms.PictureBox();
             this.pic_User = new System.Windows.Forms.PictureBox();
@@ -56,14 +58,13 @@ namespace WindowsFormsApp1
             this.btnLove = new System.Windows.Forms.PictureBox();
             this.btnLike = new System.Windows.Forms.PictureBox();
             this.btnPicture = new System.Windows.Forms.PictureBox();
-            this.lbGroupName = new System.Windows.Forms.Label();
-            this.picGroup = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogOut)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picGroup)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnNoti)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnAdd)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pic_User)).BeginInit();
@@ -74,7 +75,6 @@ namespace WindowsFormsApp1
             ((System.ComponentModel.ISupportInitialize)(this.btnLove)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLike)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPicture)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picGroup)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvFriends
@@ -129,7 +129,7 @@ namespace WindowsFormsApp1
             // 
             this.rtbDialog.Font = new System.Drawing.Font("Times New Roman", 12F);
             this.rtbDialog.Location = new System.Drawing.Point(404, 86);
-            this.rtbDialog.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.rtbDialog.Margin = new System.Windows.Forms.Padding(4);
             this.rtbDialog.Name = "rtbDialog";
             this.rtbDialog.Size = new System.Drawing.Size(923, 518);
             this.rtbDialog.TabIndex = 2;
@@ -139,7 +139,7 @@ namespace WindowsFormsApp1
             // 
             this.txtMessage.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMessage.Location = new System.Drawing.Point(447, 656);
-            this.txtMessage.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtMessage.Margin = new System.Windows.Forms.Padding(4);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(837, 30);
             this.txtMessage.TabIndex = 1;
@@ -161,7 +161,7 @@ namespace WindowsFormsApp1
             // 
             this.txtReceiver.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtReceiver.Location = new System.Drawing.Point(197, 47);
-            this.txtReceiver.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.txtReceiver.Margin = new System.Windows.Forms.Padding(4);
             this.txtReceiver.Name = "txtReceiver";
             this.txtReceiver.Size = new System.Drawing.Size(155, 32);
             this.txtReceiver.TabIndex = 0;
@@ -173,7 +173,7 @@ namespace WindowsFormsApp1
             this.btnCreateGroup.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCreateGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnCreateGroup.Location = new System.Drawing.Point(19, 654);
-            this.btnCreateGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnCreateGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnCreateGroup.Name = "btnCreateGroup";
             this.btnCreateGroup.Size = new System.Drawing.Size(173, 34);
             this.btnCreateGroup.TabIndex = 5;
@@ -188,7 +188,7 @@ namespace WindowsFormsApp1
             this.btnJoinGroup.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnJoinGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnJoinGroup.Location = new System.Drawing.Point(223, 654);
-            this.btnJoinGroup.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnJoinGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnJoinGroup.Name = "btnJoinGroup";
             this.btnJoinGroup.Size = new System.Drawing.Size(173, 34);
             this.btnJoinGroup.TabIndex = 32;
@@ -203,10 +203,11 @@ namespace WindowsFormsApp1
             this.panel1.Controls.Add(this.btnLogOut);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1344, 44);
             this.panel1.TabIndex = 33;
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             // 
             // lbTitle
             // 
@@ -224,7 +225,7 @@ namespace WindowsFormsApp1
             // picLogo
             // 
             this.picLogo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picLogo.Image = global::WindowsFormsApp1.Properties.Resources.logout;
+            this.picLogo.Image = global::WindowsFormsApp1.Properties.Resources.finalLogo2;
             this.picLogo.Location = new System.Drawing.Point(0, 0);
             this.picLogo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.picLogo.Name = "picLogo";
@@ -244,6 +245,7 @@ namespace WindowsFormsApp1
             this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnClose.TabIndex = 37;
             this.btnClose.TabStop = false;
+            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             this.btnClose.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnClose_MouseClick);
             this.btnClose.MouseLeave += new System.EventHandler(this.btnClose_MouseLeave);
             this.btnClose.MouseHover += new System.EventHandler(this.btnClose_MouseHover);
@@ -260,6 +262,30 @@ namespace WindowsFormsApp1
             this.btnLogOut.TabIndex = 34;
             this.btnLogOut.TabStop = false;
             this.btnLogOut.Click += new System.EventHandler(this.btn_LogOut_Click);
+            // 
+            // lbGroupName
+            // 
+            this.lbGroupName.AutoSize = true;
+            this.lbGroupName.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbGroupName.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lbGroupName.Location = new System.Drawing.Point(444, 49);
+            this.lbGroupName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbGroupName.Name = "lbGroupName";
+            this.lbGroupName.Size = new System.Drawing.Size(150, 32);
+            this.lbGroupName.TabIndex = 34;
+            this.lbGroupName.Text = "GroupName";
+            this.lbGroupName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // picGroup
+            // 
+            this.picGroup.Image = global::WindowsFormsApp1.Properties.Resources.default_avatar_profile_icon_social_media_user_image_gray_avatar_icon_blank_profile_silhouette_vector_illustration_561158_3467;
+            this.picGroup.Location = new System.Drawing.Point(615, 49);
+            this.picGroup.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.picGroup.Name = "picGroup";
+            this.picGroup.Size = new System.Drawing.Size(36, 33);
+            this.picGroup.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.picGroup.TabIndex = 35;
+            this.picGroup.TabStop = false;
             // 
             // btnNoti
             // 
@@ -317,7 +343,7 @@ namespace WindowsFormsApp1
             this.btnDevil.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDevil.Image = ((System.Drawing.Image)(resources.GetObject("btnDevil.Image")));
             this.btnDevil.Location = new System.Drawing.Point(531, 615);
-            this.btnDevil.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.btnDevil.Margin = new System.Windows.Forms.Padding(4);
             this.btnDevil.Name = "btnDevil";
             this.btnDevil.Size = new System.Drawing.Size(40, 33);
             this.btnDevil.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -359,6 +385,7 @@ namespace WindowsFormsApp1
             this.btnLove.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLove.TabIndex = 2;
             this.btnLove.TabStop = false;
+            this.btnLove.Click += new System.EventHandler(this.btnLove_Click);
             // 
             // btnLike
             // 
@@ -383,30 +410,7 @@ namespace WindowsFormsApp1
             this.btnPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnPicture.TabIndex = 2;
             this.btnPicture.TabStop = false;
-            // 
-            // lbGroupName
-            // 
-            this.lbGroupName.AutoSize = true;
-            this.lbGroupName.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbGroupName.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lbGroupName.Location = new System.Drawing.Point(444, 49);
-            this.lbGroupName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.lbGroupName.Name = "lbGroupName";
-            this.lbGroupName.Size = new System.Drawing.Size(150, 32);
-            this.lbGroupName.TabIndex = 34;
-            this.lbGroupName.Text = "GroupName";
-            this.lbGroupName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // picGroup
-            // 
-            this.picGroup.Image = global::WindowsFormsApp1.Properties.Resources.default_avatar_profile_icon_social_media_user_image_gray_avatar_icon_blank_profile_silhouette_vector_illustration_561158_3467;
-            this.picGroup.Location = new System.Drawing.Point(615, 49);
-            this.picGroup.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.picGroup.Name = "picGroup";
-            this.picGroup.Size = new System.Drawing.Size(36, 33);
-            this.picGroup.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.picGroup.TabIndex = 35;
-            this.picGroup.TabStop = false;
+            this.btnPicture.Click += new System.EventHandler(this.btnPicture_Click);
             // 
             // frm_ChatBox
             // 
@@ -436,7 +440,7 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.dgvGroups);
             this.Controls.Add(this.dgvFriends);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frm_ChatBox";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -449,6 +453,7 @@ namespace WindowsFormsApp1
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogOut)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.picGroup)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnNoti)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnAdd)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pic_User)).EndInit();
@@ -459,7 +464,6 @@ namespace WindowsFormsApp1
             ((System.ComponentModel.ISupportInitialize)(this.btnLove)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLike)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPicture)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picGroup)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

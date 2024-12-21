@@ -101,7 +101,6 @@
       <DependentUpon>frm_Login.cs</DependentUpon>
     </Compile>
     <Compile Include="models\Attachment.cs" />
-    <Compile Include="models\ChatAppDBContext.cs" />
     <Compile Include="models\Friendship.cs" />
     <Compile Include="models\Group.cs" />
     <Compile Include="models\GroupMember.cs" />
@@ -176,6 +175,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="assests\img\Close_Hover.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assests\img\logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assests\img\ourLogo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assests\img\finalLogo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
