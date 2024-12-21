@@ -244,5 +244,11 @@
   <ItemGroup>
     <None Include="assests\img\finalLogo.jpg" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Comunicator\Comunicator.csproj">
+      <Project>{d7e9830c-904d-40ff-9fa3-7b88507081ab}</Project>
+      <Name>Comunicator</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

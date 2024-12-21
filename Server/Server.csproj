@@ -102,6 +102,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Comunicator\Comunicator.csproj">
+      <Project>{d7e9830c-904d-40ff-9fa3-7b88507081ab}</Project>
+      <Name>Comunicator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\WindowsFormsApp1\WindowsFormsApp1.csproj">
       <Project>{9150F157-2200-49AB-9640-2C3DFB857C97}</Project>
       <Name>WindowsFormsApp1</Name>
