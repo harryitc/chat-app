@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApp1.models;
+using WindowsFormsApp1.Models;
 
 namespace WindowsFormsApp1
 {
@@ -141,7 +141,7 @@ namespace WindowsFormsApp1
                     MessageBox.Show($"Welcome, {user.Username}!", "Login Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     
                     //Redirect the user to the chat box form.
-                    new Thread(() => Application.Run(new frm_ChatBox(user.UserID))).Start();
+                    new Thread(() => Application.Run(new frm_ChatBox(user))).Start();
                     this.Close();
                 }
                 else

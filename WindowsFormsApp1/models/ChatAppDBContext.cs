@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 
-namespace WindowsFormsApp1.models
+namespace WindowsFormsApp1.Models
 {
     public partial class ChatAppDBContext : DbContext
     {
@@ -19,7 +19,6 @@ namespace WindowsFormsApp1.models
         public virtual DbSet<GroupNotification> GroupNotifications { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
         public virtual DbSet<ReadReceipt> ReadReceipts { get; set; }
-        public virtual DbSet<sysdiagram> sysdiagrams { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

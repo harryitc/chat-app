@@ -3,35 +3,130 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net.Sockets;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
+using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApp1.models;
+using WindowsFormsApp1.Models;
 using WindowsFormsApp1.utils;
 
 namespace WindowsFormsApp1
 {
     public partial class frm_ChatBox : Form
     {
-        private int id;
         private int selectedGroupId;
         ChatAppDBContext db = new ChatAppDBContext();
 
-        public frm_ChatBox(int userID)
+        User user = new User();
+
+        private string serverIp = "127.0.0.1";
+        private int serverPort = 8888;
+
+        private TcpClient client;
+        private NetworkStream stream;
+
+        public frm_ChatBox(User user)
         {
             InitializeComponent();
-            this.id = userID;
+            this.user = user;
+            ConnectToServer(this.serverIp, this.serverPort);
+        }
+
+        private void ConnectToServer(string serverIp, int serverPort)
+        {
+
+            //try
+            //{
+            //    // Kết nối đến server
+            //    using (TcpClient client = new TcpClient())
+            //    {
+            //        Console.WriteLine("Attempting to connect to the server...");
+
+            //        // Thử kết nối với thời gian chờ 5 giây
+            //        IAsyncResult result = client.BeginConnect(serverIp, serverPort, null, null);
+            //        bool success = result.AsyncWaitHandle.WaitOne(TimeSpan.FromSeconds(5));
+
+            //        if (!success)
+            //        {
+            //            throw new TimeoutException("Connection to the server timed out.");
+            //        }
+
+            //        // Đảm bảo kết nối thành công
+            //        client.EndConnect(result);
+            //        Console.WriteLine("Connected to the server!");
+
+            //        // Gửi dữ liệu JSON
+            //        using (NetworkStream stream = client.GetStream())
+            //        {
+            //            byte[] buffer = Encoding.UTF8.GetBytes(jsonMessage);
+            //            stream.Write(buffer, 0, buffer.Length);
+            //            Console.WriteLine("Sent to server: " + jsonMessage);
+            //        }
+            //    }
+            //}
+            //catch (SocketException ex)
+            //{
+            //    Console.WriteLine($"Socket error: {ex.Message}");
+            //    Console.WriteLine("Check if the server is running and reachable.");
+            //}
+            //catch (TimeoutException ex)
+            //{
+            //    Console.WriteLine($"Timeout error: {ex.Message}");
+            //    Console.WriteLine("The server might be too slow or not responding.");
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Unexpected error: {ex.Message}");
+            //}
+            //finally
+            //{
+            //    Console.WriteLine("Client connection process completed.");
+            //}
+
+            try
+            {
+                client = new TcpClient(serverIp, serverPort);
+                stream = client.GetStream();
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi tạo ip + port client " + ex.Message);
+                return;
+            }
+            // Listen for incoming messages
+            Thread thread = new Thread(ReceiveMessages);
+            thread.IsBackground = true;
+            thread.Start();
+        }
+
+        private void ReceiveMessages()
+        {
+            byte[] buffer = new byte[1024];
+            while (true)
+            {
+                try
+                {
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+                    string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    GroupMessage chatMessage = JsonSerializer.Deserialize<GroupMessage>(message);
+                    Invoke(new Action(() => AppendMessageToRichTextBox(chatMessage.User.Username, chatMessage.Content, chatMessage.Timestamp)));
+                }
+                catch
+                {
+                    MessageBox.Show("Disconnected from server.");
+                    break;
+                }
+            }
         }
 
         private void frm_ChatBox_Load(object sender, EventArgs e)
         {
-            List<User> users = db.Users.ToList();
-
-
-            var user = users.FirstOrDefault(s => s.UserID == id);
             String imageURL = user.ProfilePicture;
             ImageUtils.LoadImageFromUrlAsync(pic_User, imageURL);
             /*if (imageURL == null || imageURL == "")
@@ -43,7 +138,7 @@ namespace WindowsFormsApp1
             {
 
             }*/
-            var listFriends = db.Friendships.Where(friend => friend.RequesterID == id && friend.Status == "accepted").ToList();
+            var listFriends = db.Friendships.Where(friend => friend.RequesterID == this.user.UserID && friend.Status == "accepted").ToList();
 
             lblWelcome.Text = $"{user.Username}";
             for (int i = 0; i < listFriends.Count; i++)
@@ -53,7 +148,7 @@ namespace WindowsFormsApp1
 
             //Groups
             List<GroupMember> members = new List<GroupMember>();
-            var group = db.GroupMembers.Where(g => g.UserID == id).ToList();
+            var group = db.GroupMembers.Where(g => g.UserID == this.user.UserID).ToList();
             for (int i = 0; i < group.Count; i++)
             {
                 dgvGroups.Rows.Add(group[i].Group.GroupName);
@@ -63,7 +158,7 @@ namespace WindowsFormsApp1
             using (ChatAppDBContext dbChat = new ChatAppDBContext())
             {
                 var groups = dbChat.GroupMembers
-                    .Where(g => g.UserID == id)
+                    .Where(g => g.UserID == this.user.UserID)
                     .Select(g => g.Group)
                     .ToList();
 
@@ -90,7 +185,7 @@ namespace WindowsFormsApp1
                 if (users[i].Username == request)
                 {
                     Friendship addfr = new Friendship();
-                    addfr.AddressID = this.id;
+                    addfr.AddressID = this.user.UserID;
                     addfr.RequesterID = users[i].UserID;
                     addfr.Status = "pending";
                     addfr.CreatedAt = DateTime.Now;
@@ -103,6 +198,11 @@ namespace WindowsFormsApp1
             if (flat == false)
                 MessageBox.Show("Người dùng không tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+
+        }
+
+        private void sendMessage()
+        {
 
         }
 
@@ -134,6 +234,7 @@ namespace WindowsFormsApp1
 
         private void AppendMessageToRichTextBox(string senderName, string content, DateTime? timestamp)
         {
+
             string formattedMessage = $"[{timestamp:yyyy-MM-dd HH:mm:ss}] {senderName}: {content}\n";
 
             // Định dạng tùy chỉnh cho tin nhắn của người gửi
@@ -153,10 +254,14 @@ namespace WindowsFormsApp1
 
             rtbDialog.AppendText(formattedMessage);
             rtbDialog.SelectionColor = rtbDialog.ForeColor; // Reset màu
+
+            txtMessage.Clear();
+
         }
 
         private void btnSend_Click(object sender, EventArgs e)
         {
+
             string messageContent = txtMessage.Text.Trim();
             if (string.IsNullOrEmpty(messageContent))
             {
@@ -170,26 +275,27 @@ namespace WindowsFormsApp1
                 return;
             }
 
+            var newMessage = new GroupMessage
+            {
+                GroupID = selectedGroupId,
+                SenderID = this.user.UserID,
+                Content = messageContent,
+                MessageType = "text",
+                Timestamp = DateTime.Now
+            };
+
             try
             {
-                var newMessage = new GroupMessage
-                {
-                    GroupID = selectedGroupId,
-                    SenderID = id,
-                    Content = messageContent,
-                    MessageType = "text",
-                    Timestamp = DateTime.Now
-                };
+                // Serialize đối tượng thành JSON
+                string jsonMessage = JsonSerializer.Serialize<GroupMessage>(newMessage);
 
-                db.GroupMessages.Add(newMessage);
-                db.SaveChanges();
+                byte[] buffer = Encoding.UTF8.GetBytes(jsonMessage);
 
-                AppendMessageToRichTextBox("Me", messageContent, DateTime.Now);
-                txtMessage.Clear();
+                stream.Write(buffer, 0, buffer.Length);
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                PrintJson(ex);
             }
         }
 
@@ -244,6 +350,11 @@ namespace WindowsFormsApp1
         private void btnNoti_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private static void PrintJson(object obj)
+        {
+            MessageBox.Show(JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true }));
         }
     }
 }

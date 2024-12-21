@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApp1.models;
+using WindowsFormsApp1.Models;
 
 namespace WindowsFormsApp1
 {
@@ -58,7 +58,7 @@ namespace WindowsFormsApp1
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            try 
+            try
             {
                 //Form can't be empty.
                 if (txt_Email.Text == "" || txt_SigninUsername.Text == "" || txt_SigninPassword.Text == "")
@@ -68,7 +68,7 @@ namespace WindowsFormsApp1
                 }
 
                 //Check if the email format is correct or not.
-                if (!IsValidEmail(txt_Email.Text)) 
+                if (!IsValidEmail(txt_Email.Text))
                 {
                     MessageBox.Show("Please enter the correct email format!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -88,7 +88,7 @@ namespace WindowsFormsApp1
                 {
                     Username = txt_SigninUsername.Text,
                     Email = txt_Email.Text,
-                    Password = txt_SigninPassword.Text, 
+                    Password = txt_SigninPassword.Text,
                     CreatedAt = DateTime.Now,
                 };
 

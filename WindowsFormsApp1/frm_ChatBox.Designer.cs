@@ -32,17 +32,19 @@ namespace WindowsFormsApp1
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_ChatBox));
             this.dgvFriends = new System.Windows.Forms.DataGridView();
+            this.username = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvGroups = new System.Windows.Forms.DataGridView();
+            this.Group = new System.Windows.Forms.DataGridViewButtonColumn();
             this.rtbDialog = new System.Windows.Forms.RichTextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.lblWelcome = new System.Windows.Forms.Label();
             this.txtReceiver = new System.Windows.Forms.TextBox();
             this.btnCreateGroup = new System.Windows.Forms.Button();
             this.btnJoinGroup = new System.Windows.Forms.Button();
-            this.username = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Group = new System.Windows.Forms.DataGridViewButtonColumn();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbTitle = new System.Windows.Forms.Label();
+            this.picLogo = new System.Windows.Forms.PictureBox();
             this.btnClose = new System.Windows.Forms.PictureBox();
             this.btnLogOut = new System.Windows.Forms.PictureBox();
             this.btnNoti = new System.Windows.Forms.PictureBox();
@@ -55,12 +57,11 @@ namespace WindowsFormsApp1
             this.btnLove = new System.Windows.Forms.PictureBox();
             this.btnLike = new System.Windows.Forms.PictureBox();
             this.btnPicture = new System.Windows.Forms.PictureBox();
-            this.picLogo = new System.Windows.Forms.PictureBox();
             this.lbGroupName = new System.Windows.Forms.Label();
-            this.lbTitle = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogOut)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnNoti)).BeginInit();
@@ -73,7 +74,6 @@ namespace WindowsFormsApp1
             ((System.ComponentModel.ISupportInitialize)(this.btnLove)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLike)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPicture)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             this.SuspendLayout();
             // 
             // dgvFriends
@@ -85,13 +85,29 @@ namespace WindowsFormsApp1
             this.username,
             this.status});
             this.dgvFriends.Location = new System.Drawing.Point(13, 70);
-            this.dgvFriends.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvFriends.Margin = new System.Windows.Forms.Padding(2);
             this.dgvFriends.Name = "dgvFriends";
             this.dgvFriends.ReadOnly = true;
             this.dgvFriends.RowHeadersWidth = 51;
             this.dgvFriends.RowTemplate.Height = 25;
             this.dgvFriends.Size = new System.Drawing.Size(285, 233);
             this.dgvFriends.TabIndex = 4;
+            // 
+            // username
+            // 
+            this.username.HeaderText = "User";
+            this.username.MinimumWidth = 6;
+            this.username.Name = "username";
+            this.username.ReadOnly = true;
+            this.username.Width = 150;
+            // 
+            // status
+            // 
+            this.status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.status.HeaderText = "status";
+            this.status.MinimumWidth = 6;
+            this.status.Name = "status";
+            this.status.ReadOnly = true;
             // 
             // dgvGroups
             // 
@@ -101,7 +117,7 @@ namespace WindowsFormsApp1
             this.dgvGroups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Group});
             this.dgvGroups.Location = new System.Drawing.Point(14, 307);
-            this.dgvGroups.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.dgvGroups.Margin = new System.Windows.Forms.Padding(2);
             this.dgvGroups.Name = "dgvGroups";
             this.dgvGroups.ReadOnly = true;
             this.dgvGroups.RowHeadersWidth = 51;
@@ -109,6 +125,16 @@ namespace WindowsFormsApp1
             this.dgvGroups.Size = new System.Drawing.Size(284, 220);
             this.dgvGroups.TabIndex = 3;
             this.dgvGroups.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGroups_CellClick);
+            // 
+            // Group
+            // 
+            this.Group.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Group.HeaderText = "Group";
+            this.Group.MinimumWidth = 6;
+            this.Group.Name = "Group";
+            this.Group.ReadOnly = true;
+            this.Group.Resizable = System.Windows.Forms.DataGridViewTriState.False;
+            this.Group.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // rtbDialog
             // 
@@ -174,32 +200,6 @@ namespace WindowsFormsApp1
             this.btnJoinGroup.Text = "Join Group";
             this.btnJoinGroup.UseVisualStyleBackColor = false;
             // 
-            // username
-            // 
-            this.username.HeaderText = "User";
-            this.username.MinimumWidth = 6;
-            this.username.Name = "username";
-            this.username.ReadOnly = true;
-            this.username.Width = 150;
-            // 
-            // status
-            // 
-            this.status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.status.HeaderText = "status";
-            this.status.MinimumWidth = 6;
-            this.status.Name = "status";
-            this.status.ReadOnly = true;
-            // 
-            // Group
-            // 
-            this.Group.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Group.HeaderText = "Group";
-            this.Group.MinimumWidth = 6;
-            this.Group.Name = "Group";
-            this.Group.ReadOnly = true;
-            this.Group.Resizable = System.Windows.Forms.DataGridViewTriState.False;
-            this.Group.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
-            // 
             // panel1
             // 
             this.panel1.Controls.Add(this.lbTitle);
@@ -211,6 +211,30 @@ namespace WindowsFormsApp1
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1008, 36);
             this.panel1.TabIndex = 33;
+            // 
+            // lbTitle
+            // 
+            this.lbTitle.AutoSize = true;
+            this.lbTitle.Font = new System.Drawing.Font("Segoe UI", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbTitle.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lbTitle.Location = new System.Drawing.Point(41, 3);
+            this.lbTitle.Name = "lbTitle";
+            this.lbTitle.Size = new System.Drawing.Size(149, 32);
+            this.lbTitle.TabIndex = 35;
+            this.lbTitle.Text = "AESoftWare";
+            this.lbTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // picLogo
+            // 
+            this.picLogo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picLogo.Image = global::WindowsFormsApp1.Properties.Resources.logout;
+            this.picLogo.Location = new System.Drawing.Point(0, 0);
+            this.picLogo.Margin = new System.Windows.Forms.Padding(2);
+            this.picLogo.Name = "picLogo";
+            this.picLogo.Size = new System.Drawing.Size(36, 36);
+            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.picLogo.TabIndex = 35;
+            this.picLogo.TabStop = false;
             // 
             // btnClose
             // 
@@ -362,18 +386,6 @@ namespace WindowsFormsApp1
             this.btnPicture.TabIndex = 2;
             this.btnPicture.TabStop = false;
             // 
-            // picLogo
-            // 
-            this.picLogo.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.picLogo.Image = global::WindowsFormsApp1.Properties.Resources.logout;
-            this.picLogo.Location = new System.Drawing.Point(0, 0);
-            this.picLogo.Margin = new System.Windows.Forms.Padding(2);
-            this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(36, 36);
-            this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.picLogo.TabIndex = 35;
-            this.picLogo.TabStop = false;
-            // 
             // lbGroupName
             // 
             this.lbGroupName.AutoSize = true;
@@ -385,18 +397,6 @@ namespace WindowsFormsApp1
             this.lbGroupName.TabIndex = 34;
             this.lbGroupName.Text = "GroupName";
             this.lbGroupName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // lbTitle
-            // 
-            this.lbTitle.AutoSize = true;
-            this.lbTitle.Font = new System.Drawing.Font("Segoe UI", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbTitle.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lbTitle.Location = new System.Drawing.Point(41, 3);
-            this.lbTitle.Name = "lbTitle";
-            this.lbTitle.Size = new System.Drawing.Size(149, 32);
-            this.lbTitle.TabIndex = 35;
-            this.lbTitle.Text = "AESoftWare";
-            this.lbTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // frm_ChatBox
             // 
@@ -428,12 +428,13 @@ namespace WindowsFormsApp1
             this.Name = "frm_ChatBox";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "frm_ChatBox";
+            this.Text = " n  ";
             this.Load += new System.EventHandler(this.frm_ChatBox_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).EndInit();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLogOut)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnNoti)).EndInit();
@@ -446,7 +447,6 @@ namespace WindowsFormsApp1
             ((System.ComponentModel.ISupportInitialize)(this.btnLove)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnLike)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnPicture)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.picLogo)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
