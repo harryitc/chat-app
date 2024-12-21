@@ -13,5 +13,6 @@ namespace Comunicator
         public const string JOIN_GROUP = "JOIN_GROUP";
         public const string FRIENDSHIPS = "FRIENDSHIPS";
         public const string STATUS_ACCOUNT = "STATUS_ACCOUNT";
+        // Bổ sung thêm (nếu cần thiết)...
     }
 }

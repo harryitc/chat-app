@@ -106,23 +106,26 @@ namespace Server
                     JObject json = JObject.Parse(receivedData);
                     string type = json["Type"].ToString();
 
-                    string responseData = "";
+                    //string responseData = "";
 
-                    switch (type)
-                    {
-                        case EventType.SEND_MESSAGE:
-                            responseData = HandleMessage(json["Data"].ToObject<GroupMessage>());
-                            break;
-                        case "addFriend":
-                            //HandleAddFriend(json["Data"].ToObject<FriendRequestData>());
-                            break;
-                        case "groupAction":
-                            //HandleGroupAction(json["Data"].ToObject<GroupActionData>());
-                            break;
-                        default:
-                            Log($"Unknown type: {type}");
-                            break;
-                    }
+                    //switch (type)
+                    //{
+                    //    case EventType.SEND_MESSAGE:
+                    //        responseData = HandleMessage(json["Data"].ToObject<GroupMessage>());
+                    //        break;
+                    //    case EventType.JOIN_GROUP:
+                    //        responseData = HandleJoinGroup(json["Data"].ToObject<GroupMember>());
+                    //        break;
+                    //    case "addFriend":
+                    //        //HandleAddFriend(json["Data"].ToObject<FriendRequestData>());
+                    //        break;
+                    //    case "groupAction":
+                    //        //HandleGroupAction(json["Data"].ToObject<GroupActionData>());
+                    //        break;
+                    //    default:
+                    //        Log($"Unknown type: {type}");
+                    //        break;
+                    //}
 
 
                     //// Xử lý theo loại thông điệp
@@ -143,7 +146,8 @@ namespace Server
                     //        break;
                     //}
 
-                    Broadcast(responseData, client);
+                    Broadcast(receivedData, client);
+                    //Broadcast(responseData, client);
 
                     foreach (var _client in clients)
                     {
@@ -169,52 +173,58 @@ namespace Server
             }
         }
 
-        private static string HandleMessage(GroupMessage groupMessage)
-        {
-            string result = "";
+        //private static string HandleJoinGroup(GroupMember groupMember)
+        //{
+        //    return JsonConvert.SerializeObject(new
+        //    {
+        //        Type = EventType.JOIN_GROUP,
+        //        Data = groupMember
+        //    });
+        //}
 
-            //JObject response = new JObject
-            //{
-            //    ["Type"] = "response",
-            //    ["Data"] = new JObject
-            //    {
-            //        ["Status"] = "Error",
-            //        ["Message"] = "Unknown type"
-            //    }
-            //};
+        //private static string HandleMessage(GroupMessage groupMessage)
+        //{
 
-            using (var context = new ChatAppDBContext())
-            {
-                try
-                {
-                    try
-                    {
-                        var newGroupMessage = context.GroupMessages.Add(groupMessage);
-                        context.SaveChanges();
+        //    return JsonConvert.SerializeObject(new
+        //    {
+        //        Type = EventType.SEND_MESSAGE,
+        //        Data = groupMessage
+        //    });
 
-                        result = JsonConvert.SerializeObject(new
-                        {
-                            Type = EventType.SEND_MESSAGE,
-                            Data = newGroupMessage
-                        });
-                    }
-                    catch (Exception ex)
-                    {
-                        Log("Lỗi insert message vào DB: " + ex.Message);
-                    }
-                    finally
-                    {
-                        //PrintJson(groupMessage);
-                    }
+        //    string result = "";
 
-                    return result;
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception($"Lỗi kết nối: {ex.Message}");
-                }
-            }
-        }
+        //    using (var context = new ChatAppDBContext())
+        //    {
+        //        try
+        //        {
+        //            try
+        //            {
+        //                var newGroupMessage = context.GroupMessages.Add(groupMessage);
+        //                context.SaveChanges();
+
+        //                result = JsonConvert.SerializeObject(new
+        //                {
+        //                    Type = EventType.SEND_MESSAGE,
+        //                    Data = newGroupMessage
+        //                });
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Log("Lỗi insert message vào DB: " + ex.Message);
+        //            }
+        //            finally
+        //            {
+        //                //PrintJson(groupMessage);
+        //            }
+
+        //            return result;
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            throw new Exception($"Lỗi kết nối: {ex.Message}");
+        //        }
+        //    }
+        //}
 
         private static void Log(string message)
         {
@@ -259,15 +269,15 @@ namespace Server
             }
 
             // Gửi phản hồi lại cho sender (nếu cần)
-            try
-            {
-                NetworkStream stream = sender.GetStream();
-                stream.Write(buffer, 0, buffer.Length);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error sending message to sender: {ex.Message}");
-            }
+            //try
+            //{
+            //    NetworkStream stream = sender.GetStream();
+            //    stream.Write(buffer, 0, buffer.Length);
+            //}
+            //catch (Exception ex)
+            //{
+            //    Console.WriteLine($"Error sending message to sender: {ex.Message}");
+            //}
         }
 
         private static bool IsSocketConnected(TcpClient client)

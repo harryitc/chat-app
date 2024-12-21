@@ -32,8 +32,6 @@ namespace WindowsFormsApp1
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_ChatBox));
             this.dgvFriends = new System.Windows.Forms.DataGridView();
-            this.username = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.status = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvGroups = new System.Windows.Forms.DataGridView();
             this.rtbDialog = new System.Windows.Forms.RichTextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
@@ -83,9 +81,6 @@ namespace WindowsFormsApp1
             this.dgvFriends.AllowUserToAddRows = false;
             this.dgvFriends.AllowUserToDeleteRows = false;
             this.dgvFriends.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFriends.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.username,
-            this.status});
             this.dgvFriends.Location = new System.Drawing.Point(13, 70);
             this.dgvFriends.Margin = new System.Windows.Forms.Padding(2);
             this.dgvFriends.Name = "dgvFriends";
@@ -94,22 +89,6 @@ namespace WindowsFormsApp1
             this.dgvFriends.RowTemplate.Height = 25;
             this.dgvFriends.Size = new System.Drawing.Size(285, 233);
             this.dgvFriends.TabIndex = 4;
-            // 
-            // username
-            // 
-            this.username.HeaderText = "User";
-            this.username.MinimumWidth = 6;
-            this.username.Name = "username";
-            this.username.ReadOnly = true;
-            this.username.Width = 150;
-            // 
-            // status
-            // 
-            this.status.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.status.HeaderText = "status";
-            this.status.MinimumWidth = 6;
-            this.status.Name = "status";
-            this.status.ReadOnly = true;
             // 
             // dgvGroups
             // 
@@ -502,8 +481,6 @@ namespace WindowsFormsApp1
         private PictureBox btnNoti;
         private PictureBox pic_User;
         private Button btnJoinGroup;
-        private DataGridViewTextBoxColumn username;
-        private DataGridViewTextBoxColumn status;
         private Panel panel1;
         private PictureBox btnLogOut;
         private PictureBox btnClose;

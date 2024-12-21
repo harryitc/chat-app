@@ -46,6 +46,9 @@
     <Compile Include="EventType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StatusFriend.cs" />
+    <Compile Include="StatusLogin.cs" />
+    <Compile Include="UserRole.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
