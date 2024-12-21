@@ -160,12 +160,17 @@ namespace WindowsFormsApp1
             dgvGroups.Columns.Add("GroupID", "Group ID");
             dgvGroups.Columns["GroupID"].Visible = false; // Ẩn cột GroupID
             dgvGroups.Columns.Add("GroupName", "Group Name");
+            dgvGroups.Columns.Add("role", "Role");
+            dgvGroups.Columns.Add("sl", "Quantity");
+
 
             //Groups
-            var groups = db.GroupMembers.Where(g => g.UserID == user.UserID).ToList();
-            for (int i = 0; i < groups.Count; i++)
+            var groupMembers = db.GroupMembers.Where(g => g.UserID == user.UserID).ToList();
+            var groupMemberWithoutUserID = db.GroupMembers.ToList();
+            foreach (var groupMember in groupMembers)
             {
-                dgvGroups.Rows.Add(groups[i].GroupID, groups[i].Group.GroupName);
+                int sl = groupMemberWithoutUserID.Where(item => item.GroupID == groupMember.GroupID).Count();
+                dgvGroups.Rows.Add(groupMember.GroupID, groupMember.Group.GroupName, groupMember.Role, sl);
             }
         }
 
@@ -184,6 +189,8 @@ namespace WindowsFormsApp1
                 MessageBox.Show("Đã gửi kết bạn thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 db.Friendships.Add(addfr);
                 db.SaveChanges();
+
+                lbNoti.Text = (info + 1).ToString();
             }
             else
             {
@@ -206,10 +213,12 @@ namespace WindowsFormsApp1
         {
             this.dgvGroups.Rows.Clear();
             //Groups
-            var groups = db.GroupMembers.Where(g => g.UserID == user.UserID).ToList();
-            for (int i = 0; i < groups.Count; i++)
+            var groupMembers = db.GroupMembers.Where(g => g.UserID == user.UserID).ToList();
+            var groupMemberWithoutUserID = db.GroupMembers.ToList();
+            foreach (var groupMember in groupMembers)
             {
-                dgvGroups.Rows.Add(groups[i].GroupID, groups[i].Group.GroupName);
+                int sl = groupMemberWithoutUserID.Where(item => item.GroupID == groupMember.GroupID).Count();
+                dgvGroups.Rows.Add(groupMember.GroupID, groupMember.Group.GroupName, groupMember.Role, sl);
             }
         }
 
@@ -356,7 +365,18 @@ namespace WindowsFormsApp1
 
         private void btnNoti_Click(object sender, EventArgs e)
         {
+            Notification noti = new Notification();
+            noti.Show();
+        }
 
+        private void btnJoinGroup_Click(object sender, EventArgs e)
+        {
+            JoinGroups joinGroups = new JoinGroups(this.user);
+            joinGroups.ShowDialog();
+            if (DialogResult.OK == joinGroups.DialogResult)
+            {
+                loadListGroup();
+            }
         }
 
         private static void PrintJson(object obj)
