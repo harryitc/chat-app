@@ -190,7 +190,7 @@ namespace WindowsFormsApp1
                 db.Friendships.Add(addfr);
                 db.SaveChanges();
 
-                lbNoti.Text = (info + 1).ToString();
+                //lbNoti.Text = (info + 1).ToString();
             }
             else
             {

@@ -58,6 +58,7 @@ namespace WindowsFormsApp1
             this.btnPicture = new System.Windows.Forms.PictureBox();
             this.lbGroupName = new System.Windows.Forms.Label();
             this.picGroup = new System.Windows.Forms.PictureBox();
+            this.lbNoti = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
             this.panel1.SuspendLayout();
@@ -128,7 +129,8 @@ namespace WindowsFormsApp1
             // rtbDialog
             // 
             this.rtbDialog.Font = new System.Drawing.Font("Times New Roman", 12F);
-            this.rtbDialog.Location = new System.Drawing.Point(303, 70);
+            this.rtbDialog.Location = new System.Drawing.Point(404, 86);
+            this.rtbDialog.Margin = new System.Windows.Forms.Padding(4);
             this.rtbDialog.Name = "rtbDialog";
             this.rtbDialog.Size = new System.Drawing.Size(693, 422);
             this.rtbDialog.TabIndex = 2;
@@ -137,7 +139,8 @@ namespace WindowsFormsApp1
             // txtMessage
             // 
             this.txtMessage.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMessage.Location = new System.Drawing.Point(335, 533);
+            this.txtMessage.Location = new System.Drawing.Point(447, 656);
+            this.txtMessage.Margin = new System.Windows.Forms.Padding(4);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(629, 26);
             this.txtMessage.TabIndex = 1;
@@ -157,7 +160,8 @@ namespace WindowsFormsApp1
             // txtReceiver
             // 
             this.txtReceiver.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtReceiver.Location = new System.Drawing.Point(148, 38);
+            this.txtReceiver.Location = new System.Drawing.Point(197, 47);
+            this.txtReceiver.Margin = new System.Windows.Forms.Padding(4);
             this.txtReceiver.Name = "txtReceiver";
             this.txtReceiver.Size = new System.Drawing.Size(117, 27);
             this.txtReceiver.TabIndex = 0;
@@ -188,6 +192,7 @@ namespace WindowsFormsApp1
             this.btnJoinGroup.TabIndex = 32;
             this.btnJoinGroup.Text = "Join Group";
             this.btnJoinGroup.UseVisualStyleBackColor = false;
+            this.btnJoinGroup.Click += new System.EventHandler(this.btnJoinGroup_Click);
             // 
             // panel1
             // 
@@ -197,6 +202,7 @@ namespace WindowsFormsApp1
             this.panel1.Controls.Add(this.btnLogOut);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1008, 36);
             this.panel1.TabIndex = 33;
@@ -398,12 +404,24 @@ namespace WindowsFormsApp1
             this.picGroup.TabIndex = 35;
             this.picGroup.TabStop = false;
             // 
+            // lbNoti
+            // 
+            this.lbNoti.AutoSize = true;
+            this.lbNoti.BackColor = System.Drawing.Color.White;
+            this.lbNoti.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbNoti.ForeColor = System.Drawing.Color.Black;
+            this.lbNoti.Location = new System.Drawing.Point(423, 47);
+            this.lbNoti.Name = "lbNoti";
+            this.lbNoti.Size = new System.Drawing.Size(0, 15);
+            this.lbNoti.TabIndex = 36;
+            // 
             // frm_ChatBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
-            this.ClientSize = new System.Drawing.Size(1008, 570);
+            this.ClientSize = new System.Drawing.Size(1344, 702);
+            this.Controls.Add(this.lbNoti);
             this.Controls.Add(this.picGroup);
             this.Controls.Add(this.lbGroupName);
             this.Controls.Add(this.panel1);
@@ -426,6 +444,7 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.dgvGroups);
             this.Controls.Add(this.dgvFriends);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frm_ChatBox";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -484,5 +503,6 @@ namespace WindowsFormsApp1
         private Label lbTitle;
         private Label lbGroupName;
         private PictureBox picGroup;
+        private Label lbNoti;
     }
 }

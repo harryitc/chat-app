@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApp1.models;
+using WindowsFormsApp1.Models;
 
 namespace WindowsFormsApp1
 {
