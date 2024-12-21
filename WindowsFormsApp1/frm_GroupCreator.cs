@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using WindowsFormsApp1.models;
+using WindowsFormsApp1.Models;
 
 namespace WindowsFormsApp1
 {
@@ -69,7 +69,7 @@ namespace WindowsFormsApp1
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Group created Failed!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Group created Failed! " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.No;
             }
             finally

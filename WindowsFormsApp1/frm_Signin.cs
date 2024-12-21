@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WindowsFormsApp1.models;
+using WindowsFormsApp1.Models;
 
 namespace WindowsFormsApp1
 {
@@ -58,7 +58,7 @@ namespace WindowsFormsApp1
 
         private void btnLogin_Click(object sender, EventArgs e)
         {
-            try 
+            try
             {
                 //Form can't be empty.
                 if (txt_Email.Text == "" || txt_SigninUsername.Text == "" || txt_SigninPassword.Text == "")
@@ -68,7 +68,7 @@ namespace WindowsFormsApp1
                 }
 
                 //Check if the email format is correct or not.
-                if (!IsValidEmail(txt_Email.Text)) 
+                if (!IsValidEmail(txt_Email.Text))
                 {
                     MessageBox.Show("Please enter the correct email format!", "Warning!", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return;
@@ -88,7 +88,7 @@ namespace WindowsFormsApp1
                 {
                     Username = txt_SigninUsername.Text,
                     Email = txt_Email.Text,
-                    Password = txt_SigninPassword.Text, 
+                    Password = txt_SigninPassword.Text,
                     CreatedAt = DateTime.Now,
                 };
 
@@ -108,6 +108,40 @@ namespace WindowsFormsApp1
             catch (Exception ex)
             {
                 MessageBox.Show($"{ex.Message}");
+            }
+        }
+
+        private void btnClose_MouseHover(object sender, EventArgs e)
+        {
+            btnClose.Image = global::WindowsFormsApp1.Properties.Resources.Close_Hover;
+        }
+
+        private void btnClose_MouseLeave(object sender, EventArgs e)
+        {
+            btnClose.Image = global::WindowsFormsApp1.Properties.Resources.Close;
+        }
+
+        private void btnClose_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.Close();   
+        }
+
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool ReleaseCapture();
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (e.Clicks == 1 && e.Y <= this.Height && e.Y >= 0)
+                {
+                    ReleaseCapture();
+                    SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                }
             }
         }
     }
