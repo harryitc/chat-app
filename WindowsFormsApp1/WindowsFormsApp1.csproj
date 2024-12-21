@@ -100,6 +100,12 @@
     <Compile Include="frm_Login.Designer.cs">
       <DependentUpon>frm_Login.cs</DependentUpon>
     </Compile>
+    <Compile Include="JoinGroups.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="JoinGroups.Designer.cs">
+      <DependentUpon>JoinGroups.cs</DependentUpon>
+    </Compile>
     <Compile Include="models\Attachment.cs" />
     <Compile Include="models\ChatAppDBContext.cs" />
     <Compile Include="models\Friendship.cs" />
@@ -107,10 +113,20 @@
     <Compile Include="models\GroupMember.cs" />
     <Compile Include="models\GroupMessage.cs" />
     <Compile Include="models\GroupNotification.cs" />
-    <Compile Include="models\ChatAppDBContext.cs" />
     <Compile Include="models\ReadReceipt.cs" />
-    <Compile Include="models\sysdiagram.cs" />
     <Compile Include="models\User.cs" />
+    <Compile Include="Notification.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Notification.Designer.cs">
+      <DependentUpon>Notification.cs</DependentUpon>
+    </Compile>
+    <Compile Include="NotificationUserControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="NotificationUserControl.Designer.cs">
+      <DependentUpon>NotificationUserControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="utils\ImageUtils.cs" />
@@ -125,6 +141,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="frm_Signin.resx">
       <DependentUpon>frm_Signin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="JoinGroups.resx">
+      <DependentUpon>JoinGroups.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Notification.resx">
+      <DependentUpon>Notification.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="NotificationUserControl.resx">
+      <DependentUpon>NotificationUserControl.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
