@@ -12,7 +12,6 @@ namespace WindowsFormsApp1.Models
         public GroupMessage()
         {
             Attachments = new HashSet<Attachment>();
-            ReadReceipts = new HashSet<ReadReceipt>();
         }
 
         [Key]
@@ -35,8 +34,5 @@ namespace WindowsFormsApp1.Models
         public virtual Group Group { get; set; }
 
         public virtual User User { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReadReceipt> ReadReceipts { get; set; }
     }
 }

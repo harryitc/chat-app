@@ -1,21 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
-using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1.Models;
+
+using Newtonsoft.Json.Linq;
+
 using WindowsFormsApp1.utils;
-using static System.Windows.Forms.LinkLabel;
+using Newtonsoft.Json;
+
+using Comunicator;
 
 namespace WindowsFormsApp1
 {
@@ -63,13 +64,12 @@ namespace WindowsFormsApp1
             while (true)
             {
 
-                string message = "";
-
+                string receivedData = "";
                 try
                 {
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
 
-                    message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
                     //MessageBox.Show(message);
                 }
                 catch
@@ -78,32 +78,53 @@ namespace WindowsFormsApp1
                     break;
                 }
 
-                GroupMessage chatMessage = JsonSerializer.Deserialize<GroupMessage>(message);
 
-                var userRequest = this.db.GroupMessages.FirstOrDefault(x =>
-                x.MessageID == chatMessage.MessageID &&
-                x.GroupID == chatMessage.GroupID &&
-                this.selectedGroupId == chatMessage.GroupID
-                );
+                JObject json = JObject.Parse(receivedData);
+                string type = json["Type"].ToString();
 
-                if (userRequest != null)
+                switch (type)
                 {
-                    Invoke(new Action(() =>
+                    case EventType.SEND_MESSAGE:
+                        HandleMessage(json["Data"].ToObject<GroupMessage>());
+                        break;
+                    case "addFriend":
+                        //HandleAddFriend(json["Data"].ToObject<FriendRequestData>());
+                        break;
+                    case "groupAction":
+                        //HandleGroupAction(json["Data"].ToObject<GroupActionData>());
+                        break;
+                    default:
+                        MessageBox.Show($"Unknown type: {type}");
+                        break;
+                }
+            }
+        }
+
+        private void HandleMessage(GroupMessage groupMessage)
+        {
+            var userRequest = this.db.GroupMessages.FirstOrDefault(x =>
+            x.MessageID == groupMessage.MessageID &&
+            x.GroupID == groupMessage.GroupID &&
+            this.selectedGroupId == groupMessage.GroupID
+            );
+
+            if (userRequest != null)
+            {
+                Invoke(new Action(() =>
+                {
+                    if (groupMessage.MessageType == "text")
                     {
-                        if (chatMessage.MessageType == "text")
-                        {
-                            AppendMessageToRichTextBox(userRequest.User.Username, chatMessage.Content, chatMessage.Timestamp);
-                        }
-                        else if (chatMessage.MessageType == "image")
-                        {
-                            DisplayImageInRichTextBox(userRequest.User.Username, chatMessage.Content, chatMessage.Timestamp);
-                        }
-                    }));
-                }
-                else
-                {
-                    //MessageBox.Show("UserRequest bi null roi: " + message);
-                }
+                        AppendMessageToRichTextBox(userRequest.User.Username, groupMessage.Content, groupMessage.Timestamp);
+                    }
+                    else if (groupMessage.MessageType == "image")
+                    {
+                        DisplayImageInRichTextBox(userRequest.User.Username, groupMessage.Content, groupMessage.Timestamp);
+                    }
+                }));
+            }
+            else
+            {
+                //MessageBox.Show("UserRequest bi null roi: " + message);
             }
         }
 
@@ -315,9 +336,9 @@ namespace WindowsFormsApp1
                                {
                                    //this.Invoke(new Action(() =>
                                    // {
-                                        Clipboard.Clear();
-                                        Clipboard.SetImage(image);
-                                    //}));
+                                   Clipboard.Clear();
+                                   Clipboard.SetImage(image);
+                                   //}));
                                });
                                 thread.SetApartmentState(ApartmentState.STA);
                                 thread.Start();
@@ -369,21 +390,28 @@ namespace WindowsFormsApp1
                 return;
             }
 
-            var newMessage = new GroupMessage
+
+            // Bao bọc đối tượng trong một RequestWrapper
+            var request = new
             {
-                GroupID = selectedGroupId,
-                SenderID = this.user.UserID,
-                Content = messageContent,
-                MessageType = "text",
-                Timestamp = DateTime.Now,
+                Type = EventType.SEND_MESSAGE,
+                Data = new GroupMessage
+                {
+                    GroupID = selectedGroupId,
+                    SenderID = this.user.UserID,
+                    Content = messageContent,
+                    MessageType = "text",
+                    Timestamp = DateTime.Now,
+                }
             };
 
             try
             {
-                // Serialize đối tượng thành JSON
-                string jsonMessage = JsonSerializer.Serialize<GroupMessage>(newMessage);
-                byte[] buffer = Encoding.UTF8.GetBytes(jsonMessage);
+                // Chuyển đối tượng thành JSON
+                string jsonData = JsonConvert.SerializeObject(request);
+                byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
 
+                // Gửi dữ liệu
                 stream.Write(buffer, 0, buffer.Length);
             }
             catch (Exception ex)
@@ -465,11 +493,6 @@ namespace WindowsFormsApp1
             }
         }
 
-        private static void PrintJson(object obj)
-        {
-            MessageBox.Show(JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true }));
-        }
-
         private void btnPicture_Click(object sender, EventArgs e)
         {
             Thread dialogThread = new Thread(() =>
@@ -484,21 +507,28 @@ namespace WindowsFormsApp1
                         byte[] imageBytes = File.ReadAllBytes(imagePath);
                         string base64Image = Convert.ToBase64String(imageBytes);
 
-                        var newMessage = new GroupMessage
+
+                        // Bao bọc đối tượng trong một RequestWrapper
+                        var request = new
                         {
-                            GroupID = selectedGroupId,
-                            SenderID = this.user.UserID,
-                            Content = base64Image,
-                            MessageType = "image",
-                            Timestamp = DateTime.Now
+                            Type = EventType.SEND_MESSAGE,
+                            Data = new GroupMessage
+                            {
+                                GroupID = selectedGroupId,
+                                SenderID = this.user.UserID,
+                                Content = base64Image,
+                                MessageType = "image",
+                                Timestamp = DateTime.Now
+                            }
                         };
 
                         try
                         {
-                            // Serialize đối tượng thành JSON
-                            string jsonMessage = JsonSerializer.Serialize<GroupMessage>(newMessage);
-                            byte[] buffer = Encoding.UTF8.GetBytes(jsonMessage);
+                            // Chuyển đối tượng thành JSON
+                            string jsonData = JsonConvert.SerializeObject(request);
+                            byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
 
+                            // Gửi dữ liệu
                             stream.Write(buffer, 0, buffer.Length);
                         }
                         catch (Exception ex)
@@ -506,14 +536,6 @@ namespace WindowsFormsApp1
                             MessageBox.Show(ex.Message);
                             //PrintJson(ex);
                         }
-
-                        //// Chuyển việc sao chép ảnh vào Clipboard sang UI thread
-                        //this.Invoke(new Action(() =>
-                        //{
-                        //    // Chèn hình ảnh vào RichTextBox
-                        //    DisplayImageInRichTextBox(this.user.Username, base64Image, DateTime.Now);
-                        //}));
-                        //// Display image in txtMessage
                     }
                 }
             });

@@ -17,7 +17,6 @@ namespace WindowsFormsApp1.Models
             GroupMessages = new HashSet<GroupMessage>();
             GroupNotifications = new HashSet<GroupNotification>();
             Groups = new HashSet<Group>();
-            ReadReceipts = new HashSet<ReadReceipt>();
         }
 
         public int UserID { get; set; }
@@ -59,8 +58,5 @@ namespace WindowsFormsApp1.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Group> Groups { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<ReadReceipt> ReadReceipts { get; set; }
     }
 }

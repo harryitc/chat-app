@@ -18,18 +18,12 @@ namespace WindowsFormsApp1.Models
         public virtual DbSet<GroupMessage> GroupMessages { get; set; }
         public virtual DbSet<GroupNotification> GroupNotifications { get; set; }
         public virtual DbSet<Group> Groups { get; set; }
-        public virtual DbSet<ReadReceipt> ReadReceipts { get; set; }
         public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<GroupMessage>()
                 .HasMany(e => e.Attachments)
-                .WithRequired(e => e.GroupMessage)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<GroupMessage>()
-                .HasMany(e => e.ReadReceipts)
                 .WithRequired(e => e.GroupMessage)
                 .WillCascadeOnDelete(false);
 
@@ -80,11 +74,6 @@ namespace WindowsFormsApp1.Models
                 .HasMany(e => e.Groups)
                 .WithRequired(e => e.User)
                 .HasForeignKey(e => e.CreatedBy)
-                .WillCascadeOnDelete(false);
-
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.ReadReceipts)
-                .WithRequired(e => e.User)
                 .WillCascadeOnDelete(false);
         }
     }

@@ -1,20 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Runtime.CompilerServices;
 using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading;
-using System.Xml.Linq;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Server.Models;
 //using Json = System.Text.Json;
 //using JsonSerializer = System.Text.Json.JsonSerializer;
-using JsonSerializer = System.Text.Json.JsonSerializer;
+
+using Comunicator;
 
 namespace Server
 {
@@ -35,6 +32,7 @@ namespace Server
                     }
                     catch (Exception ex)
                     {
+                        Log($"Lỗi kết nối: {ex.Message}");
                         throw new Exception($"Lỗi kết nối: {ex.Message}");
                     }
                 }
@@ -42,7 +40,7 @@ namespace Server
                 server = new TcpListener(IPAddress.Any, 8888);
                 server.Start();
                 Log("Server started on port 8888...");
-                Console.WriteLine("Server is running...");
+                Log("Server is running...");
 
 
 
@@ -57,7 +55,6 @@ namespace Server
                     int clientPort = clientEndPoint.Port;
 
                     Log($"New client connected: {clientIp}:{clientPort}");
-                    Console.WriteLine($"New client connected: {clientIp}:{clientPort}");
 
                     Thread thread = new Thread(HandleClient);
                     thread.Start(client);
@@ -86,38 +83,67 @@ namespace Server
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
                     if (bytesRead == 0)
                     {
-                        Console.WriteLine($"[bytesRead]: {clientIp}:{clientPort} disconnected!");
+                        Log($"[bytesRead]: {clientIp}:{clientPort} disconnected!");
                         break; // Client disconnected
                     }
 
-                    string jsonMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    Log($"[{clientIp}:{clientPort}] => {receivedData}");
 
-                    GroupMessage chatMessage = JsonSerializer.Deserialize<GroupMessage>(jsonMessage);
+                    /* Dữ liệu sau khi parse
+                     var message = new
+                        {
+                            Type = "message",
+                            Data = new
+                            {
+                                GroupID = 1,
+                                SenderID = 10,
+                                Content = "Hello, everyone!",
+                                MessageType = "text"
+                            }
+                        };
+                     */
+                    JObject json = JObject.Parse(receivedData);
+                    string type = json["Type"].ToString();
 
-                    Log($"Message from {clientIp}:{clientPort} (ID: {chatMessage.SenderID}): {chatMessage.Content}");
-                    Console.WriteLine($"LogConsole - [{clientIp}:{clientPort}] (ID: {chatMessage.SenderID}): {chatMessage.Content}");
+                    string responseData = "";
 
-                    // Xử lý theo loại thông điệp
-                    switch (chatMessage.MessageType)
+                    switch (type)
                     {
-                        case "text":
-                            //Log($"Message from {chatMessage.User.Username}: {chatMessage.Content}");
-                            GroupMessage newMessage = InsertMessage(chatMessage);
-                            string jsonNewMessage = JsonSerializer.Serialize<GroupMessage>(newMessage);
-                            Broadcast(jsonNewMessage, client);
+                        case EventType.SEND_MESSAGE:
+                            responseData = HandleMessage(json["Data"].ToObject<GroupMessage>());
                             break;
-
-                        case "CreateGroup":
-                            GroupMessage groupMessage = JsonSerializer.Deserialize<GroupMessage>(jsonMessage);
-                            Log($"Group created: {groupMessage.Group.GroupName} by members: {string.Join(", ", groupMessage.User.Username)}");
-                            // Xử lý tạo nhóm
+                        case "addFriend":
+                            //HandleAddFriend(json["Data"].ToObject<FriendRequestData>());
                             break;
-
+                        case "groupAction":
+                            //HandleGroupAction(json["Data"].ToObject<GroupActionData>());
+                            break;
                         default:
-                            Log($"Unknown message type: {chatMessage.MessageType}");
+                            Log($"Unknown type: {type}");
                             break;
                     }
 
+
+                    //// Xử lý theo loại thông điệp
+                    //switch (type)
+                    //{
+                    //    case "text":
+
+                    //        break;
+
+                    //    case "CreateGroup":
+                    //        GroupMessage groupMessage = JsonSerializer.Deserialize<GroupMessage>(jsonMessage);
+                    //        Log($"Group created: {groupMessage.Group.GroupName} by members: {string.Join(", ", groupMessage.User.Username)}");
+                    //        // Xử lý tạo nhóm
+                    //        break;
+
+                    //    default:
+                    //        Log($"Unknown message type: {chatMessage.MessageType}");
+                    //        break;
+                    //}
+
+                    Broadcast(responseData, client);
 
                     foreach (var _client in clients)
                     {
@@ -134,14 +160,59 @@ namespace Server
             catch (Exception ex)
             {
                 Log($"Error with client {clientIp}:{clientPort}: {ex.Message}");
-                Console.WriteLine($"Error with client {clientIp}:{clientPort}: {ex.Message}");
             }
             finally
             {
                 Log($"Client disconnected: {clientIp}:{clientPort}");
-                Console.WriteLine($"Client disconnected: {clientIp}:{clientPort}");
                 clients.Remove(client);
                 client.Close();
+            }
+        }
+
+        private static string HandleMessage(GroupMessage groupMessage)
+        {
+            string result = "";
+
+            //JObject response = new JObject
+            //{
+            //    ["Type"] = "response",
+            //    ["Data"] = new JObject
+            //    {
+            //        ["Status"] = "Error",
+            //        ["Message"] = "Unknown type"
+            //    }
+            //};
+
+            using (var context = new ChatAppDBContext())
+            {
+                try
+                {
+                    try
+                    {
+                        var newGroupMessage = context.GroupMessages.Add(groupMessage);
+                        context.SaveChanges();
+
+                        result = JsonConvert.SerializeObject(new
+                        {
+                            Type = EventType.SEND_MESSAGE,
+                            Data = newGroupMessage
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Log("Lỗi insert message vào DB: " + ex.Message);
+                    }
+                    finally
+                    {
+                        //PrintJson(groupMessage);
+                    }
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Lỗi kết nối: {ex.Message}");
+                }
             }
         }
 
@@ -199,52 +270,6 @@ namespace Server
             }
         }
 
-        private static GroupMessage InsertMessage(GroupMessage _groupMessage)
-        {
-            var newGroupMessage = _groupMessage;
-
-            using (var context = new ChatAppDBContext())
-                try
-                {
-                    try
-                    {
-                        GroupMessage groupMessage = new GroupMessage
-                        {
-                            GroupID = _groupMessage.GroupID,
-                            SenderID = _groupMessage.SenderID,
-                            Content = _groupMessage.Content,
-                            MessageType = _groupMessage.MessageType,
-                            Timestamp = _groupMessage.Timestamp
-                        };
-
-                        string jsonNewMessage = JsonSerializer.Serialize<GroupMessage>(groupMessage);
-                        //Console.WriteLine("ahihi1111: " + jsonNewMessage);
-
-                        newGroupMessage = context.GroupMessages.Add(groupMessage);
-
-                        jsonNewMessage = JsonSerializer.Serialize<GroupMessage>(newGroupMessage);
-                        //Console.WriteLine("ahihi2222: " + jsonNewMessage);
-                        context.SaveChanges();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine("Lỗi insert message vào DB: " + ex.Message);
-                    }
-                    finally
-                    {
-                        //PrintJson(groupMessage);
-                    }
-
-                }
-                catch (Exception ex)
-                {
-                    throw new Exception($"Lỗi kết nối: {ex.Message}");
-                }
-
-            return newGroupMessage;
-
-        }
-
         private static bool IsSocketConnected(TcpClient client)
         {
             try
@@ -256,12 +281,5 @@ namespace Server
                 return false;
             }
         }
-
-
-        //private static void PrintJson(object obj)
-        //{
-        //    Console.WriteLine(JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true }));
-        //}
-
     }
 }
