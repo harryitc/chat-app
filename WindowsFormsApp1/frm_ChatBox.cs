@@ -146,31 +146,16 @@ namespace WindowsFormsApp1
                 dgvFriends.Rows.Add(listFriends[i].User.Username, listFriends[i].User.Status);
             }
 
+            dgvGroups.Columns.Add("GroupID", "Group ID");
+            dgvGroups.Columns["GroupID"].Visible = false; // Ẩn cột GroupID
+            dgvGroups.Columns.Add("GroupName", "Group Name");
+
             //Groups
             List<GroupMember> members = new List<GroupMember>();
-            var group = db.GroupMembers.Where(g => g.UserID == this.user.UserID).ToList();
-            for (int i = 0; i < group.Count; i++)
+            var groups = db.Groups.Where(g => g.CreatedBy == user.UserID).ToList();
+            for (int i = 0; i < groups.Count; i++)
             {
-                dgvGroups.Rows.Add(group[i].Group.GroupName);
-            }
-
-            //tải tin nhắn vào rtbDialog
-            using (ChatAppDBContext dbChat = new ChatAppDBContext())
-            {
-                var groups = dbChat.GroupMembers
-                    .Where(g => g.UserID == this.user.UserID)
-                    .Select(g => g.Group)
-                    .ToList();
-
-                dgvGroups.Columns.Clear();
-                dgvGroups.Columns.Add("GroupID", "Group ID");
-                dgvGroups.Columns["GroupID"].Visible = false; // Ẩn cột GroupID
-                dgvGroups.Columns.Add("GroupName", "Group Name");
-
-                foreach (var i in groups)
-                {
-                    dgvGroups.Rows.Add(i.GroupID, i.GroupName);
-                }
+                dgvGroups.Rows.Add(groups[i].GroupID, groups[i].GroupName);
             }
         }
 
@@ -178,26 +163,22 @@ namespace WindowsFormsApp1
         {
             string request = txtReceiver.Text;
             List<User> users = db.Users.ToList();
-            //var user = users.FirstOrDefault(u => u.UserID == id)
-            bool flat = false;
-            for (int i = 0; i < users.Count; i++)
+            var requestIDFound = users.FirstOrDefault(u => this.user.Username == u.Username);
+            if (requestIDFound != null)
             {
-                if (users[i].Username == request)
-                {
-                    Friendship addfr = new Friendship();
-                    addfr.AddressID = this.user.UserID;
-                    addfr.RequesterID = users[i].UserID;
-                    addfr.Status = "pending";
-                    addfr.CreatedAt = DateTime.Now;
-                    MessageBox.Show("Đã gửi kết bạn thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    db.Friendships.Add(addfr);
-                    db.SaveChanges();
-                    flat = true;
-                }
+                Friendship addfr = new Friendship();
+                addfr.AddressID = requestIDFound.UserID;
+                addfr.RequesterID = this.user.UserID;
+                addfr.Status = "accepted";
+                addfr.CreatedAt = DateTime.Now;
+                MessageBox.Show("Đã gửi kết bạn thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                db.Friendships.Add(addfr);
+                db.SaveChanges();
             }
-            if (flat == false)
+            else
+            {
                 MessageBox.Show("Người dùng không tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+            }
 
         }
 
@@ -208,8 +189,23 @@ namespace WindowsFormsApp1
 
         private void btnCreateGroup_Click(object sender, EventArgs e)
         {
-            frm_GroupCreator groupCreator = new frm_GroupCreator();
+            frm_GroupCreator groupCreator = new frm_GroupCreator(this.user.UserID);
             groupCreator.ShowDialog();
+            if (DialogResult.OK == groupCreator.DialogResult)
+            {
+                loadListGroup();
+            }
+        }
+
+        private void loadListGroup()
+        {
+            this.dgvGroups.Rows.Clear();
+            //Groups
+            var groups = db.Groups.Where(g => g.CreatedBy == this.user.UserID).ToList();
+            for (int i = 0; i < groups.Count; i++)
+            {
+                dgvGroups.Rows.Add(groups[i].GroupID, groups[i].GroupName);
+            }
         }
 
         private void LoadGroupMessages(int groupId)
@@ -304,6 +300,12 @@ namespace WindowsFormsApp1
             int rowSelected = e.RowIndex;
             selectedGroupId = selectedGroupId = Convert.ToInt32(dgvGroups.Rows[rowSelected].Cells["GroupID"].Value);
             LoadGroupMessages(selectedGroupId);
+            var groupSelected = db.Groups.FirstOrDefault(group => group.GroupID == selectedGroupId);
+            if (groupSelected != null)
+            {
+                lbGroupName.Text = groupSelected.GroupName;
+                ImageUtils.LoadImageFromUrlAsync(picGroup, groupSelected.GroupImage);
+            }
 
         }
 
