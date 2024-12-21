@@ -15,12 +15,16 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WindowsFormsApp1.Models;
 using WindowsFormsApp1.utils;
+using static System.Windows.Forms.LinkLabel;
 
 namespace WindowsFormsApp1
 {
     public partial class frm_ChatBox : Form
     {
         private int selectedGroupId;
+        private bool isDragging = false;
+        private Point startPoint = new Point(0, 0);
+        private string selectedBase64Image;
         ChatAppDBContext db = new ChatAppDBContext();
 
         User user = new User();
@@ -125,7 +129,17 @@ namespace WindowsFormsApp1
                     x.MessageID == chatMessage.MessageID
                     );
 
-                    Invoke(new Action(() => AppendMessageToRichTextBox(userRequest.User.Username, chatMessage.Content, chatMessage.Timestamp)));
+                    Invoke(new Action(() =>
+                    {
+                        if (chatMessage.MessageType == "text")
+                        {
+                            AppendMessageToRichTextBox(chatMessage.User.Username, chatMessage.Content, chatMessage.Timestamp);
+                        }
+                        else if (chatMessage.MessageType == "image")
+                        {
+                            DisplayImageInRichTextBox(chatMessage.User.Username, chatMessage.Content, chatMessage.Timestamp);
+                        }
+                    }));
                 }
                 catch
                 {
@@ -238,36 +252,281 @@ namespace WindowsFormsApp1
             rtbDialog.Clear();
             foreach (var message in messages)
             {
-                AppendMessageToRichTextBox(message.User.Username, message.Content, message.Timestamp);
+                if (message.MessageType == "text")
+                {
+                    AppendMessageToRichTextBox(message.User.Username, message.Content, message.Timestamp);
+                }
+                else if (message.MessageType == "image")
+                {
+                    DisplayImageInRichTextBox(message.User.Username, message.Content, message.Timestamp);
+                }
             }
         }
+
+        //private void AppendMessageToRichTextBox(string senderName, string content, DateTime? timestamp)
+        //{
+        //    string formattedMessage = $"[{timestamp:yyyy-MM-dd HH:mm:ss}] {senderName}: {content}\n";
+
+        //    // Định dạng tùy chỉnh cho tin nhắn của người gửi
+        //    rtbDialog.SelectionStart = rtbDialog.TextLength;
+        //    rtbDialog.SelectionLength = 0;
+
+        //    if (senderName == "Me") // Tin nhắn của bản thân
+        //    {
+        //        rtbDialog.SelectionColor = Color.Blue;
+        //        rtbDialog.SelectionFont = new Font(rtbDialog.Font, FontStyle.Bold);
+        //        rtbDialog.SelectionAlignment = HorizontalAlignment.Right;
+        //    }
+        //    else
+        //    {
+        //        rtbDialog.SelectionColor = Color.Black;
+        //        rtbDialog.SelectionFont = rtbDialog.Font;
+        //    }
+
+        //    rtbDialog.AppendText(formattedMessage);
+        //    rtbDialog.SelectionColor = rtbDialog.ForeColor; // Reset màu
+        //}
 
         private void AppendMessageToRichTextBox(string senderName, string content, DateTime? timestamp)
         {
-
-            string formattedMessage = $"[{timestamp:yyyy-MM-dd HH:mm:ss}] {senderName}: {content}\n";
-
-            // Định dạng tùy chỉnh cho tin nhắn của người gửi
-            rtbDialog.SelectionStart = rtbDialog.TextLength;
-            rtbDialog.SelectionLength = 0;
-
-            if (senderName == this.user.Username) // Tin nhắn của bản thân
+            rtbDialog.BeginInvoke(new MethodInvoker(() =>
             {
-                rtbDialog.SelectionColor = Color.Blue;
-                rtbDialog.SelectionFont = new Font(rtbDialog.Font, FontStyle.Bold);
-            }
-            else
-            {
-                rtbDialog.SelectionColor = Color.Black;
-                rtbDialog.SelectionFont = rtbDialog.Font;
-            }
+                Font currentFont = rtbDialog.SelectionFont;
 
-            rtbDialog.AppendText(formattedMessage);
-            rtbDialog.SelectionColor = rtbDialog.ForeColor; // Reset màu
+                rtbDialog.AppendText($"[{timestamp:yyyy-MM-dd HH:mm:ss}]");
 
-            txtMessage.Clear();
+                //Username
+                rtbDialog.SelectionStart = rtbDialog.TextLength;
+                rtbDialog.SelectionLength = 0;
+                rtbDialog.SelectionColor = Color.Red;
+                rtbDialog.SelectionFont = new Font(currentFont.FontFamily, currentFont.Size, FontStyle.Bold);
+                rtbDialog.AppendText(senderName);
+                rtbDialog.SelectionColor = rtbDialog.ForeColor;
 
+                rtbDialog.AppendText(": ");
+
+                //Message
+                rtbDialog.SelectionStart = rtbDialog.TextLength;
+                rtbDialog.SelectionLength = 0;
+                rtbDialog.SelectionColor = Color.Green;
+                rtbDialog.SelectionFont = new Font(currentFont.FontFamily, currentFont.Size, FontStyle.Regular);
+                rtbDialog.AppendText(content);
+                rtbDialog.SelectionColor = rtbDialog.ForeColor;
+
+                rtbDialog.AppendText(" ");
+
+                rtbDialog.SelectionStart = rtbDialog.GetFirstCharIndexOfCurrentLine();
+                rtbDialog.SelectionLength = 0;
+
+                if (senderName == this.user.Username) // Tin nhắn của bản thân
+                {
+                    rtbDialog.SelectionAlignment = HorizontalAlignment.Right;
+                }
+                else rtbDialog.SelectionAlignment = HorizontalAlignment.Left;
+
+                rtbDialog.AppendText(Environment.NewLine);
+            }));
         }
+
+
+        //private void DisplayImageInRichTextBox(string senderName, string base64Image, DateTime? timestamp)
+        //{
+        //    byte[] imageBytes = Convert.FromBase64String(base64Image);
+        //    using (var ms = new MemoryStream(imageBytes))
+        //    {
+        //        string formattedMessage = $"[{timestamp:yyyy-MM-dd HH:mm:ss}] {senderName}\n";
+        //        if (senderName == "Me") // Tin nhắn của bản thân
+        //        {
+        //            rtbDialog.SelectionColor = Color.Blue;
+        //            rtbDialog.SelectionFont = new Font(rtbDialog.Font, FontStyle.Bold);
+        //            rtbDialog.SelectionAlignment = HorizontalAlignment.Right;
+        //        }
+        //        else
+        //        {
+        //            rtbDialog.SelectionColor = Color.Black;
+        //            rtbDialog.SelectionFont = rtbDialog.Font;
+        //        }
+
+        //        rtbDialog.AppendText(formattedMessage);
+        //        rtbDialog.SelectionColor = rtbDialog.ForeColor;
+
+        //        Clipboard.SetImage(Image.FromStream(ms)); // Sao chép ảnh vào Clipboard
+        //        rtbDialog.Paste();                        // Dán ảnh vào RichTextBox
+        //    }
+        //}
+
+
+        //private void DisplayImageInRichTextBox(string senderName, string base64Image, DateTime? timestamp)
+        //{
+        //    if (string.IsNullOrEmpty(base64Image) || base64Image.Length % 4 != 0 || !base64Image.All(c => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".Contains(c)))
+        //    {
+        //        // Handle invalid Base-64 string
+        //        MessageBox.Show("Invalid image data.");
+        //        return;
+        //    }
+
+        //    byte[] imageBytes = Convert.FromBase64String(base64Image);
+        //    using (var ms = new MemoryStream(imageBytes))
+        //    {
+        //        string formattedMessage = $"[{timestamp:yyyy-MM-dd HH:mm:ss}] {senderName}\n";
+        //        if (senderName == "Me")
+        //        {
+        //            rtbDialog.SelectionColor = Color.Blue;
+        //            rtbDialog.SelectionFont = new Font(rtbDialog.Font, FontStyle.Bold);
+        //            rtbDialog.SelectionAlignment = HorizontalAlignment.Right;
+        //        }
+        //        else
+        //        {
+        //            rtbDialog.SelectionColor = Color.Black;
+        //            rtbDialog.SelectionFont = rtbDialog.Font;
+        //        }
+
+        //        rtbDialog.AppendText(formattedMessage);
+        //        rtbDialog.SelectionColor = rtbDialog.ForeColor;
+
+        //        Clipboard.SetImage(Image.FromStream(ms));
+        //        rtbDialog.Paste();
+        //    }
+        //}
+
+
+        //private string ConvertToRtfImage(string base64Image)
+        //{
+        //    // Chuyển Base64 thành byte[] 
+        //    byte[] imageBytes = Convert.FromBase64String(base64Image);
+
+        //    // Đưa byte[] vào định dạng RTF
+        //    string rtfImage = @"{\rtf1\ansi{\pict\jpegblip " + BitConverter.ToString(imageBytes).Replace("-", "") + "}}";
+
+        //    return rtfImage;
+        //}
+        private Image ConvertBase64ToImage(string base64Image)
+        {
+            try
+            {
+                // Chuyển đổi Base64 thành byte[]
+                byte[] imageBytes = Convert.FromBase64String(base64Image);
+
+                // Tạo một đối tượng Image từ byte[]
+                using (var ms = new MemoryStream(imageBytes))
+                {
+                    return Image.FromStream(ms);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error converting Base64 to Image: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
+        }
+
+
+        private void DisplayImageInRichTextBox(string senderName, string base64Image, DateTime? timestamp)
+        {
+
+            rtbDialog.BeginInvoke(new MethodInvoker(() =>
+                {
+                    Font currentFont = rtbDialog.SelectionFont;
+
+                    // Username
+                    rtbDialog.SelectionStart = rtbDialog.TextLength;
+                    rtbDialog.SelectionLength = 0;
+                    rtbDialog.SelectionColor = Color.Red;
+                    rtbDialog.SelectionFont = new Font(currentFont.FontFamily, currentFont.Size, FontStyle.Bold);
+                    rtbDialog.AppendText(senderName);
+                    rtbDialog.SelectionColor = rtbDialog.ForeColor;
+                    rtbDialog.AppendText(": ");
+
+                    // Image
+                    if (!string.IsNullOrEmpty(base64Image)) // Kiểm tra xem có ảnh không
+                    {
+                        byte[] imageBytes = Convert.FromBase64String(base64Image);
+                        using (var ms = new MemoryStream(imageBytes))
+                        {
+                            Image image = ConvertBase64ToImage(base64Image);  // Chuyển Base64 thành ảnh
+                            if (image != null)
+                            {
+                                Thread thread = new Thread(() =>
+                               {
+                                   Clipboard.Clear();
+                                   Clipboard.SetImage(image);
+                               });
+                                thread.SetApartmentState(ApartmentState.STA);
+                                thread.Start();
+                                thread.Join();
+                                rtbDialog.Paste();
+                            }
+                            else
+                            {
+                                MessageBox.Show("Image is null. Cannot display in RichTextBox.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            }
+
+                        }
+                    }
+
+
+
+                    // Căn lề cho văn bản và ảnh
+                    rtbDialog.SelectionStart = rtbDialog.GetFirstCharIndexOfCurrentLine();
+                    rtbDialog.SelectionLength = 0;
+
+                    if (senderName == this.user.Username)
+                    {
+                        rtbDialog.SelectionAlignment = HorizontalAlignment.Right; // Căn phải
+                    }
+                    else
+                    {
+                        rtbDialog.SelectionAlignment = HorizontalAlignment.Left; // Căn trái
+                    }
+
+                    rtbDialog.AppendText(Environment.NewLine);
+
+                })
+        );
+        }
+
+
+        //private void DisplayImageInRichTextBox(string senderName, string base64Image, DateTime? timestamp)
+        //{
+        //    if (rtbDialog.InvokeRequired)
+        //    {
+        //        rtbDialog.Invoke(new Action(() => DisplayImageInRichTextBox(senderName, base64Image, timestamp)));
+        //        return;
+        //    }
+
+        //    if (string.IsNullOrEmpty(base64Image) || base64Image.Length % 4 != 0 || !base64Image.All(c => "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".Contains(c)))
+        //    {
+        //        // Handle invalid Base-64 string
+        //        MessageBox.Show("Invalid image data.");
+        //        return;
+        //    }
+
+        //    byte[] imageBytes = Convert.FromBase64String(base64Image);
+        //    using (var ms = new MemoryStream(imageBytes))
+        //    {
+        //        string formattedMessage = $"[{timestamp:yyyy-MM-dd HH:mm:ss}] {senderName}\n";
+        //        if (senderName == "Me")
+        //        {
+        //            rtbDialog.SelectionColor = Color.Blue;
+        //            rtbDialog.SelectionFont = new Font(rtbDialog.Font, FontStyle.Bold);
+        //            rtbDialog.SelectionAlignment = HorizontalAlignment.Right;
+        //        }
+        //        else
+        //        {
+        //            rtbDialog.SelectionColor = Color.Black;
+        //            rtbDialog.SelectionFont = rtbDialog.Font;
+        //        }
+
+        //        rtbDialog.AppendText(formattedMessage);
+        //        rtbDialog.SelectionColor = rtbDialog.ForeColor;
+
+        //        Clipboard.SetImage(Image.FromStream(ms));
+        //        rtbDialog.Paste();
+        //    }
+        //}
+
+
+
 
         private void btnSend_Click(object sender, EventArgs e)
         {
@@ -382,6 +641,78 @@ namespace WindowsFormsApp1
         private static void PrintJson(object obj)
         {
             MessageBox.Show(JsonSerializer.Serialize(obj, new JsonSerializerOptions { WriteIndented = true }));
+        }
+
+        private void btnPicture_Click(object sender, EventArgs e)
+        {
+
+            Thread dialogThread = new Thread(() =>
+            {
+                Thread.CurrentThread.SetApartmentState(ApartmentState.STA);
+                using (OpenFileDialog openFileDialog = new OpenFileDialog())
+                {
+                    openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp";
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        string imagePath = openFileDialog.FileName;
+                        byte[] imageBytes = File.ReadAllBytes(imagePath);
+                        string base64Image = Convert.ToBase64String(imageBytes);
+
+                        var newMessage = new GroupMessage
+                        {
+                            GroupID = selectedGroupId,
+                            SenderID = this.user.UserID,
+                            Content = base64Image,
+                            MessageType = "image",
+                            Timestamp = DateTime.Now
+                        };
+
+                        db.GroupMessages.Add(newMessage);
+                        db.SaveChanges();
+
+
+                        // Chuyển việc sao chép ảnh vào Clipboard sang UI thread
+                        this.Invoke(new Action(() =>
+                        {
+                            // Chèn hình ảnh vào RichTextBox
+                            DisplayImageInRichTextBox(this.user.Username, selectedBase64Image, DateTime.Now);
+                        }));
+                        // Display image in txtMessage
+                    }
+                }
+            });
+            dialogThread.SetApartmentState(ApartmentState.STA);
+            dialogThread.Start();
+        }
+
+        //Kéo thả form
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool ReleaseCapture();
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (e.Clicks == 1 && e.Y <= this.Height && e.Y >= 0)
+                {
+                    ReleaseCapture();
+                    SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                }
+            }
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnLove_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

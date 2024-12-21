@@ -234,7 +234,13 @@
     <None Include="assests\img\Close_Hover.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Mapper\" />
+    <None Include="assests\img\logo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assests\img\ourLogo.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assests\img\finalLogo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
