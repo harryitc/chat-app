@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Xml.Linq;
 using Newtonsoft.Json;
-using WindowsFormsApp1.Models;
-using Json = System.Text.Json;
+using Server.Models;
+//using Json = System.Text.Json;
+//using JsonSerializer = System.Text.Json.JsonSerializer;
 using JsonSerializer = System.Text.Json.JsonSerializer;
 
 namespace Server
@@ -21,8 +24,6 @@ namespace Server
         private static List<TcpClient> clients = new List<TcpClient>();
         private static string logFilePath = "server_log.txt";
 
-        private static ChatAppDBContext db = new ChatAppDBContext();
-
         static void Main(string[] args)
         {
             try
@@ -31,7 +32,6 @@ namespace Server
                 {
                     try
                     {
-
                     }
                     catch (Exception ex)
                     {
@@ -43,6 +43,8 @@ namespace Server
                 server.Start();
                 Log("Server started on port 8888...");
                 Console.WriteLine("Server is running...");
+
+
 
                 while (true)
                 {
@@ -88,15 +90,17 @@ namespace Server
                     }
 
                     string jsonMessage = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+
                     GroupMessage chatMessage = JsonSerializer.Deserialize<GroupMessage>(jsonMessage);
-                    Log($"Message from {clientIp}:{clientPort}: {chatMessage.Content}");
-                    Console.WriteLine($"[{clientIp}:{clientPort}] {chatMessage.Content}");
+
+                    Log($"Message from {clientIp}:{clientPort} (ID: {chatMessage.SenderID}): {chatMessage.Content}");
+                    Console.WriteLine($"LogConsole - [{clientIp}:{clientPort}] (ID: {chatMessage.SenderID}): {chatMessage.Content}");
 
                     // Xử lý theo loại thông điệp
                     switch (chatMessage.MessageType)
                     {
                         case "text":
-                            Log($"Message from {chatMessage.User.Username}: {chatMessage.Content}");
+                            //Log($"Message from {chatMessage.User.Username}: {chatMessage.Content}");
                             GroupMessage newMessage = InsertMessage(chatMessage);
                             string jsonNewMessage = JsonSerializer.Serialize<GroupMessage>(newMessage);
                             Broadcast(jsonNewMessage, client);
@@ -112,16 +116,6 @@ namespace Server
                             Log($"Unknown message type: {chatMessage.MessageType}");
                             break;
                     }
-
-                    //// Broadcast message to all clients
-                    //foreach (var cl in clients)
-                    //{
-                    //    if (cl != client)
-                    //    {
-                    //        NetworkStream clStream = cl.GetStream();
-                    //        clStream.Write(buffer, 0, bytesRead);
-                    //    }
-                    //}
                 }
             }
             catch (Exception ex)
@@ -153,7 +147,6 @@ namespace Server
         private static void Broadcast(string message, TcpClient sender)
         {
             byte[] buffer = Encoding.UTF8.GetBytes(message);
-
             foreach (var client in clients)
             {
                 if (client != sender)
@@ -162,9 +155,6 @@ namespace Server
                     {
                         NetworkStream stream = client.GetStream();
                         stream.Write(buffer, 0, buffer.Length);
-
-                        NetworkStream stream2 = sender.GetStream();
-                        stream2.Write(buffer, 0, buffer.Length);
                     }
                     catch
                     {
@@ -173,35 +163,64 @@ namespace Server
                     }
                 }
             }
-        }
-
-        private static GroupMessage InsertMessage(GroupMessage groupMessage)
-        {
-            //var newMessage = new GroupMessage(groupMessage);
-
-            //var newMessage = new GroupMessage
-            //{
-            //    GroupID = selectedGroupId,
-            //    SenderID = this.user.UserID,
-            //    Content = content,
-            //    MessageType = "text",
-            //    Timestamp = DateTime.Now
-            //};
-            var newGroupMessage = groupMessage;
             try
             {
-                newGroupMessage = db.GroupMessages.Add(groupMessage);
-                db.SaveChanges();
+                NetworkStream stream2 = sender.GetStream();
+                stream2.Write(buffer, 0, buffer.Length);
             }
             catch (Exception ex)
             {
-                Console.WriteLine("Lỗi insert message vào DB: " + ex.Message);
+                Console.WriteLine(ex.Message);
             }
-            finally
-            {
-                PrintJson(groupMessage);
-            }
+        }
+
+        private static GroupMessage InsertMessage(GroupMessage _groupMessage)
+        {
+            var newGroupMessage = _groupMessage;
+
+            using (var context = new ChatAppDBContext())
+
+                try
+                {
+
+                    try
+                    {
+
+                        GroupMessage groupMessage = new GroupMessage
+                        {
+                            GroupID = _groupMessage.GroupID,
+                            SenderID = _groupMessage.SenderID,
+                            Content = _groupMessage.Content,
+                            MessageType = _groupMessage.MessageType,
+                            Timestamp = _groupMessage.Timestamp
+                        };
+
+                        string jsonNewMessage = JsonSerializer.Serialize<GroupMessage>(groupMessage);
+                        //Console.WriteLine("ahihi1111: " + jsonNewMessage);
+
+                        newGroupMessage = context.GroupMessages.Add(groupMessage);
+
+                        jsonNewMessage = JsonSerializer.Serialize<GroupMessage>(newGroupMessage);
+                        //Console.WriteLine("ahihi2222: " + jsonNewMessage);
+                        context.SaveChanges();
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Lỗi insert message vào DB: " + ex.Message);
+                    }
+                    finally
+                    {
+                        //PrintJson(groupMessage);
+                    }
+
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception($"Lỗi kết nối: {ex.Message}");
+                }
+
             return newGroupMessage;
+
         }
 
         private static void PrintJson(object obj)

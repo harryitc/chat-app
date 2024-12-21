@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -35,6 +36,8 @@ namespace WindowsFormsApp1
             InitializeComponent();
             this.user = user;
             ConnectToServer(this.serverIp, this.serverPort);
+
+
         }
 
         private void ConnectToServer(string serverIp, int serverPort)
@@ -113,9 +116,16 @@ namespace WindowsFormsApp1
                 try
                 {
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
+
                     string message = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                    //MessageBox.Show(this, message);
                     GroupMessage chatMessage = JsonSerializer.Deserialize<GroupMessage>(message);
-                    Invoke(new Action(() => AppendMessageToRichTextBox(chatMessage.User.Username, chatMessage.Content, chatMessage.Timestamp)));
+
+                    var userRequest = this.db.GroupMessages.FirstOrDefault(x =>
+                    x.MessageID == chatMessage.MessageID
+                    );
+
+                    Invoke(new Action(() => AppendMessageToRichTextBox(userRequest.User.Username, chatMessage.Content, chatMessage.Timestamp)));
                 }
                 catch
                 {
@@ -127,7 +137,8 @@ namespace WindowsFormsApp1
 
         private void frm_ChatBox_Load(object sender, EventArgs e)
         {
-            String imageURL = user.ProfilePicture;
+
+            String imageURL = user.ProfilePicture ?? "";
             ImageUtils.LoadImageFromUrlAsync(pic_User, imageURL);
             /*if (imageURL == null || imageURL == "")
             {
@@ -151,11 +162,10 @@ namespace WindowsFormsApp1
             dgvGroups.Columns.Add("GroupName", "Group Name");
 
             //Groups
-            List<GroupMember> members = new List<GroupMember>();
-            var groups = db.Groups.Where(g => g.CreatedBy == user.UserID).ToList();
+            var groups = db.GroupMembers.Where(g => g.UserID == user.UserID).ToList();
             for (int i = 0; i < groups.Count; i++)
             {
-                dgvGroups.Rows.Add(groups[i].GroupID, groups[i].GroupName);
+                dgvGroups.Rows.Add(groups[i].GroupID, groups[i].Group.GroupName);
             }
         }
 
@@ -182,11 +192,6 @@ namespace WindowsFormsApp1
 
         }
 
-        private void sendMessage()
-        {
-
-        }
-
         private void btnCreateGroup_Click(object sender, EventArgs e)
         {
             frm_GroupCreator groupCreator = new frm_GroupCreator(this.user.UserID);
@@ -201,10 +206,10 @@ namespace WindowsFormsApp1
         {
             this.dgvGroups.Rows.Clear();
             //Groups
-            var groups = db.Groups.Where(g => g.CreatedBy == this.user.UserID).ToList();
+            var groups = db.GroupMembers.Where(g => g.UserID == user.UserID).ToList();
             for (int i = 0; i < groups.Count; i++)
             {
-                dgvGroups.Rows.Add(groups[i].GroupID, groups[i].GroupName);
+                dgvGroups.Rows.Add(groups[i].GroupID, groups[i].Group.GroupName);
             }
         }
 
@@ -213,18 +218,18 @@ namespace WindowsFormsApp1
             var messages = db.GroupMessages
                 .Where(msg => msg.GroupID == groupId)
                 .OrderBy(msg => msg.Timestamp)
-                .Select(msg => new
-                {
-                    SenderName = msg.User.Username, // Liên kết với bảng User
-                    msg.Content,
-                    msg.Timestamp
-                })
+                //.Select(msg => new
+                //{
+                //    SenderName = msg.User.Username, // Liên kết với bảng User
+                //    msg.Content,
+                //    msg.Timestamp
+                //})
                 .ToList();
 
             rtbDialog.Clear();
             foreach (var message in messages)
             {
-                AppendMessageToRichTextBox(message.SenderName, message.Content, message.Timestamp);
+                AppendMessageToRichTextBox(message.User.Username, message.Content, message.Timestamp);
             }
         }
 
@@ -237,7 +242,7 @@ namespace WindowsFormsApp1
             rtbDialog.SelectionStart = rtbDialog.TextLength;
             rtbDialog.SelectionLength = 0;
 
-            if (senderName == "Me") // Tin nhắn của bản thân
+            if (senderName == this.user.Username) // Tin nhắn của bản thân
             {
                 rtbDialog.SelectionColor = Color.Blue;
                 rtbDialog.SelectionFont = new Font(rtbDialog.Font, FontStyle.Bold);
@@ -277,21 +282,21 @@ namespace WindowsFormsApp1
                 SenderID = this.user.UserID,
                 Content = messageContent,
                 MessageType = "text",
-                Timestamp = DateTime.Now
+                Timestamp = DateTime.Now,
             };
 
             try
             {
                 // Serialize đối tượng thành JSON
                 string jsonMessage = JsonSerializer.Serialize<GroupMessage>(newMessage);
-
                 byte[] buffer = Encoding.UTF8.GetBytes(jsonMessage);
 
                 stream.Write(buffer, 0, buffer.Length);
             }
             catch (Exception ex)
             {
-                PrintJson(ex);
+                MessageBox.Show(ex.Message);
+                //PrintJson(ex);
             }
         }
 
@@ -303,8 +308,8 @@ namespace WindowsFormsApp1
             var groupSelected = db.Groups.FirstOrDefault(group => group.GroupID == selectedGroupId);
             if (groupSelected != null)
             {
-                lbGroupName.Text = groupSelected.GroupName;
-                ImageUtils.LoadImageFromUrlAsync(picGroup, groupSelected.GroupImage);
+                lbGroupName.Text = groupSelected.GroupName ?? "";
+                ImageUtils.LoadImageFromUrlAsync(picGroup, groupSelected.GroupImage ?? "");
             }
 
         }
