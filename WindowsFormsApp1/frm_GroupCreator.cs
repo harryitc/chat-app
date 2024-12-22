@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -22,9 +23,11 @@ namespace WindowsFormsApp1
         {
             InitializeComponent();
             UserId = userID;
+            this.KeyPreview = true;
+            this.KeyDown += frm_GroupCreator_KeyDown;
         }
 
-        private void btnCreate_Click(object sender, EventArgs e)
+        private void performCreate()
         {
             try
             {
@@ -77,7 +80,54 @@ namespace WindowsFormsApp1
                 // Đóng form sau khi tạo nhóm
                 this.Close();
             }
+        }
 
+        private void btnCreate_Click(object sender, EventArgs e)
+        {
+            this.performCreate();
+        }
+
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int GreateGroup(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool ReleaseCapture();
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (e.Clicks == 1 && e.Y <= this.Height && e.Y >= 0)
+                {
+                    ReleaseCapture();
+                    GreateGroup(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                }
+            }
+        }
+
+        private void btnClose_MouseHover(object sender, EventArgs e)
+        {
+            btnClose.Image = global::WindowsFormsApp1.Properties.Resources.Close_Hover;
+        }
+
+        private void btnClose_MouseLeave(object sender, EventArgs e)
+        {
+            btnClose.Image = global::WindowsFormsApp1.Properties.Resources.Close;
+        }
+
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void frm_GroupCreator_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.performCreate();
+            }
         }
     }
 }

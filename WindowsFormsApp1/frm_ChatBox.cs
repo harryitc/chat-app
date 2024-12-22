@@ -38,6 +38,8 @@ namespace WindowsFormsApp1
             InitializeComponent();
             this.user = user;
             ConnectToServer(this.serverIp, this.serverPort);
+            this.KeyPreview = true; 
+            this.KeyDown += frm_ChatBox_KeyDown;
         }
 
         private void ConnectToServer(string serverIp, int serverPort)
@@ -374,9 +376,8 @@ namespace WindowsFormsApp1
         );
         }
 
-        private void btnSend_Click(object sender, EventArgs e)
+        private void performSendMessage()
         {
-
             string messageContent = txtMessage.Text.Trim();
             if (string.IsNullOrEmpty(messageContent))
             {
@@ -421,6 +422,11 @@ namespace WindowsFormsApp1
             }
         }
 
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+            this.performSendMessage();
+        }
+
         private void dgvGroups_CellClick(object sender, DataGridViewCellEventArgs e)
         {
             int rowSelected = e.RowIndex;
@@ -432,11 +438,6 @@ namespace WindowsFormsApp1
                 lbGroupName.Text = groupSelected.GroupName ?? "";
                 ImageUtils.LoadImageFromUrlAsync(picGroup, groupSelected.GroupImage ?? "");
             }
-
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
 
         }
 
@@ -563,14 +564,17 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void btnLove_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void btnLove_Click(object sender, EventArgs e)
+        private void frm_ChatBox_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.KeyCode == Keys.Enter) 
+            {
+                this.performSendMessage();
+            }
         }
     }
 }
