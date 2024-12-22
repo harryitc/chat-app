@@ -542,6 +542,7 @@ namespace WindowsFormsApp1
                         Type = EventType.SEND_MESSAGE,
                         Data = new GroupMessageDTO
                         {
+                            MessageID = response.MessageID,
                             GroupID = response.GroupID,
                             SenderID = response.SenderID,
                             Content = response.Content,
@@ -641,6 +642,7 @@ namespace WindowsFormsApp1
 
         private void btnClose_MouseClick(object sender, MouseEventArgs e)
         {
+            TriggerStatusLogin(StatusLogin.OFFLINE);
             this.Close();
         }
 
@@ -737,6 +739,7 @@ namespace WindowsFormsApp1
                                     Type = EventType.SEND_MESSAGE,
                                     Data = new GroupMessageDTO
                                     {
+                                        MessageID = response.MessageID,
                                         GroupID = response.GroupID,
                                         SenderID = response.SenderID,
                                         Content = response.Content,
