@@ -18,6 +18,7 @@ using Newtonsoft.Json;
 
 using Comunicator;
 using System.Runtime.Remoting.Contexts;
+using Comunicator.DTO;
 
 namespace WindowsFormsApp1
 {
@@ -39,10 +40,10 @@ namespace WindowsFormsApp1
             this.user = user;
             ConnectToServer(this.serverIp, this.serverPort);
 
-            this.HandleLogicLogin(StatusLogin.ONLINE);
+            this.TriggerStatusLogin(StatusLogin.ONLINE);
         }
 
-        private void HandleLogicLogin(string status)
+        private void TriggerStatusLogin(string status)
         {
             using (ChatAppDBContext context = new ChatAppDBContext())
             {
@@ -52,20 +53,32 @@ namespace WindowsFormsApp1
                     var userFound = context.Users.FirstOrDefault(user => user.UserID == this.user.UserID);
                     if (userFound == null) return;
 
+                    context.Users.Attach(userFound);
                     userFound.Status = status;
                     context.SaveChanges();
 
+                    this.user = userFound;
+
                     var request = new
                     {
-                        Type = EventType.STATUS_ACCOUNT,
-                        Data = userFound
+                        Type = EventType.STATUS_LOGIN,
+                        Data = new UserDTO
+                        {
+                            UserID = userFound.UserID,
+                            Username = userFound.Username,
+                            Status = userFound.Status,
+                            CreatedAt = userFound.CreatedAt,
+                            Password = userFound.Password,
+                            Email = userFound.Email,
+                            ProfilePicture = userFound.ProfilePicture
+                        }
                     };
 
                     // Chuyển đối tượng thành JSON
                     string jsonData = JsonConvert.SerializeObject(request);
                     byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
 
-                    //HandleStatusAccount(request.Data, true);
+                    //HandleEventLogin(request.Data, true);
 
                     // Gửi dữ liệu
                     stream.Write(buffer, 0, buffer.Length);
@@ -123,13 +136,16 @@ namespace WindowsFormsApp1
                 switch (type)
                 {
                     case EventType.SEND_MESSAGE:
-                        HandleMessage(json["Data"].ToObject<GroupMessage>());
+                        HandleEventMessage(json["Data"].ToObject<GroupMessageDTO>());
                         break;
                     case EventType.JOIN_GROUP:
-                        HandleJoinGroup(json["Data"].ToObject<GroupMember>());
+                        HandleEventJoinGroup(json["Data"].ToObject<GroupMemberDTO>());
                         break;
-                    case EventType.STATUS_ACCOUNT:
-                        HandleStatusAccount(json["Data"].ToObject<User>());
+                    //case EventType.STATUS_FRIEND:
+                    //    break;
+                    case EventType.STATUS_LOGIN:
+                        //HandleEventLogin(json["Data"].ToObject<UserDTO>());
+                        HandleEventStatusAccount(json["Data"].ToObject<UserDTO>());
                         break;
                     //case "addFriend":
                     //    HandleAddFriend(json["Data"].ToObject<FriendRequestData>());
@@ -144,16 +160,13 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void HandleStatusAccount(User friend, bool isSendForMe = false)
+        private void HandleEventStatusAccount(UserDTO friend, bool isSendForMe = false)
         {
             using (ChatAppDBContext context = new ChatAppDBContext())
             {
                 var userFound = context.Users.FirstOrDefault(p => p.UserID == user.UserID);
                 if (userFound == null)
                 {
-                    this.dgvFriends.Rows.Add(
-                        friend.UserID, friend.Username, friend.Status
-                        );
                     return;
                 }
 
@@ -168,7 +181,7 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void HandleJoinGroup(GroupMember groupMember, bool isSendForMe = false)
+        private void HandleEventJoinGroup(GroupMemberDTO groupMember, bool isSendForMe = false)
         {
             using (ChatAppDBContext context = new ChatAppDBContext())
             {
@@ -183,7 +196,6 @@ namespace WindowsFormsApp1
                             row.Cells["sl"].Value = sl.ToString();
                             break;
                         }
-
                     }
                 }
                 else
@@ -196,7 +208,7 @@ namespace WindowsFormsApp1
             }
         }
 
-        private void HandleMessage(GroupMessage groupMessage, bool isSendForMe = false)
+        private void HandleEventMessage(GroupMessageDTO groupMessage, bool isSendForMe = false)
         {
 
             using (ChatAppDBContext context = new ChatAppDBContext())
@@ -239,10 +251,10 @@ namespace WindowsFormsApp1
             {
                 var listFriendsAccepted = context.Friendships.Where(friend => friend.Status == StatusFriend.ACCEPTED).ToList();
                 var listFriends = listFriendsAccepted.Where(item => item.RequesterID == this.user.UserID || item.AddressID == this.user.UserID);
-                var usersOnline = context.Users.Where(user =>
-                    user.Status != StatusLogin.OFFLINE
-                );
-
+                //var usersOnline = context.Users.Where(user =>
+                //    user.Status != StatusLogin.OFFLINE
+                //);
+                var users = context.Users.ToList();
                 // Users
                 lblWelcome.Text = $"{user.Username}";
                 dgvFriends.Columns.Add("UserID", "User ID");
@@ -252,7 +264,7 @@ namespace WindowsFormsApp1
 
                 foreach (var friend in listFriends)
                 {
-                    var friendFound = usersOnline.FirstOrDefault(x => (x.UserID == friend.AddressID || x.UserID == friend.RequesterID) && x.UserID != this.user.UserID);
+                    var friendFound = users.FirstOrDefault(x => (x.UserID == friend.AddressID || x.UserID == friend.RequesterID) && x.UserID != this.user.UserID);
                     if (friendFound != null)
                     {
                         dgvFriends.Rows.Add(friendFound.UserID, friendFound.Username, friendFound.Status);
@@ -528,14 +540,21 @@ namespace WindowsFormsApp1
                     var request = new
                     {
                         Type = EventType.SEND_MESSAGE,
-                        Data = response
+                        Data = new GroupMessageDTO
+                        {
+                            GroupID = response.GroupID,
+                            SenderID = response.SenderID,
+                            Content = response.Content,
+                            MessageType = response.MessageType,
+                            Timestamp = response.Timestamp,
+                        }
                     };
 
                     // Chuyển đối tượng thành JSON
                     string jsonData = JsonConvert.SerializeObject(request);
                     byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
 
-                    HandleMessage(request.Data, true);
+                    HandleEventMessage(request.Data, true);
 
                     // Gửi dữ liệu
                     stream.Write(buffer, 0, buffer.Length);
@@ -591,7 +610,7 @@ namespace WindowsFormsApp1
             {
                 MessageBox.Show("Logout successfully!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                this.HandleLogicLogin(StatusLogin.OFFLINE);
+                this.TriggerStatusLogin(StatusLogin.OFFLINE);
 
                 new Thread(() => Application.Run(new frm_Login())).Start();
                 if (client != null && client.Connected)
@@ -652,12 +671,20 @@ namespace WindowsFormsApp1
             var request = new
             {
                 Type = EventType.JOIN_GROUP,
-                Data = groupMember
+                Data = new GroupMemberDTO
+                {
+                    GroupID = groupMember.GroupID,
+                    UserID = groupMember.UserID,
+                    MemberID = groupMember.MemberID,
+                    Role = groupMember.Role,
+                    LastSeen = groupMember.LastSeen,
+                    JoinedAt = groupMember.JoinedAt
+                }
             };
 
             try
             {
-                HandleJoinGroup(groupMember, true);
+                HandleEventJoinGroup(request.Data, true);
 
                 // Chuyển đối tượng thành JSON
                 string jsonData = JsonConvert.SerializeObject(request);
@@ -708,14 +735,21 @@ namespace WindowsFormsApp1
                                 var request = new
                                 {
                                     Type = EventType.SEND_MESSAGE,
-                                    Data = response
+                                    Data = new GroupMessageDTO
+                                    {
+                                        GroupID = response.GroupID,
+                                        SenderID = response.SenderID,
+                                        Content = response.Content,
+                                        MessageType = response.MessageType,
+                                        Timestamp = response.Timestamp,
+                                    }
                                 };
 
                                 // Chuyển đối tượng thành JSON
                                 string jsonData = JsonConvert.SerializeObject(request);
                                 byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
 
-                                HandleMessage(request.Data, true);
+                                HandleEventMessage(request.Data, true);
 
                                 // Gửi dữ liệu
                                 stream.Write(buffer, 0, buffer.Length);

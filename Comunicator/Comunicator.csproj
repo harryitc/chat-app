@@ -43,6 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\GroupMemberDTO.cs" />
+    <Compile Include="DTO\GroupMessageDTO.cs" />
+    <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="EventType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
