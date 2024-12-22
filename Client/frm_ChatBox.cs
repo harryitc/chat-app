@@ -40,6 +40,9 @@ namespace Client
             this.user = user;
             ConnectToServer(this.serverIp, this.serverPort);
 
+            this.KeyPreview = true;
+            this.KeyDown += frm_ChatBox_KeyDown;
+
             this.TriggerStatusLogin(StatusLogin.ONLINE);
         }
 
@@ -504,9 +507,8 @@ namespace Client
         );
         }
 
-        private void btnSend_Click(object sender, EventArgs e)
+        private void performSendMessage()
         {
-
             string messageContent = txtMessage.Text.Trim();
             if (string.IsNullOrEmpty(messageContent))
             {
@@ -568,6 +570,11 @@ namespace Client
             }
         }
 
+        private void btnSend_Click(object sender, EventArgs e)
+        {
+            this.performSendMessage();
+        }
+
         public static T DeepClone<T>(T obj)
         {
             var json = JsonConvert.SerializeObject(obj, new JsonSerializerSettings
@@ -592,11 +599,6 @@ namespace Client
                     ImageUtils.LoadImageFromUrlAsync(picGroup, groupSelected.GroupImage ?? "");
                 }
             }
-        }
-
-        private void button1_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void pic_User_Click(object sender, EventArgs e)
@@ -790,14 +792,17 @@ namespace Client
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
+        private void btnLove_Click(object sender, EventArgs e)
         {
 
         }
 
-        private void btnLove_Click(object sender, EventArgs e)
+        private void frm_ChatBox_KeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.performSendMessage();
+            }
         }
     }
 }
