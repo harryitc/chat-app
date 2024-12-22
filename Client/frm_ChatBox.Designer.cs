@@ -56,7 +56,6 @@ namespace Client
             this.btnLove = new System.Windows.Forms.PictureBox();
             this.btnLike = new System.Windows.Forms.PictureBox();
             this.btnPicture = new System.Windows.Forms.PictureBox();
-            this.lbNoti = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
             this.panel1.SuspendLayout();
@@ -107,8 +106,8 @@ namespace Client
             // 
             // rtbDialog
             // 
-            this.rtbDialog.Font = new System.Drawing.Font("Times New Roman", 12F);
-            this.rtbDialog.Location = new System.Drawing.Point(327, 70);
+            this.rtbDialog.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.rtbDialog.Location = new System.Drawing.Point(304, 72);
             this.rtbDialog.Margin = new System.Windows.Forms.Padding(4);
             this.rtbDialog.Name = "rtbDialog";
             this.rtbDialog.Size = new System.Drawing.Size(693, 422);
@@ -117,11 +116,11 @@ namespace Client
             // 
             // txtMessage
             // 
-            this.txtMessage.Font = new System.Drawing.Font("Times New Roman", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMessage.Location = new System.Drawing.Point(360, 546);
+            this.txtMessage.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtMessage.Location = new System.Drawing.Point(337, 531);
             this.txtMessage.Margin = new System.Windows.Forms.Padding(4);
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(627, 26);
+            this.txtMessage.Size = new System.Drawing.Size(627, 29);
             this.txtMessage.TabIndex = 1;
             // 
             // lblWelcome
@@ -139,7 +138,7 @@ namespace Client
             // txtReceiver
             // 
             this.txtReceiver.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtReceiver.Location = new System.Drawing.Point(181, 42);
+            this.txtReceiver.Location = new System.Drawing.Point(181, 41);
             this.txtReceiver.Margin = new System.Windows.Forms.Padding(4);
             this.txtReceiver.Name = "txtReceiver";
             this.txtReceiver.Size = new System.Drawing.Size(117, 27);
@@ -149,12 +148,12 @@ namespace Client
             // 
             this.btnCreateGroup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(137)))), ((int)(((byte)(218)))));
             this.btnCreateGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreateGroup.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCreateGroup.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCreateGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnCreateGroup.Location = new System.Drawing.Point(14, 548);
+            this.btnCreateGroup.Location = new System.Drawing.Point(14, 530);
             this.btnCreateGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnCreateGroup.Name = "btnCreateGroup";
-            this.btnCreateGroup.Size = new System.Drawing.Size(130, 28);
+            this.btnCreateGroup.Size = new System.Drawing.Size(107, 28);
             this.btnCreateGroup.TabIndex = 5;
             this.btnCreateGroup.Text = "Create Group";
             this.btnCreateGroup.UseVisualStyleBackColor = false;
@@ -164,12 +163,12 @@ namespace Client
             // 
             this.btnJoinGroup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(137)))), ((int)(((byte)(218)))));
             this.btnJoinGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnJoinGroup.Font = new System.Drawing.Font("Trebuchet MS", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnJoinGroup.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnJoinGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnJoinGroup.Location = new System.Drawing.Point(168, 546);
+            this.btnJoinGroup.Location = new System.Drawing.Point(191, 530);
             this.btnJoinGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnJoinGroup.Name = "btnJoinGroup";
-            this.btnJoinGroup.Size = new System.Drawing.Size(130, 28);
+            this.btnJoinGroup.Size = new System.Drawing.Size(107, 28);
             this.btnJoinGroup.TabIndex = 32;
             this.btnJoinGroup.Text = "Join Group";
             this.btnJoinGroup.UseVisualStyleBackColor = false;
@@ -185,7 +184,7 @@ namespace Client
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1037, 36);
+            this.panel1.Size = new System.Drawing.Size(1010, 36);
             this.panel1.TabIndex = 33;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             // 
@@ -194,7 +193,7 @@ namespace Client
             this.lbTitle.AutoSize = true;
             this.lbTitle.Font = new System.Drawing.Font("Segoe UI", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbTitle.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lbTitle.Location = new System.Drawing.Point(41, 3);
+            this.lbTitle.Location = new System.Drawing.Point(41, 2);
             this.lbTitle.Name = "lbTitle";
             this.lbTitle.Size = new System.Drawing.Size(149, 32);
             this.lbTitle.TabIndex = 35;
@@ -215,14 +214,14 @@ namespace Client
             // btnClose
             // 
             this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClose.Location = new System.Drawing.Point(972, 0);
+            this.btnClose.Image = global::Client.Properties.Resources.Close;
+            this.btnClose.Location = new System.Drawing.Point(974, 0);
             this.btnClose.Margin = new System.Windows.Forms.Padding(2);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(36, 36);
             this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnClose.TabIndex = 37;
             this.btnClose.TabStop = false;
-            this.btnClose.Click += new System.EventHandler(this.btnClose_Click);
             this.btnClose.MouseClick += new System.Windows.Forms.MouseEventHandler(this.btnClose_MouseClick);
             this.btnClose.MouseLeave += new System.EventHandler(this.btnClose_MouseLeave);
             this.btnClose.MouseHover += new System.EventHandler(this.btnClose_MouseHover);
@@ -230,7 +229,8 @@ namespace Client
             // btnLogOut
             // 
             this.btnLogOut.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnLogOut.Location = new System.Drawing.Point(932, 0);
+            this.btnLogOut.Image = global::Client.Properties.Resources.logout;
+            this.btnLogOut.Location = new System.Drawing.Point(934, 0);
             this.btnLogOut.Margin = new System.Windows.Forms.Padding(2);
             this.btnLogOut.Name = "btnLogOut";
             this.btnLogOut.Size = new System.Drawing.Size(36, 36);
@@ -244,7 +244,7 @@ namespace Client
             this.lbGroupName.AutoSize = true;
             this.lbGroupName.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbGroupName.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lbGroupName.Location = new System.Drawing.Point(393, 37);
+            this.lbGroupName.Location = new System.Drawing.Point(368, 41);
             this.lbGroupName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbGroupName.Name = "lbGroupName";
             this.lbGroupName.Size = new System.Drawing.Size(119, 25);
@@ -254,7 +254,8 @@ namespace Client
             // 
             // picGroup
             // 
-            this.picGroup.Location = new System.Drawing.Point(521, 37);
+            this.picGroup.Image = global::Client.Properties.Resources.default_avatar_profile_icon_social_media_user_image_gray_avatar_icon_blank_profile_silhouette_vector_illustration_561158_3467;
+            this.picGroup.Location = new System.Drawing.Point(493, 41);
             this.picGroup.Margin = new System.Windows.Forms.Padding(2);
             this.picGroup.Name = "picGroup";
             this.picGroup.Size = new System.Drawing.Size(27, 27);
@@ -266,7 +267,7 @@ namespace Client
             // 
             this.btnNoti.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnNoti.Image = ((System.Drawing.Image)(resources.GetObject("btnNoti.Image")));
-            this.btnNoti.Location = new System.Drawing.Point(361, 36);
+            this.btnNoti.Location = new System.Drawing.Point(335, 41);
             this.btnNoti.Margin = new System.Windows.Forms.Padding(2);
             this.btnNoti.Name = "btnNoti";
             this.btnNoti.Size = new System.Drawing.Size(27, 27);
@@ -279,7 +280,7 @@ namespace Client
             // 
             this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
-            this.btnAdd.Location = new System.Drawing.Point(330, 36);
+            this.btnAdd.Location = new System.Drawing.Point(304, 41);
             this.btnAdd.Margin = new System.Windows.Forms.Padding(2);
             this.btnAdd.Name = "btnAdd";
             this.btnAdd.Size = new System.Drawing.Size(27, 27);
@@ -303,7 +304,7 @@ namespace Client
             // 
             this.btnSend.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
-            this.btnSend.Location = new System.Drawing.Point(993, 545);
+            this.btnSend.Location = new System.Drawing.Point(970, 530);
             this.btnSend.Margin = new System.Windows.Forms.Padding(2);
             this.btnSend.Name = "btnSend";
             this.btnSend.Size = new System.Drawing.Size(27, 27);
@@ -316,7 +317,7 @@ namespace Client
             // 
             this.btnDevil.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDevil.Image = ((System.Drawing.Image)(resources.GetObject("btnDevil.Image")));
-            this.btnDevil.Location = new System.Drawing.Point(438, 502);
+            this.btnDevil.Location = new System.Drawing.Point(337, 500);
             this.btnDevil.Margin = new System.Windows.Forms.Padding(4);
             this.btnDevil.Name = "btnDevil";
             this.btnDevil.Size = new System.Drawing.Size(30, 27);
@@ -328,7 +329,7 @@ namespace Client
             // 
             this.btnCry.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCry.Image = ((System.Drawing.Image)(resources.GetObject("btnCry.Image")));
-            this.btnCry.Location = new System.Drawing.Point(405, 500);
+            this.btnCry.Location = new System.Drawing.Point(404, 500);
             this.btnCry.Margin = new System.Windows.Forms.Padding(2);
             this.btnCry.Name = "btnCry";
             this.btnCry.Size = new System.Drawing.Size(27, 27);
@@ -340,7 +341,7 @@ namespace Client
             // 
             this.btnLaugh.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLaugh.Image = ((System.Drawing.Image)(resources.GetObject("btnLaugh.Image")));
-            this.btnLaugh.Location = new System.Drawing.Point(365, 502);
+            this.btnLaugh.Location = new System.Drawing.Point(373, 500);
             this.btnLaugh.Margin = new System.Windows.Forms.Padding(2);
             this.btnLaugh.Name = "btnLaugh";
             this.btnLaugh.Size = new System.Drawing.Size(27, 27);
@@ -352,7 +353,7 @@ namespace Client
             // 
             this.btnLove.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLove.Image = ((System.Drawing.Image)(resources.GetObject("btnLove.Image")));
-            this.btnLove.Location = new System.Drawing.Point(326, 502);
+            this.btnLove.Location = new System.Drawing.Point(304, 500);
             this.btnLove.Margin = new System.Windows.Forms.Padding(2);
             this.btnLove.Name = "btnLove";
             this.btnLove.Size = new System.Drawing.Size(27, 27);
@@ -365,7 +366,7 @@ namespace Client
             // 
             this.btnLike.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLike.Image = ((System.Drawing.Image)(resources.GetObject("btnLike.Image")));
-            this.btnLike.Location = new System.Drawing.Point(474, 500);
+            this.btnLike.Location = new System.Drawing.Point(435, 500);
             this.btnLike.Margin = new System.Windows.Forms.Padding(2);
             this.btnLike.Name = "btnLike";
             this.btnLike.Size = new System.Drawing.Size(27, 27);
@@ -377,7 +378,7 @@ namespace Client
             // 
             this.btnPicture.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnPicture.Image = ((System.Drawing.Image)(resources.GetObject("btnPicture.Image")));
-            this.btnPicture.Location = new System.Drawing.Point(327, 546);
+            this.btnPicture.Location = new System.Drawing.Point(304, 531);
             this.btnPicture.Margin = new System.Windows.Forms.Padding(2);
             this.btnPicture.Name = "btnPicture";
             this.btnPicture.Size = new System.Drawing.Size(27, 27);
@@ -386,24 +387,12 @@ namespace Client
             this.btnPicture.TabStop = false;
             this.btnPicture.Click += new System.EventHandler(this.btnPicture_Click);
             // 
-            // lbNoti
-            // 
-            this.lbNoti.AutoSize = true;
-            this.lbNoti.BackColor = System.Drawing.Color.White;
-            this.lbNoti.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.2F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbNoti.ForeColor = System.Drawing.Color.Black;
-            this.lbNoti.Location = new System.Drawing.Point(423, 21);
-            this.lbNoti.Name = "lbNoti";
-            this.lbNoti.Size = new System.Drawing.Size(0, 13);
-            this.lbNoti.TabIndex = 36;
-            // 
             // frm_ChatBox
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
-            this.ClientSize = new System.Drawing.Size(1037, 589);
-            this.Controls.Add(this.lbNoti);
+            this.ClientSize = new System.Drawing.Size(1010, 565);
             this.Controls.Add(this.picGroup);
             this.Controls.Add(this.lbGroupName);
             this.Controls.Add(this.panel1);
@@ -432,6 +421,7 @@ namespace Client
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = resources.GetString("$this.Text");
             this.Load += new System.EventHandler(this.frm_ChatBox_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.frm_ChatBox_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).EndInit();
             this.panel1.ResumeLayout(false);
@@ -483,6 +473,5 @@ namespace Client
         private Label lbTitle;
         private Label lbGroupName;
         private PictureBox picGroup;
-        private Label lbNoti;
     }
 }

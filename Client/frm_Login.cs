@@ -19,11 +19,8 @@ namespace Client
         public frm_Login()
         {
             InitializeComponent();
-        }
-
-        private void frm_Login_Load(object sender, EventArgs e)
-        {
-
+            this.KeyPreview = true;
+            this.KeyDown += frm_Login_KeyDown;
         }
 
 
@@ -33,101 +30,13 @@ namespace Client
             this.Close();
         }
 
-        private void label7_Click(object sender, EventArgs e)
-        {
 
-        }
-
-        private void txtLoginPassword_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label8_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtLoginUsername_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txt_Email_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label9_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label10_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label11_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnStart_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox2_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label3_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void txtIP_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label6_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label1_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void performLogin()
         {
             try
             {
-                if (string.IsNullOrEmpty(txtLoginUsername.Text) || string.IsNullOrEmpty(txtLoginPassword.Text))
+                if (string.IsNullOrWhiteSpace(txtLoginUsername.Text) 
+                    || string.IsNullOrWhiteSpace(txtLoginPassword.Text))
                 {
                     MessageBox.Show("Please fill out the form!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
@@ -139,7 +48,7 @@ namespace Client
                 if (user != null)
                 {
                     MessageBox.Show($"Welcome, {user.Username}!", "Login Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    
+
                     //Redirect the user to the chat box form.
                     new Thread(() => Application.Run(new frm_ChatBox(user))).Start();
                     this.Close();
@@ -150,6 +59,11 @@ namespace Client
                 }
             }
             catch (Exception ex) { MessageBox.Show($"{ex.Message}"); }
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            this.performLogin();
         }
 
         private void lblLogin_MouseHover(object sender, EventArgs e)
@@ -191,14 +105,17 @@ namespace Client
             }
         }
 
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btnClose_MouseClick(object sender, MouseEventArgs e)
         {
             this.Close();
+        }
+
+        private void frm_Login_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.performLogin();
+            }
         }
     }
 }
