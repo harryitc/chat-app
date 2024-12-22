@@ -203,6 +203,7 @@ namespace Client
             // picLogo
             // 
             this.picLogo.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.picLogo.Image = global::Client.Properties.Resources.finalLogo;
             this.picLogo.Location = new System.Drawing.Point(0, 0);
             this.picLogo.Margin = new System.Windows.Forms.Padding(2);
             this.picLogo.Name = "picLogo";
@@ -291,6 +292,7 @@ namespace Client
             // 
             // pic_User
             // 
+            this.pic_User.Image = global::Client.Properties.Resources.default_avatar_profile_icon_social_media_user_image_gray_avatar_icon_blank_profile_silhouette_vector_illustration_561158_3467;
             this.pic_User.Location = new System.Drawing.Point(13, 39);
             this.pic_User.Margin = new System.Windows.Forms.Padding(2);
             this.pic_User.Name = "pic_User";

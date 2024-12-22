@@ -137,12 +137,12 @@ namespace Client
 
         private void btnClose_MouseHover(object sender, EventArgs e)
         {
-            btnClose.Image = global::WindowsFormsApp1.Properties.Resources.Close_Hover;
+            btnClose.Image = global::Client.Properties.Resources.Close_Hover;
         }
 
         private void btnClose_MouseLeave(object sender, EventArgs e)
         {
-            btnClose.Image = global::WindowsFormsApp1.Properties.Resources.Close;
+            btnClose.Image = global::Client.Properties.Resources.Close;
         }
 
 

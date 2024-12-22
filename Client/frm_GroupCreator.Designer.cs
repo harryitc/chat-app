@@ -131,7 +131,7 @@ namespace Client
             // btnClose
             // 
             this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btnClose.Image = global::WindowsFormsApp1.Properties.Resources.Close;
+            this.btnClose.Image = global::Client.Properties.Resources.Close;
             this.btnClose.Location = new System.Drawing.Point(181, 0);
             this.btnClose.Margin = new System.Windows.Forms.Padding(2);
             this.btnClose.Name = "btnClose";
@@ -157,7 +157,7 @@ namespace Client
             // btn_Close
             // 
             this.btn_Close.Cursor = System.Windows.Forms.Cursors.Hand;
-            this.btn_Close.Image = global::WindowsFormsApp1.Properties.Resources.Close;
+            this.btn_Close.Image = global::Client.Properties.Resources.Close;
             this.btn_Close.Location = new System.Drawing.Point(150, 1);
             this.btn_Close.Margin = new System.Windows.Forms.Padding(2);
             this.btn_Close.Name = "btn_Close";
