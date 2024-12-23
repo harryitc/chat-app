@@ -36,7 +36,7 @@ namespace Client
             this.rtbDialog = new System.Windows.Forms.RichTextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
             this.lblWelcome = new System.Windows.Forms.Label();
-            this.txtReceiver = new System.Windows.Forms.TextBox();
+            this.txtSearchText = new System.Windows.Forms.TextBox();
             this.btnCreateGroup = new System.Windows.Forms.Button();
             this.btnJoinGroup = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -57,6 +57,10 @@ namespace Client
             this.btnLike = new System.Windows.Forms.PictureBox();
             this.btnPicture = new System.Windows.Forms.PictureBox();
             this.lbNoti = new System.Windows.Forms.Label();
+            this.txtSearchGroup = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.btnSearchGroup = new System.Windows.Forms.Button();
+            this.btnSearchText = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
             this.panel1.SuspendLayout();
@@ -104,6 +108,7 @@ namespace Client
             this.dgvGroups.Size = new System.Drawing.Size(379, 271);
             this.dgvGroups.TabIndex = 3;
             this.dgvGroups.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGroups_CellClick);
+            this.dgvGroups.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGroups_CellContentClick);
             // 
             // rtbDialog
             // 
@@ -137,7 +142,7 @@ namespace Client
             this.lblWelcome.Text = "Username";
             this.lblWelcome.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // txtReceiver
+            // txtSearchText
             // 
             this.txtReceiver.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtReceiver.Location = new System.Drawing.Point(241, 50);
@@ -145,6 +150,12 @@ namespace Client
             this.txtReceiver.Name = "txtReceiver";
             this.txtReceiver.Size = new System.Drawing.Size(155, 32);
             this.txtReceiver.TabIndex = 0;
+            this.txtSearchText.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearchText.Location = new System.Drawing.Point(1007, 54);
+            this.txtSearchText.Margin = new System.Windows.Forms.Padding(5);
+            this.txtSearchText.Name = "txtSearchText";
+            this.txtSearchText.Size = new System.Drawing.Size(155, 32);
+            this.txtSearchText.TabIndex = 0;
             // 
             // btnCreateGroup
             // 
@@ -403,6 +414,55 @@ namespace Client
             this.lbNoti.Size = new System.Drawing.Size(15, 16);
             this.lbNoti.TabIndex = 36;
             this.lbNoti.Text = "0";
+            // txtSearchGroup
+            // 
+            this.txtSearchGroup.Font = new System.Drawing.Font("Segoe UI", 11.25F);
+            this.txtSearchGroup.Location = new System.Drawing.Point(190, 48);
+            this.txtSearchGroup.Name = "txtSearchGroup";
+            this.txtSearchGroup.Size = new System.Drawing.Size(117, 32);
+            this.txtSearchGroup.TabIndex = 36;
+            this.txtSearchGroup.TextChanged += new System.EventHandler(this.txtSearchGroup_TextChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
+            this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label1.Location = new System.Drawing.Point(911, 51);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(88, 32);
+            this.label1.TabIndex = 37;
+            this.label1.Text = "Search";
+            // 
+            // btnSearchGroup
+            // 
+            this.btnSearchGroup.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(137)))), ((int)(((byte)(218)))));
+            this.btnSearchGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchGroup.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnSearchGroup.Location = new System.Drawing.Point(315, 48);
+            this.btnSearchGroup.Margin = new System.Windows.Forms.Padding(5);
+            this.btnSearchGroup.Name = "btnSearchGroup";
+            this.btnSearchGroup.Size = new System.Drawing.Size(83, 34);
+            this.btnSearchGroup.TabIndex = 38;
+            this.btnSearchGroup.Text = "Search";
+            this.btnSearchGroup.UseVisualStyleBackColor = false;
+            this.btnSearchGroup.Click += new System.EventHandler(this.btnSearchText_Click_1);
+            // 
+            // btnSearchText
+            // 
+            this.btnSearchText.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(137)))), ((int)(((byte)(218)))));
+            this.btnSearchText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSearchText.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSearchText.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btnSearchText.Location = new System.Drawing.Point(1172, 54);
+            this.btnSearchText.Margin = new System.Windows.Forms.Padding(5);
+            this.btnSearchText.Name = "btnSearchText";
+            this.btnSearchText.Size = new System.Drawing.Size(83, 34);
+            this.btnSearchText.TabIndex = 39;
+            this.btnSearchText.Text = "Search";
+            this.btnSearchText.UseVisualStyleBackColor = false;
+            this.btnSearchText.Click += new System.EventHandler(this.button1_Click)
             // 
             // frm_ChatBox
             // 
@@ -411,6 +471,10 @@ namespace Client
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(1347, 695);
             this.Controls.Add(this.lbNoti);
+            this.Controls.Add(this.btnSearchText);
+            this.Controls.Add(this.btnSearchGroup);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtSearchGroup);
             this.Controls.Add(this.picGroup);
             this.Controls.Add(this.lbGroupName);
             this.Controls.Add(this.panel1);
@@ -420,7 +484,7 @@ namespace Client
             this.Controls.Add(this.btnCreateGroup);
             this.Controls.Add(this.lblWelcome);
             this.Controls.Add(this.pic_User);
-            this.Controls.Add(this.txtReceiver);
+            this.Controls.Add(this.txtSearchText);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.btnSend);
             this.Controls.Add(this.btnDevil);
@@ -472,7 +536,7 @@ namespace Client
         private TextBox txtMessage;
         private PictureBox btnSend;
         private Label lblWelcome;
-        private TextBox txtReceiver;
+        private TextBox txtSearchText;
         private Button btnCreateGroup;
         private DataGridViewButtonColumn Online;
         private PictureBox btnLike;
@@ -492,5 +556,9 @@ namespace Client
         private Label lbGroupName;
         private PictureBox picGroup;
         private Label lbNoti;
+        private TextBox txtSearchGroup;
+        private Label label1;
+        private Button btnSearchGroup;
+        private Button btnSearchText;
     }
 }
