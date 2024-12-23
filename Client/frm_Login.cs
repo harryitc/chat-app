@@ -20,7 +20,6 @@ namespace Client
         {
             InitializeComponent();
             this.KeyPreview = true;
-            this.KeyDown += frm_Login_KeyDown;
         }
 
 

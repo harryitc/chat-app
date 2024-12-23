@@ -199,6 +199,7 @@ namespace Client
             this.lbTitle.TabIndex = 35;
             this.lbTitle.Text = "AESoftWare";
             this.lbTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbTitle.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             // 
             // picLogo
             // 

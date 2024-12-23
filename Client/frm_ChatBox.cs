@@ -41,7 +41,6 @@ namespace Client
             ConnectToServer(this.serverIp, this.serverPort);
 
             this.KeyPreview = true;
-            this.KeyDown += frm_ChatBox_KeyDown;
 
             this.TriggerStatusLogin(StatusLogin.ONLINE);
         }
@@ -226,13 +225,13 @@ namespace Client
                 {
                     Invoke(new Action(() =>
                     {
-                        if (groupMessage.MessageType == "text")
+                        if (userRequest.MessageType == "text")
                         {
-                            AppendMessageToRichTextBox(userRequest.User.Username, groupMessage.Content, groupMessage.Timestamp);
+                            AppendMessageToRichTextBox(userRequest.User.Username, userRequest.Content, userRequest.Timestamp);
                         }
-                        else if (groupMessage.MessageType == "image")
+                        else if (userRequest.MessageType == "image")
                         {
-                            DisplayImageInRichTextBox(userRequest.User.Username, groupMessage.Content, groupMessage.Timestamp);
+                            DisplayImageInRichTextBox(userRequest.User.Username, userRequest.Content, userRequest.Timestamp);
                         }
                     }));
                 }
@@ -545,11 +544,7 @@ namespace Client
                         Data = new GroupMessageDTO
                         {
                             MessageID = response.MessageID,
-                            GroupID = response.GroupID,
-                            SenderID = response.SenderID,
-                            Content = response.Content,
-                            MessageType = response.MessageType,
-                            Timestamp = response.Timestamp,
+                            GroupID = response.GroupID
                         }
                     };
 
@@ -742,11 +737,7 @@ namespace Client
                                     Data = new GroupMessageDTO
                                     {
                                         MessageID = response.MessageID,
-                                        GroupID = response.GroupID,
-                                        SenderID = response.SenderID,
-                                        Content = response.Content,
-                                        MessageType = response.MessageType,
-                                        Timestamp = response.Timestamp,
+                                        GroupID = response.GroupID
                                     }
                                 };
 
