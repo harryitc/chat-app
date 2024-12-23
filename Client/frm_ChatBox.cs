@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
-using Comunicator.models;
+using Comunicator.Models;
 
 using Newtonsoft.Json.Linq;
 

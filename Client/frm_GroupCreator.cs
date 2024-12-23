@@ -9,7 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using Comunicator.models;
+using Comunicator.Models;
 
 namespace Client
 {

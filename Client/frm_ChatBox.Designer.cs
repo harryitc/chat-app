@@ -51,6 +51,7 @@ namespace Client
             this.pic_User = new System.Windows.Forms.PictureBox();
             this.btnSend = new System.Windows.Forms.PictureBox();
             this.btnDevil = new System.Windows.Forms.PictureBox();
+            this.txtReceiver = new System.Windows.Forms.TextBox();
             this.btnCry = new System.Windows.Forms.PictureBox();
             this.btnLaugh = new System.Windows.Forms.PictureBox();
             this.btnLove = new System.Windows.Forms.PictureBox();
@@ -85,13 +86,13 @@ namespace Client
             this.dgvFriends.AllowUserToAddRows = false;
             this.dgvFriends.AllowUserToDeleteRows = false;
             this.dgvFriends.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvFriends.Location = new System.Drawing.Point(17, 86);
-            this.dgvFriends.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dgvFriends.Location = new System.Drawing.Point(13, 70);
+            this.dgvFriends.Margin = new System.Windows.Forms.Padding(2);
             this.dgvFriends.Name = "dgvFriends";
             this.dgvFriends.ReadOnly = true;
             this.dgvFriends.RowHeadersWidth = 51;
             this.dgvFriends.RowTemplate.Height = 25;
-            this.dgvFriends.Size = new System.Drawing.Size(380, 287);
+            this.dgvFriends.Size = new System.Drawing.Size(285, 233);
             this.dgvFriends.TabIndex = 4;
             // 
             // dgvGroups
@@ -99,13 +100,13 @@ namespace Client
             this.dgvGroups.AllowUserToAddRows = false;
             this.dgvGroups.AllowUserToDeleteRows = false;
             this.dgvGroups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvGroups.Location = new System.Drawing.Point(19, 378);
-            this.dgvGroups.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dgvGroups.Location = new System.Drawing.Point(14, 340);
+            this.dgvGroups.Margin = new System.Windows.Forms.Padding(2);
             this.dgvGroups.Name = "dgvGroups";
             this.dgvGroups.ReadOnly = true;
             this.dgvGroups.RowHeadersWidth = 51;
             this.dgvGroups.RowTemplate.Height = 25;
-            this.dgvGroups.Size = new System.Drawing.Size(379, 271);
+            this.dgvGroups.Size = new System.Drawing.Size(284, 187);
             this.dgvGroups.TabIndex = 3;
             this.dgvGroups.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGroups_CellClick);
             this.dgvGroups.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGroups_CellContentClick);
@@ -113,20 +114,20 @@ namespace Client
             // rtbDialog
             // 
             this.rtbDialog.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.rtbDialog.Location = new System.Drawing.Point(405, 89);
-            this.rtbDialog.Margin = new System.Windows.Forms.Padding(5);
+            this.rtbDialog.Location = new System.Drawing.Point(304, 72);
+            this.rtbDialog.Margin = new System.Windows.Forms.Padding(4);
             this.rtbDialog.Name = "rtbDialog";
-            this.rtbDialog.Size = new System.Drawing.Size(923, 518);
+            this.rtbDialog.Size = new System.Drawing.Size(693, 422);
             this.rtbDialog.TabIndex = 2;
             this.rtbDialog.Text = "";
             // 
             // txtMessage
             // 
             this.txtMessage.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtMessage.Location = new System.Drawing.Point(449, 654);
-            this.txtMessage.Margin = new System.Windows.Forms.Padding(5);
+            this.txtMessage.Location = new System.Drawing.Point(337, 531);
+            this.txtMessage.Margin = new System.Windows.Forms.Padding(4);
             this.txtMessage.Name = "txtMessage";
-            this.txtMessage.Size = new System.Drawing.Size(835, 34);
+            this.txtMessage.Size = new System.Drawing.Size(627, 29);
             this.txtMessage.TabIndex = 1;
             // 
             // lblWelcome
@@ -134,27 +135,20 @@ namespace Client
             this.lblWelcome.AutoSize = true;
             this.lblWelcome.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblWelcome.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lblWelcome.Location = new System.Drawing.Point(57, 50);
-            this.lblWelcome.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lblWelcome.Location = new System.Drawing.Point(43, 41);
             this.lblWelcome.Name = "lblWelcome";
-            this.lblWelcome.Size = new System.Drawing.Size(126, 32);
+            this.lblWelcome.Size = new System.Drawing.Size(101, 25);
             this.lblWelcome.TabIndex = 4;
             this.lblWelcome.Text = "Username";
             this.lblWelcome.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // txtSearchText
             // 
-            this.txtReceiver.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtReceiver.Location = new System.Drawing.Point(241, 50);
-            this.txtReceiver.Margin = new System.Windows.Forms.Padding(5);
-            this.txtReceiver.Name = "txtReceiver";
-            this.txtReceiver.Size = new System.Drawing.Size(155, 32);
-            this.txtReceiver.TabIndex = 0;
             this.txtSearchText.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearchText.Location = new System.Drawing.Point(1007, 54);
-            this.txtSearchText.Margin = new System.Windows.Forms.Padding(5);
+            this.txtSearchText.Location = new System.Drawing.Point(755, 44);
+            this.txtSearchText.Margin = new System.Windows.Forms.Padding(4);
             this.txtSearchText.Name = "txtSearchText";
-            this.txtSearchText.Size = new System.Drawing.Size(155, 32);
+            this.txtSearchText.Size = new System.Drawing.Size(117, 27);
             this.txtSearchText.TabIndex = 0;
             // 
             // btnCreateGroup
@@ -163,10 +157,10 @@ namespace Client
             this.btnCreateGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnCreateGroup.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCreateGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnCreateGroup.Location = new System.Drawing.Point(19, 652);
-            this.btnCreateGroup.Margin = new System.Windows.Forms.Padding(5);
+            this.btnCreateGroup.Location = new System.Drawing.Point(14, 530);
+            this.btnCreateGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnCreateGroup.Name = "btnCreateGroup";
-            this.btnCreateGroup.Size = new System.Drawing.Size(143, 34);
+            this.btnCreateGroup.Size = new System.Drawing.Size(107, 28);
             this.btnCreateGroup.TabIndex = 5;
             this.btnCreateGroup.Text = "Create Group";
             this.btnCreateGroup.UseVisualStyleBackColor = false;
@@ -178,10 +172,10 @@ namespace Client
             this.btnJoinGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnJoinGroup.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnJoinGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnJoinGroup.Location = new System.Drawing.Point(255, 652);
-            this.btnJoinGroup.Margin = new System.Windows.Forms.Padding(5);
+            this.btnJoinGroup.Location = new System.Drawing.Point(191, 530);
+            this.btnJoinGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnJoinGroup.Name = "btnJoinGroup";
-            this.btnJoinGroup.Size = new System.Drawing.Size(143, 34);
+            this.btnJoinGroup.Size = new System.Drawing.Size(107, 28);
             this.btnJoinGroup.TabIndex = 32;
             this.btnJoinGroup.Text = "Join Group";
             this.btnJoinGroup.UseVisualStyleBackColor = false;
@@ -195,9 +189,9 @@ namespace Client
             this.panel1.Controls.Add(this.btnLogOut);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(5);
+            this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1347, 44);
+            this.panel1.Size = new System.Drawing.Size(1010, 36);
             this.panel1.TabIndex = 33;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             // 
@@ -206,10 +200,9 @@ namespace Client
             this.lbTitle.AutoSize = true;
             this.lbTitle.Font = new System.Drawing.Font("Segoe UI", 18F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbTitle.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lbTitle.Location = new System.Drawing.Point(55, 2);
-            this.lbTitle.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
+            this.lbTitle.Location = new System.Drawing.Point(41, 2);
             this.lbTitle.Name = "lbTitle";
-            this.lbTitle.Size = new System.Drawing.Size(186, 41);
+            this.lbTitle.Size = new System.Drawing.Size(149, 32);
             this.lbTitle.TabIndex = 35;
             this.lbTitle.Text = "AESoftWare";
             this.lbTitle.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -219,9 +212,9 @@ namespace Client
             this.picLogo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picLogo.Image = global::Client.Properties.Resources.finalLogo;
             this.picLogo.Location = new System.Drawing.Point(0, 0);
-            this.picLogo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.picLogo.Margin = new System.Windows.Forms.Padding(2);
             this.picLogo.Name = "picLogo";
-            this.picLogo.Size = new System.Drawing.Size(48, 44);
+            this.picLogo.Size = new System.Drawing.Size(36, 36);
             this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.picLogo.TabIndex = 35;
             this.picLogo.TabStop = false;
@@ -230,10 +223,10 @@ namespace Client
             // 
             this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnClose.Image = global::Client.Properties.Resources.Close;
-            this.btnClose.Location = new System.Drawing.Point(1299, 0);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnClose.Location = new System.Drawing.Point(974, 0);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(2);
             this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(48, 44);
+            this.btnClose.Size = new System.Drawing.Size(36, 36);
             this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnClose.TabIndex = 37;
             this.btnClose.TabStop = false;
@@ -245,10 +238,10 @@ namespace Client
             // 
             this.btnLogOut.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLogOut.Image = global::Client.Properties.Resources.logout;
-            this.btnLogOut.Location = new System.Drawing.Point(1245, 0);
-            this.btnLogOut.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnLogOut.Location = new System.Drawing.Point(934, 0);
+            this.btnLogOut.Margin = new System.Windows.Forms.Padding(2);
             this.btnLogOut.Name = "btnLogOut";
-            this.btnLogOut.Size = new System.Drawing.Size(48, 44);
+            this.btnLogOut.Size = new System.Drawing.Size(36, 36);
             this.btnLogOut.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLogOut.TabIndex = 34;
             this.btnLogOut.TabStop = false;
@@ -259,10 +252,10 @@ namespace Client
             this.lbGroupName.AutoSize = true;
             this.lbGroupName.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbGroupName.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lbGroupName.Location = new System.Drawing.Point(491, 50);
-            this.lbGroupName.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
+            this.lbGroupName.Location = new System.Drawing.Point(368, 41);
+            this.lbGroupName.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.lbGroupName.Name = "lbGroupName";
-            this.lbGroupName.Size = new System.Drawing.Size(150, 32);
+            this.lbGroupName.Size = new System.Drawing.Size(119, 25);
             this.lbGroupName.TabIndex = 34;
             this.lbGroupName.Text = "GroupName";
             this.lbGroupName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -270,10 +263,10 @@ namespace Client
             // picGroup
             // 
             this.picGroup.Image = global::Client.Properties.Resources.default_avatar_profile_icon_social_media_user_image_gray_avatar_icon_blank_profile_silhouette_vector_illustration_561158_3467;
-            this.picGroup.Location = new System.Drawing.Point(657, 50);
-            this.picGroup.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.picGroup.Location = new System.Drawing.Point(493, 41);
+            this.picGroup.Margin = new System.Windows.Forms.Padding(2);
             this.picGroup.Name = "picGroup";
-            this.picGroup.Size = new System.Drawing.Size(36, 33);
+            this.picGroup.Size = new System.Drawing.Size(27, 27);
             this.picGroup.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picGroup.TabIndex = 35;
             this.picGroup.TabStop = false;
@@ -282,10 +275,10 @@ namespace Client
             // 
             this.btnNoti.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnNoti.Image = ((System.Drawing.Image)(resources.GetObject("btnNoti.Image")));
-            this.btnNoti.Location = new System.Drawing.Point(447, 50);
-            this.btnNoti.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnNoti.Location = new System.Drawing.Point(335, 41);
+            this.btnNoti.Margin = new System.Windows.Forms.Padding(2);
             this.btnNoti.Name = "btnNoti";
-            this.btnNoti.Size = new System.Drawing.Size(36, 33);
+            this.btnNoti.Size = new System.Drawing.Size(27, 27);
             this.btnNoti.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnNoti.TabIndex = 31;
             this.btnNoti.TabStop = false;
@@ -295,10 +288,10 @@ namespace Client
             // 
             this.btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnAdd.Image = ((System.Drawing.Image)(resources.GetObject("btnAdd.Image")));
-            this.btnAdd.Location = new System.Drawing.Point(405, 50);
-            this.btnAdd.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnAdd.Location = new System.Drawing.Point(304, 41);
+            this.btnAdd.Margin = new System.Windows.Forms.Padding(2);
             this.btnAdd.Name = "btnAdd";
-            this.btnAdd.Size = new System.Drawing.Size(36, 33);
+            this.btnAdd.Size = new System.Drawing.Size(27, 27);
             this.btnAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnAdd.TabIndex = 30;
             this.btnAdd.TabStop = false;
@@ -307,10 +300,10 @@ namespace Client
             // pic_User
             // 
             this.pic_User.Image = global::Client.Properties.Resources.default_avatar_profile_icon_social_media_user_image_gray_avatar_icon_blank_profile_silhouette_vector_illustration_561158_3467;
-            this.pic_User.Location = new System.Drawing.Point(17, 48);
-            this.pic_User.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.pic_User.Location = new System.Drawing.Point(13, 39);
+            this.pic_User.Margin = new System.Windows.Forms.Padding(2);
             this.pic_User.Name = "pic_User";
-            this.pic_User.Size = new System.Drawing.Size(36, 33);
+            this.pic_User.Size = new System.Drawing.Size(27, 27);
             this.pic_User.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pic_User.TabIndex = 30;
             this.pic_User.TabStop = false;
@@ -320,10 +313,10 @@ namespace Client
             // 
             this.btnSend.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnSend.Image = ((System.Drawing.Image)(resources.GetObject("btnSend.Image")));
-            this.btnSend.Location = new System.Drawing.Point(1293, 652);
-            this.btnSend.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnSend.Location = new System.Drawing.Point(970, 530);
+            this.btnSend.Margin = new System.Windows.Forms.Padding(2);
             this.btnSend.Name = "btnSend";
-            this.btnSend.Size = new System.Drawing.Size(36, 33);
+            this.btnSend.Size = new System.Drawing.Size(27, 27);
             this.btnSend.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnSend.TabIndex = 2;
             this.btnSend.TabStop = false;
@@ -333,22 +326,31 @@ namespace Client
             // 
             this.btnDevil.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDevil.Image = ((System.Drawing.Image)(resources.GetObject("btnDevil.Image")));
-            this.btnDevil.Location = new System.Drawing.Point(449, 615);
-            this.btnDevil.Margin = new System.Windows.Forms.Padding(5);
+            this.btnDevil.Location = new System.Drawing.Point(337, 500);
+            this.btnDevil.Margin = new System.Windows.Forms.Padding(4);
             this.btnDevil.Name = "btnDevil";
-            this.btnDevil.Size = new System.Drawing.Size(40, 33);
+            this.btnDevil.Size = new System.Drawing.Size(30, 27);
             this.btnDevil.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnDevil.TabIndex = 2;
             this.btnDevil.TabStop = false;
+            // 
+            // txtReceiver
+            // 
+            this.txtReceiver.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtReceiver.Location = new System.Drawing.Point(143, 39);
+            this.txtReceiver.Margin = new System.Windows.Forms.Padding(5);
+            this.txtReceiver.Name = "txtReceiver";
+            this.txtReceiver.Size = new System.Drawing.Size(155, 27);
+            this.txtReceiver.TabIndex = 0;
             // 
             // btnCry
             // 
             this.btnCry.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnCry.Image = ((System.Drawing.Image)(resources.GetObject("btnCry.Image")));
-            this.btnCry.Location = new System.Drawing.Point(539, 615);
-            this.btnCry.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnCry.Location = new System.Drawing.Point(404, 500);
+            this.btnCry.Margin = new System.Windows.Forms.Padding(2);
             this.btnCry.Name = "btnCry";
-            this.btnCry.Size = new System.Drawing.Size(36, 33);
+            this.btnCry.Size = new System.Drawing.Size(27, 27);
             this.btnCry.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnCry.TabIndex = 2;
             this.btnCry.TabStop = false;
@@ -357,10 +359,10 @@ namespace Client
             // 
             this.btnLaugh.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLaugh.Image = ((System.Drawing.Image)(resources.GetObject("btnLaugh.Image")));
-            this.btnLaugh.Location = new System.Drawing.Point(497, 615);
-            this.btnLaugh.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnLaugh.Location = new System.Drawing.Point(373, 500);
+            this.btnLaugh.Margin = new System.Windows.Forms.Padding(2);
             this.btnLaugh.Name = "btnLaugh";
-            this.btnLaugh.Size = new System.Drawing.Size(36, 33);
+            this.btnLaugh.Size = new System.Drawing.Size(27, 27);
             this.btnLaugh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLaugh.TabIndex = 2;
             this.btnLaugh.TabStop = false;
@@ -369,10 +371,10 @@ namespace Client
             // 
             this.btnLove.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLove.Image = ((System.Drawing.Image)(resources.GetObject("btnLove.Image")));
-            this.btnLove.Location = new System.Drawing.Point(405, 615);
-            this.btnLove.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnLove.Location = new System.Drawing.Point(304, 500);
+            this.btnLove.Margin = new System.Windows.Forms.Padding(2);
             this.btnLove.Name = "btnLove";
-            this.btnLove.Size = new System.Drawing.Size(36, 33);
+            this.btnLove.Size = new System.Drawing.Size(27, 27);
             this.btnLove.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLove.TabIndex = 2;
             this.btnLove.TabStop = false;
@@ -382,10 +384,10 @@ namespace Client
             // 
             this.btnLike.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnLike.Image = ((System.Drawing.Image)(resources.GetObject("btnLike.Image")));
-            this.btnLike.Location = new System.Drawing.Point(580, 615);
-            this.btnLike.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnLike.Location = new System.Drawing.Point(435, 500);
+            this.btnLike.Margin = new System.Windows.Forms.Padding(2);
             this.btnLike.Name = "btnLike";
-            this.btnLike.Size = new System.Drawing.Size(36, 33);
+            this.btnLike.Size = new System.Drawing.Size(27, 27);
             this.btnLike.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLike.TabIndex = 2;
             this.btnLike.TabStop = false;
@@ -394,10 +396,10 @@ namespace Client
             // 
             this.btnPicture.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnPicture.Image = ((System.Drawing.Image)(resources.GetObject("btnPicture.Image")));
-            this.btnPicture.Location = new System.Drawing.Point(405, 654);
-            this.btnPicture.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnPicture.Location = new System.Drawing.Point(304, 531);
+            this.btnPicture.Margin = new System.Windows.Forms.Padding(2);
             this.btnPicture.Name = "btnPicture";
-            this.btnPicture.Size = new System.Drawing.Size(36, 33);
+            this.btnPicture.Size = new System.Drawing.Size(27, 27);
             this.btnPicture.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnPicture.TabIndex = 2;
             this.btnPicture.TabStop = false;
@@ -409,17 +411,20 @@ namespace Client
             this.lbNoti.BackColor = System.Drawing.Color.White;
             this.lbNoti.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lbNoti.ForeColor = System.Drawing.SystemColors.Desktop;
-            this.lbNoti.Location = new System.Drawing.Point(469, 48);
+            this.lbNoti.Location = new System.Drawing.Point(352, 39);
+            this.lbNoti.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.lbNoti.Name = "lbNoti";
-            this.lbNoti.Size = new System.Drawing.Size(15, 16);
+            this.lbNoti.Size = new System.Drawing.Size(14, 13);
             this.lbNoti.TabIndex = 36;
             this.lbNoti.Text = "0";
+            // 
             // txtSearchGroup
             // 
             this.txtSearchGroup.Font = new System.Drawing.Font("Segoe UI", 11.25F);
-            this.txtSearchGroup.Location = new System.Drawing.Point(190, 48);
+            this.txtSearchGroup.Location = new System.Drawing.Point(140, 309);
+            this.txtSearchGroup.Margin = new System.Windows.Forms.Padding(2);
             this.txtSearchGroup.Name = "txtSearchGroup";
-            this.txtSearchGroup.Size = new System.Drawing.Size(117, 32);
+            this.txtSearchGroup.Size = new System.Drawing.Size(89, 27);
             this.txtSearchGroup.TabIndex = 36;
             this.txtSearchGroup.TextChanged += new System.EventHandler(this.txtSearchGroup_TextChanged);
             // 
@@ -428,9 +433,10 @@ namespace Client
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(911, 51);
+            this.label1.Location = new System.Drawing.Point(683, 41);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(88, 32);
+            this.label1.Size = new System.Drawing.Size(71, 25);
             this.label1.TabIndex = 37;
             this.label1.Text = "Search";
             // 
@@ -440,10 +446,10 @@ namespace Client
             this.btnSearchGroup.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchGroup.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnSearchGroup.Location = new System.Drawing.Point(315, 48);
-            this.btnSearchGroup.Margin = new System.Windows.Forms.Padding(5);
+            this.btnSearchGroup.Location = new System.Drawing.Point(234, 309);
+            this.btnSearchGroup.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearchGroup.Name = "btnSearchGroup";
-            this.btnSearchGroup.Size = new System.Drawing.Size(83, 34);
+            this.btnSearchGroup.Size = new System.Drawing.Size(62, 28);
             this.btnSearchGroup.TabIndex = 38;
             this.btnSearchGroup.Text = "Search";
             this.btnSearchGroup.UseVisualStyleBackColor = false;
@@ -455,21 +461,21 @@ namespace Client
             this.btnSearchText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchText.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchText.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnSearchText.Location = new System.Drawing.Point(1172, 54);
-            this.btnSearchText.Margin = new System.Windows.Forms.Padding(5);
+            this.btnSearchText.Location = new System.Drawing.Point(879, 44);
+            this.btnSearchText.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearchText.Name = "btnSearchText";
-            this.btnSearchText.Size = new System.Drawing.Size(83, 34);
+            this.btnSearchText.Size = new System.Drawing.Size(62, 28);
             this.btnSearchText.TabIndex = 39;
             this.btnSearchText.Text = "Search";
             this.btnSearchText.UseVisualStyleBackColor = false;
-            this.btnSearchText.Click += new System.EventHandler(this.button1_Click)
+            this.btnSearchText.Click += new System.EventHandler(this.button1_Click);
             // 
             // frm_ChatBox
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
-            this.ClientSize = new System.Drawing.Size(1347, 695);
+            this.ClientSize = new System.Drawing.Size(1010, 565);
             this.Controls.Add(this.lbNoti);
             this.Controls.Add(this.btnSearchText);
             this.Controls.Add(this.btnSearchGroup);
@@ -484,6 +490,7 @@ namespace Client
             this.Controls.Add(this.btnCreateGroup);
             this.Controls.Add(this.lblWelcome);
             this.Controls.Add(this.pic_User);
+            this.Controls.Add(this.txtReceiver);
             this.Controls.Add(this.txtSearchText);
             this.Controls.Add(this.txtMessage);
             this.Controls.Add(this.btnSend);
@@ -497,7 +504,7 @@ namespace Client
             this.Controls.Add(this.dgvGroups);
             this.Controls.Add(this.dgvFriends);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(5);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "frm_ChatBox";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
@@ -558,6 +565,7 @@ namespace Client
         private Label lbNoti;
         private TextBox txtSearchGroup;
         private Label label1;
+        private TextBox txtReceiver;
         private Button btnSearchGroup;
         private Button btnSearchText;
     }
