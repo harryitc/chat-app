@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
 using System.Linq;
 
-namespace Comunicator.Models
+namespace Comunicator.models
 {
     public partial class ChatAppDBContext : DbContext
     {

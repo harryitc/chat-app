@@ -56,6 +56,7 @@ namespace Client
             this.btnLove = new System.Windows.Forms.PictureBox();
             this.btnLike = new System.Windows.Forms.PictureBox();
             this.btnPicture = new System.Windows.Forms.PictureBox();
+            this.lbNoti = new System.Windows.Forms.Label();
             this.txtSearchGroup = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.btnSearchGroup = new System.Windows.Forms.Button();
@@ -143,6 +144,12 @@ namespace Client
             // 
             // txtSearchText
             // 
+            this.txtReceiver.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtReceiver.Location = new System.Drawing.Point(241, 50);
+            this.txtReceiver.Margin = new System.Windows.Forms.Padding(5);
+            this.txtReceiver.Name = "txtReceiver";
+            this.txtReceiver.Size = new System.Drawing.Size(155, 32);
+            this.txtReceiver.TabIndex = 0;
             this.txtSearchText.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSearchText.Location = new System.Drawing.Point(1007, 54);
             this.txtSearchText.Margin = new System.Windows.Forms.Padding(5);
@@ -396,6 +403,17 @@ namespace Client
             this.btnPicture.TabStop = false;
             this.btnPicture.Click += new System.EventHandler(this.btnPicture_Click);
             // 
+            // lbNoti
+            // 
+            this.lbNoti.AutoSize = true;
+            this.lbNoti.BackColor = System.Drawing.Color.White;
+            this.lbNoti.Font = new System.Drawing.Font("Microsoft Sans Serif", 7.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbNoti.ForeColor = System.Drawing.SystemColors.Desktop;
+            this.lbNoti.Location = new System.Drawing.Point(469, 48);
+            this.lbNoti.Name = "lbNoti";
+            this.lbNoti.Size = new System.Drawing.Size(15, 16);
+            this.lbNoti.TabIndex = 36;
+            this.lbNoti.Text = "0";
             // txtSearchGroup
             // 
             this.txtSearchGroup.Font = new System.Drawing.Font("Segoe UI", 11.25F);
@@ -444,7 +462,7 @@ namespace Client
             this.btnSearchText.TabIndex = 39;
             this.btnSearchText.Text = "Search";
             this.btnSearchText.UseVisualStyleBackColor = false;
-            this.btnSearchText.Click += new System.EventHandler(this.button1_Click);
+            this.btnSearchText.Click += new System.EventHandler(this.button1_Click)
             // 
             // frm_ChatBox
             // 
@@ -452,6 +470,7 @@ namespace Client
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(1347, 695);
+            this.Controls.Add(this.lbNoti);
             this.Controls.Add(this.btnSearchText);
             this.Controls.Add(this.btnSearchGroup);
             this.Controls.Add(this.label1);
@@ -536,6 +555,7 @@ namespace Client
         private Label lbTitle;
         private Label lbGroupName;
         private PictureBox picGroup;
+        private Label lbNoti;
         private TextBox txtSearchGroup;
         private Label label1;
         private Button btnSearchGroup;
