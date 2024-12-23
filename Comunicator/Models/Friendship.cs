@@ -1,4 +1,4 @@
-namespace Comunicator.Models
+namespace Comunicator.models
 {
     using System;
     using System.Collections.Generic;

@@ -9,7 +9,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Windows.Forms;
-using Comunicator.Models;
+using Comunicator.models;
 
 using Newtonsoft.Json.Linq;
 
@@ -150,9 +150,9 @@ namespace Client
                         //HandleEventLogin(json["Data"].ToObject<UserDTO>());
                         HandleEventStatusAccount(json["Data"].ToObject<UserDTO>());
                         break;
-                    //case "addFriend":
-                    //    HandleAddFriend(json["Data"].ToObject<FriendRequestData>());
-                    //    break;
+                    case EventType.FRIENDSHIPS:
+                        HandleAddFriend(json["Data"].ToObject<FriendshipDTO>());
+                        break;
                     //case "groupAction":
                     //    HandleGroupAction(json["Data"].ToObject<GroupActionData>());
                     //    break;
@@ -244,6 +244,27 @@ namespace Client
 
         }
 
+        private void HandleAddFriend(FriendshipDTO friendRequestDTO, bool isSendForMe = false)
+        {
+                    
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                if (!isSendForMe)
+                {
+                    var userFound = context.Users.FirstOrDefault(f => f.UserID == friendRequestDTO.RequesterID);
+                    if (userFound == null) return;
+                    this.dgvFriends.Rows.Add(userFound.UserID ,userFound.Username, userFound.Status);
+                }
+                else
+                {
+                    var userFound = context.Users.FirstOrDefault(f => f.UserID == friendRequestDTO.AddressID);
+                    if (userFound == null) return;
+                    this.dgvFriends.Rows.Add(userFound.UserID, userFound.Username, userFound.Status);
+                }
+            }
+        }
+
+
         private void frm_ChatBox_Load(object sender, EventArgs e)
         {
 
@@ -296,7 +317,7 @@ namespace Client
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            using (ChatAppDBContext context = new ChatAppDBContext())
+            /*using (ChatAppDBContext context = new ChatAppDBContext())
             {
                 string request = txtReceiver.Text;
                 List<User> users = context.Users.ToList();
@@ -319,9 +340,69 @@ namespace Client
                     MessageBox.Show("Người dùng không tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
+            }*/
+
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                string receiverUsername = txtReceiver.Text.Trim();
+
+                var receiver = context.Users.FirstOrDefault(u => u.Username == receiverUsername);
+                if (receiver == null)
+                {
+                    MessageBox.Show("Người dùng không tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                var existingFriendship = context.Friendships
+                    .FirstOrDefault(f =>
+                        (f.RequesterID == this.user.UserID && f.AddressID == receiver.UserID) ||
+                        (f.RequesterID == receiver.UserID && f.AddressID == this.user.UserID));
+
+                if (existingFriendship != null)
+                {
+                    MessageBox.Show("Bạn đã gửi hoặc nhận lời mời kết bạn từ người dùng này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                Friendship newFriendship = new Friendship
+                {
+                    AddressID = receiver.UserID,
+                    RequesterID = this.user.UserID,
+                    Status = StatusFriend.ACCEPTED,
+                    CreatedAt = DateTime.Now
+                };
+
+                var response = context.Friendships.Add(newFriendship);
+                context.SaveChanges();
+
+                MessageBox.Show("Đã kết bạn thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                var request = new
+                {
+                    Type = EventType.FRIENDSHIPS,
+                    Data = new FriendshipDTO
+                    {
+                        FriendshipID = response.FriendshipID,
+                        RequesterID = response.RequesterID,
+                        AddressID = response.AddressID,
+                        Status = response.Status,
+                        CreatedAt = response.CreatedAt
+                    }
+                };
+                // Chuyển đối tượng thành JSON
+                string jsonData = JsonConvert.SerializeObject(request);
+                byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
+
+                HandleAddFriend(request.Data, true);
+
+                // Gửi dữ liệu
+                stream.Write(buffer, 0, buffer.Length);
+
+                
             }
 
         }
+
 
         private void btnCreateGroup_Click(object sender, EventArgs e)
         {
@@ -650,8 +731,8 @@ namespace Client
 
         private void btnNoti_Click(object sender, EventArgs e)
         {
-            Notification noti = new Notification();
-            noti.Show();
+            //Notification noti = new Notification();
+            //noti.Show();
         }
 
         private void btnJoinGroup_Click(object sender, EventArgs e)
