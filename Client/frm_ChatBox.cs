@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using Comunicator;
 using System.Runtime.Remoting.Contexts;
 using Comunicator.DTO;
+using System.Data.Entity;
 
 namespace Client
 {
@@ -298,7 +299,7 @@ namespace Client
         {
             using (ChatAppDBContext context = new ChatAppDBContext())
             {
-                string request = txtReceiver.Text;
+                string request = txtSearchText.Text;
                 List<User> users = context.Users.ToList();
                 var requestIDFound = users.FirstOrDefault(u => this.user.Username == u.Username);
                 if (requestIDFound != null)
@@ -803,6 +804,109 @@ namespace Client
             {
                 this.performSendMessage();
             }
+        }
+
+        private void dgvGroups_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        
+        private async void btnSearchText_Click_1(object sender, EventArgs e)
+        {
+            string keyword = txtSearchGroup.Text.Trim();
+
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                try
+                {
+                    var groups = await context.GroupMembers
+                        .Where(gm => gm.UserID == this.user.UserID) // Chỉ lấy các nhóm mà người dùng hiện tại tham gia
+                        .Select(gm => gm.Group) // Lấy thông tin nhóm
+                        .Where(g => string.IsNullOrEmpty(keyword) || g.GroupName.Contains(keyword)) // Lọc theo từ khóa
+                        .ToListAsync();
+
+                    if (groups.Count == 0)
+                    {
+                        MessageBox.Show("Không tìm thấy nhóm nào phù hợp.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        dgvGroups.Rows.Clear();
+                        return;
+                    }
+
+                    dgvGroups.Rows.Clear();
+                    foreach (var group in groups)
+                    {
+                        // Lấy vai trò của người dùng trong nhóm
+                        var userRole = context.GroupMembers
+                            .Where(gm => gm.GroupID == group.GroupID && gm.UserID == this.user.UserID)
+                            .Select(gm => gm.Role)
+                            .FirstOrDefault() ?? "Thành viên";
+
+                        int memberCount = context.GroupMembers.Count(gm => gm.GroupID == group.GroupID);
+
+                        dgvGroups.Rows.Add(group.GroupID, group.GroupName, userRole, memberCount);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi tìm kiếm nhóm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void HighlightMessages(string keyword)
+        {
+            // Lưu lại vị trí con trỏ hiện tại
+            int originalSelectionStart = rtbDialog.SelectionStart;
+            int originalSelectionLength = rtbDialog.SelectionLength;
+
+            // Đặt lại tất cả văn bản về màu mặc định
+            rtbDialog.SelectAll();
+            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
+
+            RemoveAllHighlights();
+
+            // Tìm và highlight các đoạn chứa từ khóa
+            int startIndex = 0;
+            while ((startIndex = rtbDialog.Text.IndexOf(keyword, startIndex, StringComparison.OrdinalIgnoreCase)) != -1)
+            {
+                rtbDialog.Select(startIndex, keyword.Length);
+                rtbDialog.SelectionBackColor = Color.Yellow;
+                startIndex += keyword.Length;
+            }
+
+            // Khôi phục vị trí con trỏ
+            rtbDialog.Select(originalSelectionStart, originalSelectionLength);
+            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
+        }
+
+        private void RemoveAllHighlights()
+        {
+            //Bỏ các highlight cũ
+            rtbDialog.SelectAll();
+            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
+
+            // Bỏ chọn văn bản
+            rtbDialog.Select(0, 0);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string keyword = txtSearchText.Text.Trim();
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                //Bỏ highlight nếu từ khóa rỗng
+                RemoveAllHighlights();
+                return;
+            }
+
+            HighlightMessages(keyword);           
+        }
+
+        private void txtSearchGroup_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
