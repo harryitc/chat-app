@@ -19,6 +19,7 @@ using Newtonsoft.Json;
 using Comunicator;
 using System.Runtime.Remoting.Contexts;
 using Comunicator.DTO;
+using System.Data.Entity;
 
 namespace Client
 {
@@ -41,7 +42,6 @@ namespace Client
             ConnectToServer(this.serverIp, this.serverPort);
 
             this.KeyPreview = true;
-            this.KeyDown += frm_ChatBox_KeyDown;
 
             this.TriggerStatusLogin(StatusLogin.ONLINE);
         }
@@ -150,9 +150,9 @@ namespace Client
                         //HandleEventLogin(json["Data"].ToObject<UserDTO>());
                         HandleEventStatusAccount(json["Data"].ToObject<UserDTO>());
                         break;
-                    //case "addFriend":
-                    //    HandleAddFriend(json["Data"].ToObject<FriendRequestData>());
-                    //    break;
+                    case EventType.FRIENDSHIPS:
+                        HandleAddFriend(json["Data"].ToObject<FriendshipDTO>());
+                        break;
                     //case "groupAction":
                     //    HandleGroupAction(json["Data"].ToObject<GroupActionData>());
                     //    break;
@@ -226,13 +226,13 @@ namespace Client
                 {
                     Invoke(new Action(() =>
                     {
-                        if (groupMessage.MessageType == "text")
+                        if (userRequest.MessageType == "text")
                         {
-                            AppendMessageToRichTextBox(userRequest.User.Username, groupMessage.Content, groupMessage.Timestamp);
+                            AppendMessageToRichTextBox(userRequest.User.Username, userRequest.Content, userRequest.Timestamp);
                         }
-                        else if (groupMessage.MessageType == "image")
+                        else if (userRequest.MessageType == "image")
                         {
-                            DisplayImageInRichTextBox(userRequest.User.Username, groupMessage.Content, groupMessage.Timestamp);
+                            DisplayImageInRichTextBox(userRequest.User.Username, userRequest.Content, userRequest.Timestamp);
                         }
                     }));
                 }
@@ -243,6 +243,27 @@ namespace Client
             }
 
         }
+
+        private void HandleAddFriend(FriendshipDTO friendRequestDTO, bool isSendForMe = false)
+        {
+                    
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                if (!isSendForMe)
+                {
+                    var userFound = context.Users.FirstOrDefault(f => f.UserID == friendRequestDTO.RequesterID);
+                    if (userFound == null) return;
+                    this.dgvFriends.Rows.Add(userFound.UserID ,userFound.Username, userFound.Status);
+                }
+                else
+                {
+                    var userFound = context.Users.FirstOrDefault(f => f.UserID == friendRequestDTO.AddressID);
+                    if (userFound == null) return;
+                    this.dgvFriends.Rows.Add(userFound.UserID, userFound.Username, userFound.Status);
+                }
+            }
+        }
+
 
         private void frm_ChatBox_Load(object sender, EventArgs e)
         {
@@ -296,9 +317,9 @@ namespace Client
 
         private void btnAdd_Click(object sender, EventArgs e)
         {
-            using (ChatAppDBContext context = new ChatAppDBContext())
+            /*using (ChatAppDBContext context = new ChatAppDBContext())
             {
-                string request = txtReceiver.Text;
+                string request = txtSearchText.Text;
                 List<User> users = context.Users.ToList();
                 var requestIDFound = users.FirstOrDefault(u => this.user.Username == u.Username);
                 if (requestIDFound != null)
@@ -319,9 +340,69 @@ namespace Client
                     MessageBox.Show("Người dùng không tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
+            }*/
+
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                string receiverUsername = txtReceiver.Text.Trim();
+
+                var receiver = context.Users.FirstOrDefault(u => u.Username == receiverUsername);
+                if (receiver == null)
+                {
+                    MessageBox.Show("Người dùng không tồn tại.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                var existingFriendship = context.Friendships
+                    .FirstOrDefault(f =>
+                        (f.RequesterID == this.user.UserID && f.AddressID == receiver.UserID) ||
+                        (f.RequesterID == receiver.UserID && f.AddressID == this.user.UserID));
+
+                if (existingFriendship != null)
+                {
+                    MessageBox.Show("Bạn đã gửi hoặc nhận lời mời kết bạn từ người dùng này.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
+
+                Friendship newFriendship = new Friendship
+                {
+                    AddressID = receiver.UserID,
+                    RequesterID = this.user.UserID,
+                    Status = StatusFriend.ACCEPTED,
+                    CreatedAt = DateTime.Now
+                };
+
+                var response = context.Friendships.Add(newFriendship);
+                context.SaveChanges();
+
+                MessageBox.Show("Đã kết bạn thành công.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                var request = new
+                {
+                    Type = EventType.FRIENDSHIPS,
+                    Data = new FriendshipDTO
+                    {
+                        FriendshipID = response.FriendshipID,
+                        RequesterID = response.RequesterID,
+                        AddressID = response.AddressID,
+                        Status = response.Status,
+                        CreatedAt = response.CreatedAt
+                    }
+                };
+                // Chuyển đối tượng thành JSON
+                string jsonData = JsonConvert.SerializeObject(request);
+                byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
+
+                HandleAddFriend(request.Data, true);
+
+                // Gửi dữ liệu
+                stream.Write(buffer, 0, buffer.Length);
+
+                
             }
 
         }
+
 
         private void btnCreateGroup_Click(object sender, EventArgs e)
         {
@@ -545,11 +626,7 @@ namespace Client
                         Data = new GroupMessageDTO
                         {
                             MessageID = response.MessageID,
-                            GroupID = response.GroupID,
-                            SenderID = response.SenderID,
-                            Content = response.Content,
-                            MessageType = response.MessageType,
-                            Timestamp = response.Timestamp,
+                            GroupID = response.GroupID
                         }
                     };
 
@@ -650,8 +727,8 @@ namespace Client
 
         private void btnNoti_Click(object sender, EventArgs e)
         {
-            Notification noti = new Notification();
-            noti.Show();
+            //Notification noti = new Notification();
+            //noti.Show();
         }
 
         private void btnJoinGroup_Click(object sender, EventArgs e)
@@ -742,11 +819,7 @@ namespace Client
                                     Data = new GroupMessageDTO
                                     {
                                         MessageID = response.MessageID,
-                                        GroupID = response.GroupID,
-                                        SenderID = response.SenderID,
-                                        Content = response.Content,
-                                        MessageType = response.MessageType,
-                                        Timestamp = response.Timestamp,
+                                        GroupID = response.GroupID
                                     }
                                 };
 
@@ -803,6 +876,109 @@ namespace Client
             {
                 this.performSendMessage();
             }
+        }
+
+        private void dgvGroups_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        
+        private async void btnSearchText_Click_1(object sender, EventArgs e)
+        {
+            string keyword = txtSearchGroup.Text.Trim();
+
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                try
+                {
+                    var groups = await context.GroupMembers
+                        .Where(gm => gm.UserID == this.user.UserID) // Chỉ lấy các nhóm mà người dùng hiện tại tham gia
+                        .Select(gm => gm.Group) // Lấy thông tin nhóm
+                        .Where(g => string.IsNullOrEmpty(keyword) || g.GroupName.Contains(keyword)) // Lọc theo từ khóa
+                        .ToListAsync();
+
+                    if (groups.Count == 0)
+                    {
+                        MessageBox.Show("Không tìm thấy nhóm nào phù hợp.", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        dgvGroups.Rows.Clear();
+                        return;
+                    }
+
+                    dgvGroups.Rows.Clear();
+                    foreach (var group in groups)
+                    {
+                        // Lấy vai trò của người dùng trong nhóm
+                        var userRole = context.GroupMembers
+                            .Where(gm => gm.GroupID == group.GroupID && gm.UserID == this.user.UserID)
+                            .Select(gm => gm.Role)
+                            .FirstOrDefault() ?? "Thành viên";
+
+                        int memberCount = context.GroupMembers.Count(gm => gm.GroupID == group.GroupID);
+
+                        dgvGroups.Rows.Add(group.GroupID, group.GroupName, userRole, memberCount);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Lỗi khi tìm kiếm nhóm: {ex.Message}", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void HighlightMessages(string keyword)
+        {
+            // Lưu lại vị trí con trỏ hiện tại
+            int originalSelectionStart = rtbDialog.SelectionStart;
+            int originalSelectionLength = rtbDialog.SelectionLength;
+
+            // Đặt lại tất cả văn bản về màu mặc định
+            rtbDialog.SelectAll();
+            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
+
+            RemoveAllHighlights();
+
+            // Tìm và highlight các đoạn chứa từ khóa
+            int startIndex = 0;
+            while ((startIndex = rtbDialog.Text.IndexOf(keyword, startIndex, StringComparison.OrdinalIgnoreCase)) != -1)
+            {
+                rtbDialog.Select(startIndex, keyword.Length);
+                rtbDialog.SelectionBackColor = Color.Yellow;
+                startIndex += keyword.Length;
+            }
+
+            // Khôi phục vị trí con trỏ
+            rtbDialog.Select(originalSelectionStart, originalSelectionLength);
+            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
+        }
+
+        private void RemoveAllHighlights()
+        {
+            //Bỏ các highlight cũ
+            rtbDialog.SelectAll();
+            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
+
+            // Bỏ chọn văn bản
+            rtbDialog.Select(0, 0);
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string keyword = txtSearchText.Text.Trim();
+
+            if (string.IsNullOrEmpty(keyword))
+            {
+                //Bỏ highlight nếu từ khóa rỗng
+                RemoveAllHighlights();
+                return;
+            }
+
+            HighlightMessages(keyword);           
+        }
+
+        private void txtSearchGroup_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

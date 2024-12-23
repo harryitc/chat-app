@@ -20,6 +20,7 @@ namespace Client
         public frm_Signin()
         {
             InitializeComponent();
+            this.KeyPreview = true;
         }
 
         private void frm_Signin_Load(object sender, EventArgs e)
@@ -56,7 +57,7 @@ namespace Client
             }
         }
 
-        private void btnLogin_Click(object sender, EventArgs e)
+        private void performSignin()
         {
             try
             {
@@ -111,6 +112,11 @@ namespace Client
             }
         }
 
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            this.performSignin();
+        }
+
         private void btnClose_MouseHover(object sender, EventArgs e)
         {
             btnClose.Image = global::Client.Properties.Resources.Close_Hover;
@@ -142,6 +148,14 @@ namespace Client
                     ReleaseCapture();
                     SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
                 }
+            }
+        }
+
+        private void frm_Signin_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                this.performSignin();
             }
         }
     }
