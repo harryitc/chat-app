@@ -145,7 +145,7 @@ namespace Client
             // txtSearchText
             // 
             this.txtSearchText.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.txtSearchText.Location = new System.Drawing.Point(755, 44);
+            this.txtSearchText.Location = new System.Drawing.Point(810, 41);
             this.txtSearchText.Margin = new System.Windows.Forms.Padding(4);
             this.txtSearchText.Name = "txtSearchText";
             this.txtSearchText.Size = new System.Drawing.Size(117, 27);
@@ -434,7 +434,7 @@ namespace Client
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))));
             this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label1.Location = new System.Drawing.Point(683, 41);
+            this.label1.Location = new System.Drawing.Point(738, 38);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(71, 25);
@@ -462,7 +462,7 @@ namespace Client
             this.btnSearchText.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSearchText.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchText.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.btnSearchText.Location = new System.Drawing.Point(879, 44);
+            this.btnSearchText.Location = new System.Drawing.Point(934, 41);
             this.btnSearchText.Margin = new System.Windows.Forms.Padding(4);
             this.btnSearchText.Name = "btnSearchText";
             this.btnSearchText.Size = new System.Drawing.Size(62, 28);
