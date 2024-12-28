@@ -12,6 +12,7 @@ namespace Comunicator
         public const string CREATE_GROUP = "CREATE_GROUP"; // Tạo group
         public const string JOIN_GROUP = "JOIN_GROUP"; // Tham gia group
         public const string FRIENDSHIPS = "FRIENDSHIPS"; // Lời mời kết bạn
+        public const string NOTI_FRIENDSHIPS = "NOTI_FRIENDSHIPS"; // Thông báo kết bạn
         public const string STATUS_LOGIN = "STATUS_LOGIN"; // Trạng thái Login/ Logout của từng user
         // Bổ sung thêm (nếu cần thiết)...
     }

@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using Comunicator;
 using Comunicator.Models;
 
 namespace Client
@@ -56,7 +57,7 @@ namespace Client
                 {
                     GroupID = newGroup.GroupID,
                     UserID = UserId,
-                    Role = "Admin",
+                    Role = UserRole.ADMIN,
                     JoinedAt = DateTime.Now,
                     LastSeen = DateTime.Now,
                 };

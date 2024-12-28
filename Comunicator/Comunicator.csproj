@@ -55,11 +55,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DTO\FriendshipDTO.cs" />
-    <Compile Include="DTO\GroupMemberDTO.cs" />
-    <Compile Include="DTO\GroupMessageDTO.cs" />
-    <Compile Include="DTO\GroupNotificationDTO.cs" />
-    <Compile Include="DTO\UserDTO.cs" />
     <Compile Include="EventType.cs" />
     <Compile Include="Models\Attachment.cs" />
     <Compile Include="Models\ChatAppDBContext.cs" />
