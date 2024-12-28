@@ -10,6 +10,7 @@ namespace Comunicator
     {
         public const string ACCEPTED = "accepted";
         public const string PENDING = "pending";
-        public const string blocked = "blocked";
+        public const string BLOCKED = "blocked";
+        public const string DENIED = "denied";
     }
 }

@@ -7,43 +7,57 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Comunicator;
 using Comunicator.Models;
 
 namespace Client
 {
     public partial class Notification : Form
     {
-        public Notification()
+
+        // Khai báo sự kiện
+        public event EventHandler<Friendship> DataSent;
+
+        public Notification(User user)
         {
             InitializeComponent();
             this.pnUserControl.AutoScroll = true;
-            ChatAppDBContext db = new ChatAppDBContext();
-            List<Friendship> friends = db.Friendships.Where(p=>p.Status == "pending").ToList();
-            for (int i = 0; i < friends.Count; i++)
+            using (ChatAppDBContext context = new ChatAppDBContext())
             {
-                NotificationUserControl notificationUserControl = new NotificationUserControl
+                List<Friendship> friends = context.Friendships.Where(p =>
+                p.Status == StatusFriend.PENDING &&
+                user.UserID == p.AddressID
+                ).ToList();
+                foreach (var friend in friends)
                 {
-                    Dock = DockStyle.Top,
-                };
-                notificationUserControl.lbID.Text = friends[i].FriendshipID.ToString();
+                    NotificationUserControl notificationUserControl = new NotificationUserControl
+                    {
+                        Dock = DockStyle.Top,
+                    };
 
-                notificationUserControl.lbUser.Text = friends[i].User.Username;
-                notificationUserControl.lbStatus.Text = friends[i].Status;
+                    var userRequestFound = context.Users.FirstOrDefault(p => p.UserID == friend.RequesterID);
 
-                MessageBox.Show(friends[i].FriendshipID.ToString());
+                    notificationUserControl.lbID.Text = friend.FriendshipID.ToString();
+                    notificationUserControl.lbUser.Text = userRequestFound.Username;
+                    notificationUserControl.lbStatus.Text = friend.Status;
+                    notificationUserControl.btnAccepted.Enabled = true;
+                    notificationUserControl.btnDenied.Enabled = true;
+                    notificationUserControl.lbStatusRequest.Text = "Cần phản hồi";
 
-                // Đăng ký sự kiện
-                notificationUserControl.btnAccepted.Click += (s, e) =>
-                {
-                    HandleAccepted(notificationUserControl, int.Parse(notificationUserControl.lbID.Text));
-                };
+                    // Đăng ký sự kiện
+                    notificationUserControl.btnAccepted.Click += (s, e) =>
+                    {
+                        HandleAccepted(notificationUserControl, int.Parse(notificationUserControl.lbID.Text));
+                    };
 
-                notificationUserControl.btnDenied.Click += (s, e) =>
-                {
-                    HandleDenied(notificationUserControl, int.Parse(notificationUserControl.lbID.Text));
-                };
+                    notificationUserControl.btnDenied.Click += (s, e) =>
+                    {
+                        HandleDenied(notificationUserControl, int.Parse(notificationUserControl.lbID.Text));
+                    };
 
-                this.pnUserControl.Controls.Add(notificationUserControl);
+                    this.pnUserControl.Controls.Add(notificationUserControl);
+                }
+
             }
         }
 
@@ -57,18 +71,21 @@ namespace Client
 
                 if (friendship != null)
                 {
-                    friendship.Status = "accepted";
+                    db.Friendships.Attach(friendship);
+                    friendship.Status = StatusFriend.ACCEPTED;
                     db.SaveChanges();
-                    control.lbStatus.Text = "accepted"; // Cập nhật trạng thái trên giao diện
-                    control.btnAccepted.Enabled = false; // Vô hiệu hóa nút "Accepted"
-                    control.btnDenied.Enabled = false;  // Vô hiệu hóa nút "Denied"
+                    control.lbStatus.Text = StatusFriend.ACCEPTED; // Cập nhật trạng thái trên giao diện
+                    pnUserControl.Controls.Remove(control); // Loại bỏ UserControl khỏi Panel
+                    control.Dispose(); // Giải phóng tài nguyên
+                    this.DataSent?.Invoke(this, friendship);
                 }
                 else
                 {
                     MessageBox.Show("Khong the accepted");
                 }
             }
-            catch (Exception ex) {
+            catch (Exception ex)
+            {
                 MessageBox.Show(ex.Message);
             }
         }
@@ -81,16 +98,22 @@ namespace Client
                 ChatAppDBContext db = new ChatAppDBContext();
                 var friendship = db.Friendships.FirstOrDefault(f => f.FriendshipID == friendshipId);
 
-                if (friendship != null)
+                if (friendship == null)
                 {
-                    db.Friendships.Remove(friendship);
-                    db.SaveChanges();
+                    MessageBox.Show("[Notification] ban be nay khong ton tai");
+                    return;
                 }
+
+                db.Friendships.Attach(friendship);
+                friendship.Status = StatusFriend.DENIED;
+                db.Friendships.Remove(friendship);
+                db.SaveChanges();
 
                 pnUserControl.Controls.Remove(control); // Loại bỏ UserControl khỏi Panel
                 control.Dispose(); // Giải phóng tài nguyên
+                this.DataSent?.Invoke(this, friendship);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 MessageBox.Show(ex.Message);
             }
