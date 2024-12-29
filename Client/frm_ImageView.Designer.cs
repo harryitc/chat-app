@@ -30,50 +30,53 @@ namespace Client
         /// </summary>
         private void InitializeComponent()
         {
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.btnCreate = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.pic_IMG = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pic_IMG)).BeginInit();
             this.SuspendLayout();
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(413, 278);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
             // 
             // btnCreate
             // 
-            this.btnCreate.BackColor = System.Drawing.Color.RosyBrown;
+            this.btnCreate.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(137)))), ((int)(((byte)(218)))));
             this.btnCreate.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnCreate.Font = new System.Drawing.Font("Times New Roman", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.btnCreate.ForeColor = System.Drawing.Color.Maroon;
-            this.btnCreate.Location = new System.Drawing.Point(128, 296);
+            this.btnCreate.Font = new System.Drawing.Font("Times New Roman", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnCreate.ForeColor = System.Drawing.Color.White;
+            this.btnCreate.Location = new System.Drawing.Point(116, 445);
             this.btnCreate.Name = "btnCreate";
-            this.btnCreate.Size = new System.Drawing.Size(170, 27);
+            this.btnCreate.Size = new System.Drawing.Size(197, 45);
             this.btnCreate.TabIndex = 30;
-            this.btnCreate.Text = "Download";
+            this.btnCreate.Text = "Choose";
             this.btnCreate.UseVisualStyleBackColor = false;
+            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
             // 
-            // ImageView
+            // pic_IMG
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
+            this.pic_IMG.Location = new System.Drawing.Point(14, 13);
+            this.pic_IMG.Name = "pic_IMG";
+            this.pic_IMG.Size = new System.Drawing.Size(400, 400);
+            this.pic_IMG.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pic_IMG.TabIndex = 0;
+            this.pic_IMG.TabStop = false;
+            // 
+            // frm_ImageView
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(440, 330);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
+            this.ClientSize = new System.Drawing.Size(430, 507);
             this.Controls.Add(this.btnCreate);
-            this.Controls.Add(this.pictureBox1);
-            this.Name = "ImageView";
+            this.Controls.Add(this.pic_IMG);
+            this.Name = "frm_ImageView";
             this.Text = "Image View";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.Load += new System.EventHandler(this.frm_ImageView_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pic_IMG)).EndInit();
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private PictureBox pictureBox1;
+        private PictureBox pic_IMG;
         private Button btnCreate;
     }
 }

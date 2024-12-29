@@ -90,11 +90,15 @@ namespace Client
                     Username = txt_SigninUsername.Text,
                     Email = txt_Email.Text,
                     Password = txt_SigninPassword.Text,
+                    ProfilePicture = "",
                     CreatedAt = DateTime.Now,
                 };
 
-                db.Users.Add(newUser);
+                var respone = db.Users.Add(newUser);
                 db.SaveChanges();
+
+                frm_ImageView frm_ImageView = new frm_ImageView(respone);
+                frm_ImageView.ShowDialog();
 
                 MessageBox.Show("Sign up successful! You can now login.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 

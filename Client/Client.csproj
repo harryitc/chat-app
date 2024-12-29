@@ -167,6 +167,9 @@
     <EmbeddedResource Include="frm_GroupCreator.resx">
       <DependentUpon>frm_GroupCreator.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="frm_ImageView.resx">
+      <DependentUpon>frm_ImageView.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="frm_Login.resx">
       <DependentUpon>frm_Login.cs</DependentUpon>
     </EmbeddedResource>

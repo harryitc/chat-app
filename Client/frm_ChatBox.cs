@@ -17,6 +17,7 @@ using Newtonsoft.Json;
 using Comunicator;
 using System.Data.Entity;
 using System.Runtime.Remoting.Messaging;
+using System.Runtime.Remoting.Contexts;
 
 namespace Client
 {
@@ -319,6 +320,8 @@ namespace Client
             String imageURL = user.ProfilePicture ?? "";
             ImageUtils.LoadImageFromUrlAsync(pic_User, imageURL);
 
+             
+
             using (ChatAppDBContext context = new ChatAppDBContext())
             {
                 var listFriendsAccepted = context.Friendships.Where(friend => friend.Status == StatusFriend.ACCEPTED).ToList();
@@ -328,6 +331,7 @@ namespace Client
                 //);
                 var users = context.Users.ToList();
                 // Users
+                pic_User.Image = ConvertBase64ToImage(user.ProfilePicture);
                 lblWelcome.Text = $"{user.Username}";
                 dgvFriends.Columns.Add("UserID", "User ID");
                 dgvFriends.Columns["UserID"].Visible = false; // Ẩn cột UserID
@@ -722,11 +726,6 @@ namespace Client
             }
         }
 
-        private void pic_User_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void btn_LogOut_Click(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("Are you sure you wanna logout?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -1076,6 +1075,15 @@ namespace Client
             if (count < 0) count = 0;
 
             this.lbNoti.Text = count.ToString();
+        }
+
+        private void pic_User_Click(object sender, EventArgs e)
+        {
+            frm_ImageView imageView = new frm_ImageView(this.user);
+            imageView.ShowDialog();
+
+            //Load lại hình ảnh
+            pic_User.Image = ConvertBase64ToImage(this.user.ProfilePicture);
         }
     }
 }
