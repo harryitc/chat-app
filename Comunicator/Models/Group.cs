@@ -28,7 +28,6 @@ namespace Comunicator.Models
 
         public DateTime? CreatedAt { get; set; }
 
-        [StringLength(500)]
         public string GroupImage { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

@@ -16,7 +16,7 @@ CREATE TABLE Users (
     Username NVARCHAR(100) NOT NULL,
     Email NVARCHAR(255) NOT NULL UNIQUE,
     Password NVARCHAR(255) NOT NULL,
-    ProfilePicture NVARCHAR(500),
+    ProfilePicture NVARCHAR(MAX),
     Status NVARCHAR(50), -- CHECK (Status IN ('online', 'offline', 'busy')),
     CreatedAt DATETIME DEFAULT GETDATE()
 );
@@ -30,7 +30,7 @@ CREATE TABLE Groups (
     GroupDescription NVARCHAR(MAX),
     CreatedBy INT NOT NULL,
     CreatedAt DATETIME DEFAULT GETDATE(),
-    GroupImage NVARCHAR(500),
+    GroupImage NVARCHAR(MAX),
     FOREIGN KEY (CreatedBy) REFERENCES Users(UserID)
 );
 
