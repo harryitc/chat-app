@@ -88,7 +88,7 @@ namespace Server
                     }
 
                     string receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    Log($"[{clientIp}:{clientPort}] => {receivedData}");
+                    //Log($"[{clientIp}:{clientPort}] => {receivedData}");
 
                     /* Dữ liệu sau khi parse
                      var message = new

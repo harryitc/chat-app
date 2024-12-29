@@ -34,7 +34,6 @@ namespace Comunicator.Models
         [StringLength(255)]
         public string Password { get; set; }
 
-        [StringLength(500)]
         public string ProfilePicture { get; set; }
 
         [StringLength(50)]

@@ -17,6 +17,9 @@ namespace Client
     public partial class frm_Signin : Form
     {
         ChatAppDBContext db = new ChatAppDBContext();
+
+        private int userID;
+
         public frm_Signin()
         {
             InitializeComponent();
@@ -90,11 +93,18 @@ namespace Client
                     Username = txt_SigninUsername.Text,
                     Email = txt_Email.Text,
                     Password = txt_SigninPassword.Text,
+                    ProfilePicture = "",
                     CreatedAt = DateTime.Now,
                 };
 
-                db.Users.Add(newUser);
+                var response = db.Users.Add(newUser);
                 db.SaveChanges();
+
+                this.userID = response.UserID;
+
+                frm_ImageView frm_ImageView = new frm_ImageView(response.ProfilePicture);
+                frm_ImageView.DataSent += OnDataPictureUserReceived;
+                frm_ImageView.ShowDialog();
 
                 MessageBox.Show("Sign up successful! You can now login.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
@@ -109,6 +119,16 @@ namespace Client
             catch (Exception ex)
             {
                 MessageBox.Show($"{ex.Message}");
+            }
+        }
+
+        private void OnDataPictureUserReceived(object sender, string imageBase64)
+        {
+            {
+                var user = db.Users.FirstOrDefault(p => p.UserID == this.userID);
+                db.Users.Attach(user);
+                user.ProfilePicture = imageBase64;
+                db.SaveChanges();
             }
         }
 
@@ -129,7 +149,7 @@ namespace Client
 
         private void btnClose_MouseClick(object sender, MouseEventArgs e)
         {
-            this.Close();   
+            this.Close();
         }
 
         private const int WM_NCLBUTTONDOWN = 0xA1;

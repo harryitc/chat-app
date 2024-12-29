@@ -34,7 +34,7 @@ namespace Client
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(txtLoginUsername.Text) 
+                if (string.IsNullOrWhiteSpace(txtLoginUsername.Text)
                     || string.IsNullOrWhiteSpace(txtLoginPassword.Text))
                 {
                     MessageBox.Show("Please fill out the form!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
