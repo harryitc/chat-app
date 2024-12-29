@@ -71,7 +71,7 @@ namespace Client
                             CreatedAt = userFound.CreatedAt,
                             Password = userFound.Password,
                             Email = userFound.Email,
-                            ProfilePicture = userFound.ProfilePicture
+                            //ProfilePicture = userFound.ProfilePicture
                         }
                     };
 
@@ -151,10 +151,32 @@ namespace Client
                     case EventType.NOTI_FRIENDSHIPS:
                         HandleEventNotiFriend(json["Data"].ToObject<Friendship>());
                         break;
+                    case EventType.CHANGE_AVATAR_GROUP:
+                        HandleEventChangeAvatarGroup(json["Data"].ToObject<Group>());
+                        break;
                     default:
                         MessageBox.Show($"Unknown type: {type}");
                         break;
                 }
+            }
+        }
+
+        private void HandleEventChangeAvatarGroup(Group group)
+        {
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+
+                var groupFound = context.Groups.FirstOrDefault(x =>
+                x.GroupID == group.GroupID &&
+                this.selectedGroupId == group.GroupID
+                );
+
+                if (groupFound == null)
+                {
+                    return;
+                }
+
+                ImageUtils.LoadImage(this.picGroup, groupFound.GroupImage);
             }
         }
 
@@ -318,9 +340,7 @@ namespace Client
         {
 
             String imageURL = user.ProfilePicture ?? "";
-            ImageUtils.LoadImageFromUrlAsync(pic_User, imageURL);
-
-             
+            ImageUtils.LoadImage(this.pic_User, imageURL);
 
             using (ChatAppDBContext context = new ChatAppDBContext())
             {
@@ -331,7 +351,7 @@ namespace Client
                 //);
                 var users = context.Users.ToList();
                 // Users
-                pic_User.Image = ConvertBase64ToImage(user.ProfilePicture);
+                ImageUtils.LoadImage(pic_User, user?.ProfilePicture ?? "");
                 lblWelcome.Text = $"{user.Username}";
                 dgvFriends.Columns.Add("UserID", "User ID");
                 dgvFriends.Columns["UserID"].Visible = false; // Ẩn cột UserID
@@ -550,26 +570,6 @@ namespace Client
                 rtbDialog.AppendText(Environment.NewLine);
             }));
         }
-        private Image ConvertBase64ToImage(string base64Image)
-        {
-            try
-            {
-                // Chuyển đổi Base64 thành byte[]
-                byte[] imageBytes = Convert.FromBase64String(base64Image);
-
-                // Tạo một đối tượng Image từ byte[]
-                using (var ms = new MemoryStream(imageBytes))
-                {
-                    return Image.FromStream(ms);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error converting Base64 to Image: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
-            }
-        }
-
 
         private void DisplayImageInRichTextBox(string senderName, string base64Image, DateTime? timestamp)
         {
@@ -593,7 +593,7 @@ namespace Client
                         byte[] imageBytes = Convert.FromBase64String(base64Image);
                         using (var ms = new MemoryStream(imageBytes))
                         {
-                            Image image = ConvertBase64ToImage(base64Image);  // Chuyển Base64 thành ảnh
+                            Image image = ImageUtils.ConvertBase64ToImage(base64Image);  // Chuyển Base64 thành ảnh
                             if (image != null)
                             {
                                 Thread thread = new Thread(() =>
@@ -721,7 +721,8 @@ namespace Client
                 if (groupSelected != null)
                 {
                     lbGroupName.Text = groupSelected.GroupName ?? "";
-                    ImageUtils.LoadImageFromUrlAsync(picGroup, groupSelected.GroupImage ?? "");
+                    ImageUtils.LoadImage(this.picGroup, groupSelected?.GroupImage ?? "");
+                    //ImageUtils.LoadImageFromUrlAsync(picGroup, groupSelected.GroupImage ?? "");
                 }
             }
         }
@@ -1079,11 +1080,75 @@ namespace Client
 
         private void pic_User_Click(object sender, EventArgs e)
         {
-            frm_ImageView imageView = new frm_ImageView(this.user);
+            frm_ImageView imageView = new frm_ImageView(this.user.ProfilePicture);
+            imageView.DataSent += OnDataPictureUserReceived;
             imageView.ShowDialog();
 
-            //Load lại hình ảnh
-            pic_User.Image = ConvertBase64ToImage(this.user.ProfilePicture);
+        }
+
+        // Xử lý dữ liệu nhận được từ form con
+        private void OnDataPictureUserReceived(object sender, string imageBase64)
+        {
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                var user = context.Users.FirstOrDefault(p => p.UserID == this.user.UserID);
+                context.Users.Attach(user);
+                user.ProfilePicture = imageBase64;
+                context.SaveChangesAsync();
+                ImageUtils.LoadImage(this.pic_User, imageBase64);
+            }
+
+        }
+
+        private void picGroup_Click(object sender, EventArgs e)
+        {
+
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                var group = context.Groups.FirstOrDefault(p => p.GroupID == this.selectedGroupId);
+
+                frm_ImageView imageView = new frm_ImageView(group.GroupImage);
+                imageView.DataSent += OnDataPictureGroupReceived;
+                imageView.ShowDialog();
+            }
+
+        }
+        private void OnDataPictureGroupReceived(object sender, string imageBase64)
+        {
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                // Bao bọc đối tượng trong một RequestWrapper
+                try
+                {
+                    var group = context.Groups.FirstOrDefault(p => p.GroupID == this.selectedGroupId);
+                    context.Groups.Attach(group);
+                    group.GroupImage = imageBase64;
+                    context.SaveChangesAsync();
+
+                    ImageUtils.LoadImage(this.picGroup, imageBase64);
+
+                    var request = new
+                    {
+                        Type = EventType.CHANGE_AVATAR_GROUP,
+                        Data = new Group
+                        {
+                            GroupID = this.selectedGroupId
+                        }
+                    };
+
+                    // Chuyển đối tượng thành JSON
+                    string jsonData = JsonConvert.SerializeObject(request);
+                    byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
+
+                    // Gửi dữ liệu
+                    stream.Write(buffer, 0, buffer.Length);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                    //PrintJson(ex);
+                }
+            }
         }
     }
 }

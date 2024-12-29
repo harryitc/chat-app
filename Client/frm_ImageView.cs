@@ -7,10 +7,12 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Runtime.Remoting.Contexts;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Client.utils;
 using Comunicator;
 using Comunicator.Models;
 using Newtonsoft.Json;
@@ -19,11 +21,15 @@ namespace Client
 {
     public partial class frm_ImageView : Form
     {
-        private User user;
-        public frm_ImageView(User userInput)
+
+        private string imageBase64 = string.Empty;
+
+        public event EventHandler<string> DataSent;
+
+        public frm_ImageView(string imageBase64)
         {
             InitializeComponent();
-            this.user = userInput;
+            this.imageBase64 = imageBase64;
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
@@ -39,32 +45,8 @@ namespace Client
                         string imagePath = openFileDialog.FileName;
                         byte[] imageBytes = File.ReadAllBytes(imagePath);
                         string base64Image = Convert.ToBase64String(imageBytes);
-
-
-
-                        using (ChatAppDBContext context = new ChatAppDBContext())
-                        {
-                            // Bao bọc đối tượng trong một RequestWrapper
-                            //try
-                            //{
-                                //context.Users.AddOrUpdate(new User
-                                //{
-                                //    ProfilePicture = base64Image
-                                //});
-                                context.Users.Attach(user);
-                                user.ProfilePicture = base64Image;
-                                //context.Users.AddOrUpdate(user);
-                                context.SaveChanges();
-                                loadPicture();  
-                                MessageBox.Show("Đã cập nhật ảnh đại diện thành công", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                            //}
-                            //catch (Exception ex)
-                            //{
-                            //    MessageBox.Show("Lỗi: " + ex.Message);
-                            //    //PrintJson(ex);
-                            //}
-                        }
+                        this.imageBase64 = base64Image;
+                        ImageUtils.LoadImage(this.pic_IMG, this.imageBase64);
                     }
                 }
             });
@@ -74,40 +56,13 @@ namespace Client
 
         private void frm_ImageView_Load(object sender, EventArgs e)
         {
-            loadPicture();
+            ImageUtils.LoadImage(this.pic_IMG, this.imageBase64);
         }
 
-        private void loadPicture()
+        private void btnSubmit_Click(object sender, EventArgs e)
         {
-            string userIMG = user.ProfilePicture;
-            if (!string.IsNullOrEmpty(userIMG))
-            {
-                pic_IMG.Image = ConvertBase64ToImage(userIMG);
-            }
-            else
-            {
-                pic_IMG.Image = null;
-            }
-        }
-
-        private Image ConvertBase64ToImage(string base64Image)
-        {
-            try
-            {
-                // Chuyển đổi Base64 thành byte[]
-                byte[] imageBytes = Convert.FromBase64String(base64Image);
-
-                // Tạo một đối tượng Image từ byte[]
-                using (var ms = new MemoryStream(imageBytes))
-                {
-                    return Image.FromStream(ms);
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error converting Base64 to Image: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return null;
-            }
+            this.DataSent?.Invoke(this, this.imageBase64);
+            this.Close();
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Comunicator
         public const string FRIENDSHIPS = "FRIENDSHIPS"; // Lời mời kết bạn
         public const string NOTI_FRIENDSHIPS = "NOTI_FRIENDSHIPS"; // Thông báo kết bạn
         public const string STATUS_LOGIN = "STATUS_LOGIN"; // Trạng thái Login/ Logout của từng user
+        public const string CHANGE_AVATAR_GROUP = "CHANGE_AVATAR_GROUP"; // Trạng thái Login/ Logout của từng user
         // Bổ sung thêm (nếu cần thiết)...
     }
 }
