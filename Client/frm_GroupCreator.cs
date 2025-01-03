@@ -19,7 +19,6 @@ namespace Client
     {
         ChatAppDBContext db = new ChatAppDBContext();
         public int UserId { get; set; } // ID của người dùng hiện tại
-        //public Action<Group> OnGroupCreated; // Callback để cập nhật frm_ChatBox
 
         public frm_GroupCreator(int userID)
         {
