@@ -7,11 +7,10 @@ using System.Text;
 using System.Threading;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Comunicator.Models;
-//using Json = System.Text.Json;
-//using JsonSerializer = System.Text.Json.JsonSerializer;
 
-using Comunicator;
+using DAL;
+using DAL.Config;
+
 
 namespace Server
 {

@@ -13,9 +13,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Client.utils;
-using Comunicator;
-using Comunicator.Models;
-using Newtonsoft.Json;
+
+using DAL;
+using DAL.Config;
+
 
 namespace Client
 {

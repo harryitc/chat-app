@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Comunicator
+namespace DAL.Config
 {
     public static class StatusFriend
     {

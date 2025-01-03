@@ -1,4 +1,4 @@
-namespace Comunicator.Models
+namespace DAL
 {
     using System;
     using System.Collections.Generic;

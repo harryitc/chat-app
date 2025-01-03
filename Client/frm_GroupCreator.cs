@@ -9,8 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using Comunicator;
-using Comunicator.Models;
+
+using DAL;
+using DAL.Config;
 
 namespace Client
 {

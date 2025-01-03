@@ -7,8 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Comunicator;
-using Comunicator.Models;
+
+using DAL;
+using DAL.Config;
+
 
 namespace Client
 {

@@ -7,17 +7,16 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
-using Comunicator.Models;
 
 using Newtonsoft.Json.Linq;
 
 using Client.utils;
 using Newtonsoft.Json;
 
-using Comunicator;
 using System.Data.Entity;
-using System.Runtime.Remoting.Messaging;
-using System.Runtime.Remoting.Contexts;
+
+using DAL;
+using DAL.Config;
 
 namespace Client
 {
