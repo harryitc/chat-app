@@ -101,7 +101,6 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
@@ -195,6 +194,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <None Include="appsetings.json" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -246,9 +246,13 @@
     <None Include="assests\img\finalLogo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Comunicator\Comunicator.csproj">
-      <Project>{d7e9830c-904d-40ff-9fa3-7b88507081ab}</Project>
-      <Name>Comunicator</Name>
+    <ProjectReference Include="..\BUS\BUS.csproj">
+      <Project>{350f5e6b-f5a6-499e-9f90-e4ace1940dbe}</Project>
+      <Name>BUS</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.csproj">
+      <Project>{74bca307-c581-4203-b930-afb1d8624ebd}</Project>
+      <Name>DAL</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,4 +1,4 @@
-namespace Comunicator.Models
+namespace DAL
 {
     using System;
     using System.Collections.Generic;
@@ -6,19 +6,19 @@ namespace Comunicator.Models
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Attachment
+    public partial class ReadReceipt
     {
-        public int AttachmentID { get; set; }
+        [Key]
+        public int ReceiptID { get; set; }
 
         public int MessageID { get; set; }
 
-        [Required]
-        [StringLength(500)]
-        public string FilePath { get; set; }
+        public int UserID { get; set; }
 
-        [StringLength(50)]
-        public string FileType { get; set; }
+        public DateTime? ReadAt { get; set; }
 
         public virtual GroupMessage GroupMessage { get; set; }
+
+        public virtual User User { get; set; }
     }
 }

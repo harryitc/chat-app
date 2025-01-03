@@ -9,8 +9,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
-using Comunicator;
-using Comunicator.Models;
+
+using DAL;
+using DAL.Config;
 
 namespace Client
 {
@@ -18,7 +19,6 @@ namespace Client
     {
         ChatAppDBContext db = new ChatAppDBContext();
         public int UserId { get; set; } // ID của người dùng hiện tại
-        //public Action<Group> OnGroupCreated; // Callback để cập nhật frm_ChatBox
 
         public frm_GroupCreator(int userID)
         {
@@ -91,7 +91,7 @@ namespace Client
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HT_CAPTION = 0x2;
         [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern int GreateGroup(IntPtr hWnd, int Msg, int wParam, int lParam);
+        private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool ReleaseCapture();
 
@@ -102,19 +102,19 @@ namespace Client
                 if (e.Clicks == 1 && e.Y <= this.Height && e.Y >= 0)
                 {
                     ReleaseCapture();
-                    GreateGroup(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                    SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
                 }
             }
         }
 
         private void btnClose_MouseHover(object sender, EventArgs e)
         {
-            btnClose.Image = global::Client.Properties.Resources.Close_Hover;
+            btn_Close.Image = global::Client.Properties.Resources.Close_Hover;
         }
 
         private void btnClose_MouseLeave(object sender, EventArgs e)
         {
-            btnClose.Image = global::Client.Properties.Resources.Close;
+            btn_Close.Image = global::Client.Properties.Resources.Close;
         }
 
 
