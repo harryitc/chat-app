@@ -685,6 +685,8 @@ namespace Client
 
                     // Gửi dữ liệu
                     stream.Write(buffer, 0, buffer.Length);
+
+                    txtMessage.Clear();
                 }
                 catch (Exception ex)
                 {
