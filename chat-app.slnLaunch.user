@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Start Project",
+    "Projects": [
+      {
+        "Path": "Server\\Server.csproj",
+        "Action": "StartWithoutDebugging"
+      },
+      {
+        "Path": "Client\\Client.csproj",
+        "Action": "StartWithoutDebugging"
+      }
+    ]
+  }
+]
