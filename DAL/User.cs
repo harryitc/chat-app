@@ -31,8 +31,10 @@ namespace DAL
         public string Email { get; set; }
 
         [Required]
-        [StringLength(255)]
         public string Password { get; set; }
+
+        [Required]
+        public string SecretKey { get; set; }
 
         public string ProfilePicture { get; set; }
 

@@ -43,6 +43,8 @@ namespace Client
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.btnClose = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.txtOtp = new System.Windows.Forms.TextBox();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.picLogo)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.btnClose)).BeginInit();
@@ -95,7 +97,7 @@ namespace Client
             this.txtLoginUsername.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtLoginUsername.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLoginUsername.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.txtLoginUsername.Location = new System.Drawing.Point(15, 183);
+            this.txtLoginUsername.Location = new System.Drawing.Point(15, 159);
             this.txtLoginUsername.Margin = new System.Windows.Forms.Padding(2);
             this.txtLoginUsername.Name = "txtLoginUsername";
             this.txtLoginUsername.Size = new System.Drawing.Size(244, 32);
@@ -107,7 +109,7 @@ namespace Client
             this.label8.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label8.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.label8.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.label8.Location = new System.Drawing.Point(11, 157);
+            this.label8.Location = new System.Drawing.Point(11, 133);
             this.label8.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(95, 25);
@@ -120,7 +122,7 @@ namespace Client
             this.txtLoginPassword.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.txtLoginPassword.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLoginPassword.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.txtLoginPassword.Location = new System.Drawing.Point(15, 257);
+            this.txtLoginPassword.Location = new System.Drawing.Point(15, 220);
             this.txtLoginPassword.Margin = new System.Windows.Forms.Padding(2);
             this.txtLoginPassword.Name = "txtLoginPassword";
             this.txtLoginPassword.Size = new System.Drawing.Size(244, 32);
@@ -132,7 +134,7 @@ namespace Client
             this.label7.AutoSize = true;
             this.label7.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label7.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.label7.Location = new System.Drawing.Point(11, 231);
+            this.label7.Location = new System.Drawing.Point(11, 193);
             this.label7.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(90, 25);
@@ -223,12 +225,38 @@ namespace Client
             this.pictureBox1.TabIndex = 45;
             this.pictureBox1.TabStop = false;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Italic, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.label1.Location = new System.Drawing.Point(11, 254);
+            this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(101, 25);
+            this.label1.TabIndex = 47;
+            this.label1.Text = "OTP Token";
+            // 
+            // txtOtp
+            // 
+            this.txtOtp.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(33)))), ((int)(((byte)(36)))));
+            this.txtOtp.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.txtOtp.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtOtp.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.txtOtp.Location = new System.Drawing.Point(16, 281);
+            this.txtOtp.Margin = new System.Windows.Forms.Padding(2);
+            this.txtOtp.Name = "txtOtp";
+            this.txtOtp.Size = new System.Drawing.Size(244, 32);
+            this.txtOtp.TabIndex = 46;
+            // 
             // frm_Login
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(554, 402);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.txtOtp);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.btnLogin);
             this.Controls.Add(this.lblLogin);
@@ -270,5 +298,7 @@ namespace Client
         private PictureBox picLogo;
         private Label lbTitle;
         private PictureBox pictureBox1;
+        private Label label1;
+        private TextBox txtOtp;
     }
 }

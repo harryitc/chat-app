@@ -24,13 +24,15 @@ namespace Client
     {
 
         private string imageBase64 = string.Empty;
+        private string loadType = string.Empty;
 
         public event EventHandler<string> DataSent;
 
-        public frm_ImageView(string imageBase64)
+        public frm_ImageView(string imageBase64, string typeLoad)
         {
             InitializeComponent();
             this.imageBase64 = imageBase64;
+            this.loadType = typeLoad;
         }
 
         private void btnCreate_Click(object sender, EventArgs e)
@@ -58,6 +60,11 @@ namespace Client
         private void frm_ImageView_Load(object sender, EventArgs e)
         {
             ImageUtils.LoadImage(this.pic_IMG, this.imageBase64);
+            if (this.loadType != "avatar")
+            {
+                btnSubmit.Enabled = false;
+                btnCreate.Enabled = false;
+            }
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
@@ -65,6 +72,8 @@ namespace Client
             this.DataSent?.Invoke(this, this.imageBase64);
             this.Close();
         }
+
+
 
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HT_CAPTION = 0x2;
