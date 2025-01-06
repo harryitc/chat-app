@@ -604,5 +604,6 @@ namespace Client
         private Button btnSearchGroup;
         private Button btnSearchText;
         private Button btn_Report;
+        private Label lbSbSOTP;
     }
 }
