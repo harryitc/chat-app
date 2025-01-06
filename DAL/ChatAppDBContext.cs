@@ -1,3 +1,4 @@
+using DAL;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity;
@@ -8,7 +9,7 @@ namespace DAL
     public partial class ChatAppDBContext : DbContext
     {
         public ChatAppDBContext()
-            : base("name=ChatAppDBContext")
+            : base(AppConfig.GetConnectionString("ChatApp"))
         {
         }
 
