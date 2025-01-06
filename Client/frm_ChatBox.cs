@@ -43,301 +43,9 @@ namespace Client
             this.TriggerStatusLogin(StatusLogin.ONLINE);
         }
 
-        private void TriggerStatusLogin(string status)
-        {
-            using (ChatAppDBContext context = new ChatAppDBContext())
-            {
-                // Bao bọc đối tượng trong một RequestWrapper
-                try
-                {
-                    var userFound = context.Users.FirstOrDefault(user => user.UserID == this.user.UserID);
-                    if (userFound == null) return;
-
-                    context.Users.Attach(userFound);
-                    userFound.Status = status;
-                    context.SaveChanges();
-
-                    this.user = userFound;
-
-                    var request = new
-                    {
-                        Type = EventType.STATUS_LOGIN,
-                        Data = new User
-                        {
-                            UserID = userFound.UserID,
-                            Username = userFound.Username,
-                            Status = userFound.Status,
-                            CreatedAt = userFound.CreatedAt,
-                            Password = userFound.Password,
-                            Email = userFound.Email,
-                            //ProfilePicture = userFound.ProfilePicture
-                        }
-                    };
-
-                    // Chuyển đối tượng thành JSON
-                    string jsonData = JsonConvert.SerializeObject(request);
-                    byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
-
-                    //HandleEventLogin(request.Data, true);
-
-                    // Gửi dữ liệu
-                    stream.Write(buffer, 0, buffer.Length);
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show("Lỗi: " + ex.Message);
-                    //PrintJson(ex);
-                }
-            }
-        }
-
-        private void ConnectToServer(string serverIp, int serverPort)
-        {
-            try
-            {
-                client = new TcpClient(serverIp, serverPort);
-                stream = client.GetStream();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Lỗi khởi tạo ứng dựng REALTIME. Đừng lo, vẫn hoạt động bình thường!" + ex.Message);
-                return;
-            }
-            // Listen for incoming messages
-            Thread thread = new Thread(ReceiveMessages);
-            thread.IsBackground = true;
-            thread.Start();
-        }
-
-        private void ReceiveMessages()
-        {
-            byte[] buffer = new byte[4096];
-            while (true)
-            {
-
-                string receivedData = "";
-                try
-                {
-                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
-
-                    receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
-                    //MessageBox.Show(message);
-                }
-                catch
-                {
-                    //MessageBox.Show("Disconnected from server.");
-                    break;
-                }
-
-
-                JObject json = JObject.Parse(receivedData);
-                string type = json["Type"].ToString();
-
-                switch (type)
-                {
-                    case EventType.SEND_MESSAGE:
-                        HandleEventMessage(json["Data"].ToObject<GroupMessage>());
-                        break;
-                    case EventType.JOIN_GROUP:
-                        HandleEventJoinGroup(json["Data"].ToObject<GroupMember>());
-                        break;
-                    case EventType.STATUS_LOGIN:
-                        HandleEventStatusAccount(json["Data"].ToObject<User>());
-                        break;
-                    case EventType.FRIENDSHIPS:
-                        HandleEventAddFriend(json["Data"].ToObject<Friendship>());
-                        break;
-                    case EventType.NOTI_FRIENDSHIPS:
-                        HandleEventNotiFriend(json["Data"].ToObject<Friendship>());
-                        break;
-                    case EventType.CHANGE_AVATAR_GROUP:
-                        HandleEventChangeAvatarGroup(json["Data"].ToObject<Group>());
-                        break;
-                    default:
-                        MessageBox.Show($"Unknown type: {type}");
-                        break;
-                }
-            }
-        }
-
-        private void HandleEventChangeAvatarGroup(Group group)
-        {
-            using (ChatAppDBContext context = new ChatAppDBContext())
-            {
-
-                var groupFound = context.Groups.FirstOrDefault(x =>
-                x.GroupID == group.GroupID &&
-                this.selectedGroupId == group.GroupID
-                );
-
-                if (groupFound == null)
-                {
-                    return;
-                }
-
-                ImageUtils.LoadImage(this.picGroup, groupFound.GroupImage);
-            }
-        }
-
-        private void HandleEventNotiFriend(Friendship friendship, bool isSendForMe = false)
-        {
-
-            if (!isSendForMe && !CanUserAccepted(friendship.AddressID))
-            {
-                return;
-            }
-
-            using (ChatAppDBContext context = new ChatAppDBContext())
-            {
-                var userFound = context.Users.FirstOrDefault(user => user.UserID == friendship.AddressID);
-                if (userFound != null)
-                {
-                    bool isOffline = userFound.Status == StatusLogin.OFFLINE;
-                    if (isOffline) return;
-                }
-                else
-                {
-                    return;
-                }
-            }
-            this.updateNotifi(friendship.Status);
-        }
-
-        private void HandleEventStatusAccount(User friend, bool isSendForMe = false)
-        {
-
-            using (ChatAppDBContext context = new ChatAppDBContext())
-            {
-                var userFound = context.Users.FirstOrDefault(p => p.UserID == user.UserID);
-                if (userFound == null)
-                {
-                    return;
-                }
-
-                foreach (DataGridViewRow row in this.dgvFriends.Rows)
-                {
-                    if (row.Cells["UserID"].Value.ToString() == friend.UserID.ToString())
-                    {
-                        row.Cells["Status"].Value = friend.Status;
-                        break;
-                    }
-                }
-            }
-        }
-
-        private void HandleEventJoinGroup(GroupMember groupMember, bool isSendForMe = false)
-        {
-
-            using (ChatAppDBContext context = new ChatAppDBContext())
-            {
-                var groupMemberWithoutUserID = context.GroupMembers.ToList();
-                if (!isSendForMe)
-                {
-
-                    var userFoundInGroup = context.GroupMembers.FirstOrDefault(
-                            p => p.GroupID == groupMember.GroupID &&
-                            p.UserID == this.user.UserID
-                            );
-                    if (userFoundInGroup == null)
-                    {
-                        return;
-                    }
-
-                    foreach (DataGridViewRow row in this.dgvGroups.Rows)
-                    {
-                        if (row.Cells[0].Value.ToString() == groupMember.GroupID.ToString())
-                        {
-                            int sl = groupMemberWithoutUserID.Where(item => item.GroupID == groupMember.GroupID).Count();
-                            row.Cells["sl"].Value = sl.ToString();
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    var groupFound = context.Groups.FirstOrDefault(group => group.GroupID == groupMember.GroupID);
-                    if (groupFound == null) return;
-                    int sl = groupMemberWithoutUserID.Where(item => item.GroupID == groupMember.GroupID).Count();
-                    this.dgvGroups.Rows.Add(groupMember.GroupID, groupFound.GroupName, groupMember.Role, sl);
-                }
-            }
-        }
-
-        private void HandleEventMessage(GroupMessage groupMessage, bool isSendForMe = false)
-        {
-
-            using (ChatAppDBContext context = new ChatAppDBContext())
-            {
-
-                var userRequest = context.GroupMessages.FirstOrDefault(x =>
-                x.MessageID == groupMessage.MessageID &&
-                x.GroupID == groupMessage.GroupID &&
-                this.selectedGroupId == groupMessage.GroupID
-                );
-
-                if (userRequest != null)
-                {
-                    Invoke(new Action(() =>
-                    {
-                        if (userRequest.MessageType == "text")
-                        {
-                            AppendMessageToRichTextBox(userRequest.User.Username, userRequest.Content, userRequest.Timestamp);
-                        }
-                        else if (userRequest.MessageType == "image")
-                        {
-                            DisplayImageInRichTextBox(userRequest.User.Username, userRequest.Content, userRequest.Timestamp);
-                        }
-                    }));
-                }
-                else
-                {
-                    //MessageBox.Show("UserRequest bi null roi: " + message);
-                }
-            }
-
-        }
-
-        private void HandleEventAddFriend(Friendship friendRequest, bool isSendForMe = false)
-        {
-
-            using (ChatAppDBContext context = new ChatAppDBContext())
-            {
-
-                if (friendRequest.Status == StatusFriend.DENIED)
-                {
-                    return;
-                }
-
-                //var friendships = context.Friendships.Where(p => p.AddressID == friendRequest.AddressID && p.Status == StatusFriend.ACCEPTED);
-
-                if (!isSendForMe)
-                {
-                    if (this.user.UserID != friendRequest.RequesterID) return;
-                    var userFound = context.Users.FirstOrDefault(f => f.UserID == friendRequest.AddressID);
-                    if (userFound == null) return;
-                    this.dgvFriends.Rows.Add(userFound.UserID, userFound.Username, userFound.Status);
-                }
-                else
-                {
-                    var userFound = context.Users.FirstOrDefault(f => f.UserID == friendRequest.RequesterID);
-                    if (userFound == null) return;
-                    this.dgvFriends.Rows.Add(userFound.UserID, userFound.Username, userFound.Status);
-                }
-
-                this.updateNotifi(friendRequest.Status);
-
-            }
-        }
-
-        private bool CanUserAccepted(int userID)
-        {
-            return this.user.UserID == userID;
-        }
-
-
+        #region FA phần còn lại của thế giới
         private void frm_ChatBox_Load(object sender, EventArgs e)
         {
-
             String imageURL = user.ProfilePicture ?? "";
             ImageUtils.LoadImage(this.pic_User, imageURL);
 
@@ -348,7 +56,9 @@ namespace Client
                 //var usersOnline = context.Users.Where(user =>
                 //    user.Status != StatusLogin.OFFLINE
                 //);
+
                 var users = context.Users.ToList();
+
                 // Users
                 ImageUtils.LoadImage(pic_User, user?.ProfilePicture ?? "");
                 lblWelcome.Text = $"{user.Username}";
@@ -393,7 +103,24 @@ namespace Client
             }
 
         }
+        private void ConnectToServer(string serverIp, int serverPort)
+        {
+            try
+            {
+                client = new TcpClient(serverIp, serverPort);
+                stream = client.GetStream();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi khởi tạo ứng dựng REALTIME. Đừng lo, vẫn hoạt động bình thường!" + ex.Message);
+                return;
+            }
 
+            // Listen for incoming messages
+            Thread thread = new Thread(ReceiveMessages);
+            thread.IsBackground = true;
+            thread.Start();
+        }
         private void btnAdd_Click(object sender, EventArgs e)
         {
             using (ChatAppDBContext context = new ChatAppDBContext())
@@ -465,14 +192,248 @@ namespace Client
                 catch (Exception ex)
                 {
                     MessageBox.Show("Lỗi: " + ex.Message);
-                    //PrintJson(ex);
                 }
 
             }
 
         }
+        #endregion
 
+        #region Log In/Out
+        private void TriggerStatusLogin(string status)
+        {
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                // Bao bọc đối tượng trong một RequestWrapper
+                try
+                {
+                    var userFound = context.Users.FirstOrDefault(user => user.UserID == this.user.UserID);
+                    if (userFound == null) return;
 
+                    context.Users.Attach(userFound);
+                    userFound.Status = status;
+                    context.SaveChanges();
+
+                    this.user = userFound;
+
+                    var request = new
+                    {
+                        Type = EventType.STATUS_LOGIN,
+                        Data = new User
+                        {
+                            UserID = userFound.UserID,
+                            Username = userFound.Username,
+                            Status = userFound.Status,
+                            CreatedAt = userFound.CreatedAt,
+                            Password = userFound.Password,
+                            Email = userFound.Email,
+                            //ProfilePicture = userFound.ProfilePicture
+                        }
+                    };
+
+                    // Chuyển đối tượng thành JSON
+                    string jsonData = JsonConvert.SerializeObject(request);
+                    byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
+
+                    //HandleEventLogin(request.Data, true);
+
+                    // Gửi dữ liệu
+                    stream.Write(buffer, 0, buffer.Length);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Lỗi: " + ex.Message);
+                }
+            }
+        }
+        private void btn_LogOut_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you wanna logout?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                MessageBox.Show("Logout successfully!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                this.TriggerStatusLogin(StatusLogin.OFFLINE);
+
+                new Thread(() => Application.Run(new frm_Login())).Start();
+                if (client != null && client.Connected)
+                {
+                    client.Close();
+                }
+                if (stream != null)
+                {
+                    stream.Close();
+                }
+                this.Close();
+            }
+        }
+        #endregion
+
+        #region Event Handle
+        private void HandleEventChangeAvatarGroup(Group group)
+        {
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+
+                var groupFound = context.Groups.FirstOrDefault(x =>
+                x.GroupID == group.GroupID &&
+                this.selectedGroupId == group.GroupID
+                );
+
+                if (groupFound == null)
+                {
+                    return;
+                }
+
+                ImageUtils.LoadImage(this.picGroup, groupFound.GroupImage);
+            }
+        }
+        private bool CanUserAccepted(int userID)
+        {
+            return this.user.UserID == userID;
+        }
+        private void HandleEventNotiFriend(Friendship friendship, bool isSendForMe = false)
+        {
+
+            if (!isSendForMe && !CanUserAccepted(friendship.AddressID))
+            {
+                return;
+            }
+
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                var userFound = context.Users.FirstOrDefault(user => user.UserID == friendship.AddressID);
+                if (userFound != null)
+                {
+                    bool isOffline = userFound.Status == StatusLogin.OFFLINE;
+                    if (isOffline) return;
+                }
+                else
+                {
+                    return;
+                }
+            }
+            this.updateNotifi(friendship.Status);
+        }
+        private void HandleEventStatusAccount(User friend, bool isSendForMe = false)
+        {
+
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                var userFound = context.Users.FirstOrDefault(p => p.UserID == user.UserID);
+                if (userFound == null)
+                {
+                    return;
+                }
+
+                foreach (DataGridViewRow row in this.dgvFriends.Rows)
+                {
+                    if (row.Cells["UserID"].Value.ToString() == friend.UserID.ToString())
+                    {
+                        row.Cells["Status"].Value = friend.Status;
+                        break;
+                    }
+                }
+            }
+        }
+        private void HandleEventJoinGroup(GroupMember groupMember, bool isSendForMe = false)
+        {
+
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                var groupMemberWithoutUserID = context.GroupMembers.ToList();
+                if (!isSendForMe)
+                {
+
+                    var userFoundInGroup = context.GroupMembers.FirstOrDefault(
+                            p => p.GroupID == groupMember.GroupID &&
+                            p.UserID == this.user.UserID
+                            );
+                    if (userFoundInGroup == null)
+                    {
+                        return;
+                    }
+
+                    foreach (DataGridViewRow row in this.dgvGroups.Rows)
+                    {
+                        if (row.Cells[0].Value.ToString() == groupMember.GroupID.ToString())
+                        {
+                            int sl = groupMemberWithoutUserID.Where(item => item.GroupID == groupMember.GroupID).Count();
+                            row.Cells["sl"].Value = sl.ToString();
+                            break;
+                        }
+                    }
+                }
+                else
+                {
+                    var groupFound = context.Groups.FirstOrDefault(group => group.GroupID == groupMember.GroupID);
+                    if (groupFound == null) return;
+                    int sl = groupMemberWithoutUserID.Where(item => item.GroupID == groupMember.GroupID).Count();
+                    this.dgvGroups.Rows.Add(groupMember.GroupID, groupFound.GroupName, groupMember.Role, sl);
+                }
+            }
+        }
+        private void HandleEventMessage(GroupMessage groupMessage, bool isSendForMe = false)
+        {
+
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+
+                var userRequest = context.GroupMessages.FirstOrDefault(x =>
+                x.MessageID == groupMessage.MessageID &&
+                x.GroupID == groupMessage.GroupID &&
+                this.selectedGroupId == groupMessage.GroupID
+                );
+
+                if (userRequest != null)
+                {
+                    Invoke(new Action(() =>
+                    {
+                        if (userRequest.MessageType == "text")
+                        {
+                            AppendMessageToRichTextBox(userRequest.User.Username, userRequest.Content, userRequest.Timestamp);
+                        }
+                        else if (userRequest.MessageType == "image")
+                        {
+                            DisplayImageInRichTextBox(userRequest.User.Username, userRequest.Content, userRequest.Timestamp);
+                        }
+                    }));
+                }
+            }
+
+        }
+        private void HandleEventAddFriend(Friendship friendRequest, bool isSendForMe = false)
+        {
+
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+
+                if (friendRequest.Status == StatusFriend.DENIED)
+                {
+                    return;
+                }
+
+                if (!isSendForMe)
+                {
+                    if (this.user.UserID != friendRequest.RequesterID) return;
+                    var userFound = context.Users.FirstOrDefault(f => f.UserID == friendRequest.AddressID);
+                    if (userFound == null) return;
+                    this.dgvFriends.Rows.Add(userFound.UserID, userFound.Username, userFound.Status);
+                }
+                else
+                {
+                    var userFound = context.Users.FirstOrDefault(f => f.UserID == friendRequest.RequesterID);
+                    if (userFound == null) return;
+                    this.dgvFriends.Rows.Add(userFound.UserID, userFound.Username, userFound.Status);
+                }
+
+                this.updateNotifi(friendRequest.Status);
+
+            }
+        }
+        #endregion
+
+        #region Group
         private void btnCreateGroup_Click(object sender, EventArgs e)
         {
             frm_GroupCreator groupCreator = new frm_GroupCreator(this.user.UserID);
@@ -482,7 +443,15 @@ namespace Client
                 loadListGroup();
             }
         }
+        private void btnJoinGroup_Click(object sender, EventArgs e)
+        {
+            JoinGroups joinGroups = new JoinGroups(this.user);
 
+            // Đăng ký sự kiện DataSent từ form con
+            joinGroups.DataSent += OnDataReceived;
+
+            joinGroups.ShowDialog();
+        }
         private void loadListGroup()
         {
             this.dgvGroups.Rows.Clear();
@@ -499,7 +468,25 @@ namespace Client
                 }
             }
         }
+        private void dgvGroups_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int rowSelected = e.RowIndex;
+            selectedGroupId = selectedGroupId = Convert.ToInt32(dgvGroups.Rows[rowSelected].Cells["GroupID"].Value);
+            LoadGroupMessages(selectedGroupId);
 
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                var groupSelected = context.Groups.FirstOrDefault(group => group.GroupID == selectedGroupId);
+                if (groupSelected != null)
+                {
+                    lbGroupName.Text = groupSelected.GroupName ?? "";
+                    ImageUtils.LoadImage(this.picGroup, groupSelected?.GroupImage ?? "");
+                }
+            }
+        }
+        #endregion
+
+        #region Send Message
         private void LoadGroupMessages(int groupId)
         {
             using (ChatAppDBContext context = new ChatAppDBContext())
@@ -569,7 +556,6 @@ namespace Client
                 rtbDialog.AppendText(Environment.NewLine);
             }));
         }
-
         private void DisplayImageInRichTextBox(string senderName, string base64Image, DateTime? timestamp)
         {
 
@@ -597,11 +583,8 @@ namespace Client
                             {
                                 Thread thread = new Thread(() =>
                                {
-                                   //this.Invoke(new Action(() =>
-                                   // {
                                    Clipboard.Clear();
                                    Clipboard.SetImage(image);
-                                   //}));
                                });
                                 thread.SetApartmentState(ApartmentState.STA);
                                 thread.Start();
@@ -634,10 +617,9 @@ namespace Client
                 })
         );
         }
-
-        private void performSendMessage()
+        private void performSendMessage(string messages)
         {
-            string messageContent = txtMessage.Text.Trim();
+            string messageContent = messages.Trim();
             if (string.IsNullOrEmpty(messageContent))
             {
                 MessageBox.Show("Message cannot be empty.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -691,175 +673,13 @@ namespace Client
                 catch (Exception ex)
                 {
                     MessageBox.Show("Lỗi: " + ex.Message);
-                    //PrintJson(ex);
                 }
             }
         }
-
         private void btnSend_Click(object sender, EventArgs e)
         {
-            this.performSendMessage();
+            this.performSendMessage(txtMessage.Text);
         }
-
-        public static T DeepClone<T>(T obj)
-        {
-            var json = JsonConvert.SerializeObject(obj, new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-            return JsonConvert.DeserializeObject<T>(json);
-        }
-
-        private void dgvGroups_CellClick(object sender, DataGridViewCellEventArgs e)
-        {
-            int rowSelected = e.RowIndex;
-            selectedGroupId = selectedGroupId = Convert.ToInt32(dgvGroups.Rows[rowSelected].Cells["GroupID"].Value);
-            LoadGroupMessages(selectedGroupId);
-
-            using (ChatAppDBContext context = new ChatAppDBContext())
-            {
-                var groupSelected = context.Groups.FirstOrDefault(group => group.GroupID == selectedGroupId);
-                if (groupSelected != null)
-                {
-                    lbGroupName.Text = groupSelected.GroupName ?? "";
-                    ImageUtils.LoadImage(this.picGroup, groupSelected?.GroupImage ?? "");
-                    //ImageUtils.LoadImageFromUrlAsync(picGroup, groupSelected.GroupImage ?? "");
-                }
-            }
-        }
-
-        private void btn_LogOut_Click(object sender, EventArgs e)
-        {
-            DialogResult result = MessageBox.Show("Are you sure you wanna logout?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-            if (result == DialogResult.Yes)
-            {
-                MessageBox.Show("Logout successfully!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                this.TriggerStatusLogin(StatusLogin.OFFLINE);
-
-                new Thread(() => Application.Run(new frm_Login())).Start();
-                if (client != null && client.Connected)
-                {
-                    client.Close();
-                }
-                if (stream != null)
-                {
-                    stream.Close();
-                }
-                this.Close();
-            }
-            else if (result == DialogResult.No)
-            {
-                //MessageBox.Show("Logout canceled successfully!", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-        }
-
-        private void btnClose_MouseHover(object sender, EventArgs e)
-        {
-            btnClose.Image = global::Client.Properties.Resources.Close_Hover;
-        }
-
-        private void btnClose_MouseLeave(object sender, EventArgs e)
-        {
-            btnClose.Image = global::Client.Properties.Resources.Close;
-        }
-
-        private void btnClose_MouseClick(object sender, MouseEventArgs e)
-        {
-            TriggerStatusLogin(StatusLogin.OFFLINE);
-            this.Close();
-        }
-
-        private void btnNoti_Click(object sender, EventArgs e)
-        {
-            Notification noti = new Notification(this.user);
-            noti.DataSent += OnDataNotiReceived;
-            noti.Show();
-        }
-
-        private void OnDataNotiReceived(object sender, Friendship friend)
-        {
-            var request = new
-            {
-                Type = EventType.FRIENDSHIPS,
-                Data = new Friendship
-                {
-                    Status = friend.Status,
-                    AddressID = friend.AddressID,
-                    CreatedAt = friend.CreatedAt,
-                    FriendshipID = friend.FriendshipID,
-                    RequesterID = friend.RequesterID,
-                }
-            };
-
-            this.HandleEventAddFriend(request.Data, true);
-            // Bao bọc đối tượng trong một RequestWrapper
-            try
-            {
-                // Chuyển đối tượng thành JSON
-                string jsonData = JsonConvert.SerializeObject(request);
-                byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
-
-                // Gửi dữ liệu
-                stream.Write(buffer, 0, buffer.Length);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                //PrintJson(ex);
-            }
-        }
-
-        private void btnJoinGroup_Click(object sender, EventArgs e)
-        {
-            JoinGroups joinGroups = new JoinGroups(this.user);
-
-            // Đăng ký sự kiện DataSent từ form con
-            joinGroups.DataSent += OnDataReceived;
-
-            joinGroups.ShowDialog();
-            //if (DialogResult.OK == joinGroups.DialogResult)
-            //{
-
-            //}
-        }
-
-        // Xử lý dữ liệu nhận được từ form con
-        private void OnDataReceived(object sender, GroupMember groupMember)
-        {
-            // Bao bọc đối tượng trong một RequestWrapper
-            var request = new
-            {
-                Type = EventType.JOIN_GROUP,
-                Data = new GroupMember
-                {
-                    GroupID = groupMember.GroupID,
-                    UserID = groupMember.UserID,
-                    MemberID = groupMember.MemberID,
-                    Role = groupMember.Role,
-                    LastSeen = groupMember.LastSeen,
-                    JoinedAt = groupMember.JoinedAt
-                }
-            };
-
-            try
-            {
-                HandleEventJoinGroup(request.Data, true);
-
-                // Chuyển đối tượng thành JSON
-                string jsonData = JsonConvert.SerializeObject(request);
-                byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
-
-                // Gửi dữ liệu
-                stream.Write(buffer, 0, buffer.Length);
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-                //PrintJson(ex);
-            }
-        }
-
         private void btnPicture_Click(object sender, EventArgs e)
         {
             Thread dialogThread = new Thread(() =>
@@ -914,7 +734,6 @@ namespace Client
                             catch (Exception ex)
                             {
                                 MessageBox.Show("Lỗi: " + ex.Message);
-                                //PrintJson(ex);
                             }
                         }
                     }
@@ -923,47 +742,208 @@ namespace Client
             dialogThread.SetApartmentState(ApartmentState.STA);
             dialogThread.Start();
         }
-
-        //Kéo thả form
-        private const int WM_NCLBUTTONDOWN = 0xA1;
-        private const int HT_CAPTION = 0x2;
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
-        [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern bool ReleaseCapture();
-
-        private void panel1_MouseDown(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                if (e.Clicks == 1 && e.Y <= this.Height && e.Y >= 0)
-                {
-                    ReleaseCapture();
-                    SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
-                }
-            }
-        }
-
-        private void btnLove_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void frm_ChatBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
-                this.performSendMessage();
+                this.performSendMessage(txtMessage.Text);
             }
         }
+        private void ReceiveMessages()
+        {
+            byte[] buffer = new byte[4096];
+            while (true)
+            {
 
-        private void dgvGroups_CellContentClick(object sender, DataGridViewCellEventArgs e)
+                string receivedData = "";
+                try
+                {
+                    int bytesRead = stream.Read(buffer, 0, buffer.Length);
+
+                    receivedData = Encoding.UTF8.GetString(buffer, 0, bytesRead);
+                }
+                catch
+                {
+                    //MessageBox.Show("Disconnected from server.");
+                    break;
+                }
+
+
+                JObject json = JObject.Parse(receivedData);
+                string type = json["Type"].ToString();
+
+                switch (type)
+                {
+                    case EventType.SEND_MESSAGE:
+                        HandleEventMessage(json["Data"].ToObject<GroupMessage>());
+                        break;
+                    case EventType.JOIN_GROUP:
+                        HandleEventJoinGroup(json["Data"].ToObject<GroupMember>());
+                        break;
+                    case EventType.STATUS_LOGIN:
+                        HandleEventStatusAccount(json["Data"].ToObject<User>());
+                        break;
+                    case EventType.FRIENDSHIPS:
+                        HandleEventAddFriend(json["Data"].ToObject<Friendship>());
+                        break;
+                    case EventType.NOTI_FRIENDSHIPS:
+                        HandleEventNotiFriend(json["Data"].ToObject<Friendship>());
+                        break;
+                    case EventType.CHANGE_AVATAR_GROUP:
+                        HandleEventChangeAvatarGroup(json["Data"].ToObject<Group>());
+                        break;
+                    default:
+                        MessageBox.Show($"Unknown type: {type}");
+                        break;
+                }
+            }
+        }
+        #endregion
+
+        #region Notification
+        private void btnNoti_Click(object sender, EventArgs e)
+        {
+            Notification noti = new Notification(this.user);
+            noti.DataSent += OnDataNotiReceived;
+            noti.Show();
+        }
+        private void updateNotifi(string status)
+        {
+            int count = int.Parse(this.lbNoti.Text);
+
+            switch (status)
+            {
+                case StatusFriend.ACCEPTED:
+                    count -= 1;
+                    break;
+                case StatusFriend.PENDING:
+                    count += 1;
+                    break;
+            }
+
+            if (count < 0) count = 0;
+
+            this.lbNoti.Text = count.ToString();
+        }
+        private void OnDataNotiReceived(object sender, Friendship friend)
+        {
+            var request = new
+            {
+                Type = EventType.FRIENDSHIPS,
+                Data = new Friendship
+                {
+                    Status = friend.Status,
+                    AddressID = friend.AddressID,
+                    CreatedAt = friend.CreatedAt,
+                    FriendshipID = friend.FriendshipID,
+                    RequesterID = friend.RequesterID,
+                }
+            };
+
+            this.HandleEventAddFriend(request.Data, true);
+            // Bao bọc đối tượng trong một RequestWrapper
+            try
+            {
+                // Chuyển đối tượng thành JSON
+                string jsonData = JsonConvert.SerializeObject(request);
+                byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
+
+                // Gửi dữ liệu
+                stream.Write(buffer, 0, buffer.Length);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        private void OnDataReceived(object sender, GroupMember groupMember)
+        {
+            // Bao bọc đối tượng trong một RequestWrapper
+            var request = new
+            {
+                Type = EventType.JOIN_GROUP,
+                Data = new GroupMember
+                {
+                    GroupID = groupMember.GroupID,
+                    UserID = groupMember.UserID,
+                    MemberID = groupMember.MemberID,
+                    Role = groupMember.Role,
+                    LastSeen = groupMember.LastSeen,
+                    JoinedAt = groupMember.JoinedAt
+                }
+            };
+
+            try
+            {
+                HandleEventJoinGroup(request.Data, true);
+
+                // Chuyển đối tượng thành JSON
+                string jsonData = JsonConvert.SerializeObject(request);
+                byte[] buffer = Encoding.UTF8.GetBytes(jsonData);
+
+                // Gửi dữ liệu
+                stream.Write(buffer, 0, buffer.Length);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+        }
+        #endregion
+
+        #region Search
+        private void HighlightMessages(string keyword)
+        {
+            // Lưu lại vị trí con trỏ hiện tại
+            int originalSelectionStart = rtbDialog.SelectionStart;
+            int originalSelectionLength = rtbDialog.SelectionLength;
+
+            // Đặt lại tất cả văn bản về màu mặc định
+            rtbDialog.SelectAll();
+            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
+
+            RemoveAllHighlights();
+
+            // Tìm và highlight các đoạn chứa từ khóa
+            int startIndex = 0;
+            while ((startIndex = rtbDialog.Text.IndexOf(keyword, startIndex, StringComparison.OrdinalIgnoreCase)) != -1)
+            {
+                rtbDialog.Select(startIndex, keyword.Length);
+                rtbDialog.SelectionBackColor = Color.Yellow;
+                startIndex += keyword.Length;
+            }
+
+            // Khôi phục vị trí con trỏ
+            rtbDialog.Select(originalSelectionStart, originalSelectionLength);
+            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
+        }
+        private void RemoveAllHighlights()
+        {
+            //Bỏ các highlight cũ
+            rtbDialog.SelectAll();
+            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
+
+            // Bỏ chọn văn bản
+            rtbDialog.Select(0, 0);
+        }
+        private void txtSearchGroup_TextChanged(object sender, EventArgs e)
         {
 
         }
+        private void btnSearchText_Click(object sender, EventArgs e)
+        {
+            string keyword = txtSearchText.Text.Trim();
 
+            if (string.IsNullOrEmpty(keyword))
+            {
+                //Bỏ highlight nếu từ khóa rỗng
+                RemoveAllHighlights();
+                return;
+            }
 
-        private async void btnSearchText_Click_1(object sender, EventArgs e)
+            HighlightMessages(keyword);
+        }
+        private async void btnSearchGroup_Click(object sender, EventArgs e)
         {
             string keyword = txtSearchGroup.Text.Trim();
 
@@ -1004,81 +984,32 @@ namespace Client
                 }
             }
         }
+        #endregion
 
-        private void HighlightMessages(string keyword)
+        #region Emoji
+        private void btnLike_Click(object sender, EventArgs e)
         {
-            // Lưu lại vị trí con trỏ hiện tại
-            int originalSelectionStart = rtbDialog.SelectionStart;
-            int originalSelectionLength = rtbDialog.SelectionLength;
-
-            // Đặt lại tất cả văn bản về màu mặc định
-            rtbDialog.SelectAll();
-            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
-
-            RemoveAllHighlights();
-
-            // Tìm và highlight các đoạn chứa từ khóa
-            int startIndex = 0;
-            while ((startIndex = rtbDialog.Text.IndexOf(keyword, startIndex, StringComparison.OrdinalIgnoreCase)) != -1)
-            {
-                rtbDialog.Select(startIndex, keyword.Length);
-                rtbDialog.SelectionBackColor = Color.Yellow;
-                startIndex += keyword.Length;
-            }
-
-            // Khôi phục vị trí con trỏ
-            rtbDialog.Select(originalSelectionStart, originalSelectionLength);
-            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
+            this.performSendMessage("👍 (lai)");
         }
-
-        private void RemoveAllHighlights()
+        private void btnLove_Click(object sender, EventArgs e)
         {
-            //Bỏ các highlight cũ
-            rtbDialog.SelectAll();
-            rtbDialog.SelectionBackColor = rtbDialog.BackColor;
-
-            // Bỏ chọn văn bản
-            rtbDialog.Select(0, 0);
+            this.performSendMessage("🥰 (lo ve)");
         }
-
-        private void button1_Click(object sender, EventArgs e)
+        private void btnCry_Click(object sender, EventArgs e)
         {
-            string keyword = txtSearchText.Text.Trim();
-
-            if (string.IsNullOrEmpty(keyword))
-            {
-                //Bỏ highlight nếu từ khóa rỗng
-                RemoveAllHighlights();
-                return;
-            }
-
-            HighlightMessages(keyword);
+            this.performSendMessage("😭 (cơ rai)");
         }
-
-        private void txtSearchGroup_TextChanged(object sender, EventArgs e)
+        private void btnLaugh_Click(object sender, EventArgs e)
         {
-
+            this.performSendMessage("🤣 (láp)");
         }
-
-        private void updateNotifi(string status)
+        private void btnDevil_Click(object sender, EventArgs e)
         {
-            int count = int.Parse(this.lbNoti.Text);
-
-            switch (status)
-            {
-                case StatusFriend.ACCEPTED:
-                    count -= 1;
-                    break;
-                case StatusFriend.PENDING:
-                    count += 1;
-                    break;
-            }
-
-            if (count < 0) count = 0;
-
-            this.lbNoti.Text = count.ToString();
+            this.performSendMessage("😡 (ăng rì)");
         }
-
+        #endregion
+       
+        #region Avatar
         private void pic_User_Click(object sender, EventArgs e)
         {
             frm_ImageView imageView = new frm_ImageView(this.user.ProfilePicture);
@@ -1086,21 +1017,6 @@ namespace Client
             imageView.ShowDialog();
 
         }
-
-        // Xử lý dữ liệu nhận được từ form con
-        private void OnDataPictureUserReceived(object sender, string imageBase64)
-        {
-            using (ChatAppDBContext context = new ChatAppDBContext())
-            {
-                var user = context.Users.FirstOrDefault(p => p.UserID == this.user.UserID);
-                context.Users.Attach(user);
-                user.ProfilePicture = imageBase64;
-                context.SaveChangesAsync();
-                ImageUtils.LoadImage(this.pic_User, imageBase64);
-            }
-
-        }
-
         private void picGroup_Click(object sender, EventArgs e)
         {
 
@@ -1111,6 +1027,18 @@ namespace Client
                 frm_ImageView imageView = new frm_ImageView(group.GroupImage);
                 imageView.DataSent += OnDataPictureGroupReceived;
                 imageView.ShowDialog();
+            }
+
+        }
+        private void OnDataPictureUserReceived(object sender, string imageBase64)
+        {
+            using (ChatAppDBContext context = new ChatAppDBContext())
+            {
+                var user = context.Users.FirstOrDefault(p => p.UserID == this.user.UserID);
+                context.Users.Attach(user);
+                user.ProfilePicture = imageBase64;
+                context.SaveChangesAsync();
+                ImageUtils.LoadImage(this.pic_User, imageBase64);
             }
 
         }
@@ -1147,9 +1075,53 @@ namespace Client
                 catch (Exception ex)
                 {
                     MessageBox.Show("Lỗi: " + ex.Message);
-                    //PrintJson(ex);
                 }
             }
+        }
+        #endregion
+
+        #region Button Close
+        private void btnClose_MouseHover(object sender, EventArgs e)
+        {
+            btnClose.Image = global::Client.Properties.Resources.Close_Hover;
+        }
+        private void btnClose_MouseLeave(object sender, EventArgs e)
+        {
+            btnClose.Image = global::Client.Properties.Resources.Close;
+        }
+        private void btnClose_MouseClick(object sender, MouseEventArgs e)
+        {
+            TriggerStatusLogin(StatusLogin.OFFLINE);
+            this.Close();
+        }
+        #endregion
+
+        #region Drag Form
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool ReleaseCapture();
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (e.Clicks == 1 && e.Y <= this.Height && e.Y >= 0)
+                {
+                    ReleaseCapture();
+                    SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                }
+            }
+        }
+        #endregion
+        public static T DeepClone<T>(T obj)
+        {
+            var json = JsonConvert.SerializeObject(obj, new JsonSerializerSettings
+            {
+                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
+            });
+            return JsonConvert.DeserializeObject<T>(json);
         }
     }
 }
