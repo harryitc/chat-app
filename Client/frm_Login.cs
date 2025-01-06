@@ -9,8 +9,9 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
 using DAL;
+using BUS;
+using OtpNet;
 
 
 namespace Client
@@ -18,6 +19,7 @@ namespace Client
     public partial class frm_Login : Form
     {
         ChatAppDBContext db = new ChatAppDBContext();
+        private readonly AuthService auth = new AuthService();
         public frm_Login()
         {
             InitializeComponent();
@@ -32,6 +34,7 @@ namespace Client
         }
 
 
+
         private void performLogin()
         {
             try
@@ -44,18 +47,22 @@ namespace Client
                 }
 
                 //Check if there's a user in the database.
-                var user = db.Users.FirstOrDefault(u => u.Username == txtLoginUsername.Text &&
-                                                       u.Password == txtLoginPassword.Text);
-                if (user != null)
+                var user = db.Users.FirstOrDefault(u => u.Username == txtLoginUsername.Text );
+                
+                if (!auth.CheckAuth(user, txtOtp.Text, txtLoginPassword.Text))
                 {
                     //Redirect the user to the chat box form.
+                    MessageBox.Show("Username, password or OTP Token is incorrect!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     new Thread(() => Application.Run(new frm_ChatBox(user))).Start();
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show("Username or password is incorrect!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                    //MessageBox.Show($"Welcome, {user.Username}!", "Login Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    new Thread(() => Application.Run(new frm_ChatBox(user))).Start();
+                    this.Close();
+                }    
             }
             catch (Exception ex) { MessageBox.Show($"{ex.Message}"); }
         }

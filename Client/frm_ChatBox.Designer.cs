@@ -62,6 +62,7 @@ namespace Client
             this.label1 = new System.Windows.Forms.Label();
             this.btnSearchGroup = new System.Windows.Forms.Button();
             this.btnSearchText = new System.Windows.Forms.Button();
+            this.lbSbSOTP = new System.Windows.Forms.Label();
             this.btn_Report = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
@@ -184,6 +185,7 @@ namespace Client
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lbSbSOTP);
             this.panel1.Controls.Add(this.lbTitle);
             this.panel1.Controls.Add(this.picLogo);
             this.panel1.Controls.Add(this.btnClose);
@@ -476,6 +478,18 @@ namespace Client
             this.btnSearchText.UseVisualStyleBackColor = false;
             this.btnSearchText.Click += new System.EventHandler(this.btnSearchText_Click);
             // 
+            // lbSbSOTP
+            // 
+            this.lbSbSOTP.AutoSize = true;
+            this.lbSbSOTP.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbSbSOTP.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lbSbSOTP.Location = new System.Drawing.Point(196, 8);
+            this.lbSbSOTP.Name = "lbSbSOTP";
+            this.lbSbSOTP.Size = new System.Drawing.Size(159, 25);
+            this.lbSbSOTP.TabIndex = 40;
+            this.lbSbSOTP.Text = "Step by step OTP";
+            this.lbSbSOTP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbSbSOTP.Click += new System.EventHandler(this.lbSbSOTP_Click);
             // btn_Report
             // 
             this.btn_Report.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(137)))), ((int)(((byte)(218)))));
@@ -590,5 +604,6 @@ namespace Client
         private Button btnSearchGroup;
         private Button btnSearchText;
         private Button btn_Report;
+        private Label lbSbSOTP;
     }
 }

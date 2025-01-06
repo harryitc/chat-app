@@ -10,7 +10,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using BUS;
 using DAL;
 
 
@@ -19,6 +19,8 @@ namespace Client
     public partial class frm_Signin : Form
     {
         ChatAppDBContext db = new ChatAppDBContext();
+        private readonly OtpService otp = new OtpService();
+        private readonly SHAService sha = new SHAService();
 
         private int userID;
 
@@ -90,11 +92,13 @@ namespace Client
                 }
 
                 //Create a new user in the database.
+                string secretKey = otp.GenerateSecretKey();
                 var newUser = new User
                 {
                     Username = txt_SigninUsername.Text,
                     Email = txt_Email.Text,
-                    Password = txt_SigninPassword.Text,
+                    SecretKey = secretKey, 
+                    Password = sha.HashPassword(txt_SigninPassword.Text, secretKey, "AESoftware"),
                     ProfilePicture = "",
                     CreatedAt = DateTime.Now,
                 };
@@ -104,11 +108,16 @@ namespace Client
 
                 this.userID = response.UserID;
 
-                frm_ImageView frm_ImageView = new frm_ImageView(response.ProfilePicture);
+                frm_ImageView frm_ImageView = new frm_ImageView(response.ProfilePicture, "avatar");
                 frm_ImageView.DataSent += OnDataPictureUserReceived;
                 frm_ImageView.ShowDialog();
 
-                MessageBox.Show("Sign up successful! You can now login.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Sign up successful!\nHere is your OTP QRCode, using Authenticator to scan it.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                var QRCodeImage = otp.GenerateQRCode(response);
+                frm_ImageView QRScan = new frm_ImageView(QRCodeImage, "qrCode");
+                QRScan.DataSent += OnDataPictureUserReceived;
+                QRScan.ShowDialog();
 
                 txt_Email.Clear();
                 txt_SigninUsername.Clear();

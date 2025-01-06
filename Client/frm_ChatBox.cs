@@ -1012,7 +1012,7 @@ namespace Client
         #region Avatar
         private void pic_User_Click(object sender, EventArgs e)
         {
-            frm_ImageView imageView = new frm_ImageView(this.user.ProfilePicture);
+            frm_ImageView imageView = new frm_ImageView(this.user.ProfilePicture, "avatar");
             imageView.DataSent += OnDataPictureUserReceived;
             imageView.ShowDialog();
 
@@ -1024,7 +1024,7 @@ namespace Client
             {
                 var group = context.Groups.FirstOrDefault(p => p.GroupID == this.selectedGroupId);
 
-                frm_ImageView imageView = new frm_ImageView(group.GroupImage);
+                frm_ImageView imageView = new frm_ImageView(group.GroupImage, "avatar");
                 imageView.DataSent += OnDataPictureGroupReceived;
                 imageView.ShowDialog();
             }
@@ -1124,6 +1124,11 @@ namespace Client
             return JsonConvert.DeserializeObject<T>(json);
         }
 
+        private void lbSbSOTP_Click(object sender, EventArgs e)
+        {
+            frm_StepbystepOTP newfrm = new frm_StepbystepOTP();
+            newfrm.Show();
+        }
         private void btn_Report_Click(object sender, EventArgs e)
         {
             frm_Report report = new frm_Report();
