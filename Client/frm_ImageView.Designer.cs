@@ -114,9 +114,9 @@ namespace Client
             this.label3.ForeColor = System.Drawing.Color.White;
             this.label3.Location = new System.Drawing.Point(3, 3);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(58, 21);
+            this.label3.Size = new System.Drawing.Size(100, 21);
             this.label3.TabIndex = 3;
-            this.label3.Text = "Image";
+            this.label3.Text = "Image View";
             this.label3.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             // 
             // frm_ImageView

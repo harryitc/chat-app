@@ -52,13 +52,13 @@ namespace Client
                 if (!auth.CheckAuth(user, txtOtp.Text, txtLoginPassword.Text))
                 {
                     //Redirect the user to the chat box form.
-                    //MessageBox.Show("Username, password or OTP Token is incorrect!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("Username, password or OTP Token is incorrect!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     new Thread(() => Application.Run(new frm_ChatBox(user))).Start();
                     this.Close();
                 }
                 else
                 {
-                    MessageBox.Show($"Welcome, {user.Username}!", "Login Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    //MessageBox.Show($"Welcome, {user.Username}!", "Login Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     new Thread(() => Application.Run(new frm_ChatBox(user))).Start();
                     this.Close();
