@@ -45,6 +45,7 @@
       <HintPath>..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
     </Reference>
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Pipelines, Version=9.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.IO.Pipelines.9.0.0\lib\net462\System.IO.Pipelines.dll</HintPath>
@@ -87,7 +88,9 @@
     <Compile Include="config\StatusFriend.cs" />
     <Compile Include="config\StatusLogin.cs" />
     <Compile Include="config\UserRole.cs" />
+    <Compile Include="DTO\GroupDTO.cs" />
     <Compile Include="Friendship.cs" />
+    <Compile Include="GetGroups.cs" />
     <Compile Include="Group.cs" />
     <Compile Include="GroupMember.cs" />
     <Compile Include="GroupMessage.cs" />
