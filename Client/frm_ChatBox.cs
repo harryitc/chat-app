@@ -1128,6 +1128,10 @@ namespace Client
         {
             frm_StepbystepOTP newfrm = new frm_StepbystepOTP();
             newfrm.Show();
+        private void btn_Report_Click(object sender, EventArgs e)
+        {
+            frm_Report report = new frm_Report();
+            report.Show();
         }
     }
 }
