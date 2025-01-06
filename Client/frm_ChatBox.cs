@@ -1123,5 +1123,11 @@ namespace Client
             });
             return JsonConvert.DeserializeObject<T>(json);
         }
+
+        private void btn_Report_Click(object sender, EventArgs e)
+        {
+            frm_Report report = new frm_Report();
+            report.Show();
+        }
     }
 }

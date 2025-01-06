@@ -48,8 +48,6 @@ namespace Client
                                                        u.Password == txtLoginPassword.Text);
                 if (user != null)
                 {
-                    MessageBox.Show($"Welcome, {user.Username}!", "Login Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                     //Redirect the user to the chat box form.
                     new Thread(() => Application.Run(new frm_ChatBox(user))).Start();
                     this.Close();
