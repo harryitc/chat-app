@@ -64,6 +64,8 @@ namespace Client
             {
                 btnSubmit.Enabled = false;
                 btnCreate.Enabled = false;
+                btnSubmit.BackColor = Color.LightGray;
+                btnCreate.BackColor = Color.LightGray;
             }
         }
 
