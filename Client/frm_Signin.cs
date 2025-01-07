@@ -179,12 +179,70 @@ namespace Client
 
                 // Cấu trúc body email với HTML (username và password)
                 string emailBody = $@"
-                <html>
-                    <body>
-                        <h3>Welcome {username}!</h3>
-                        <p>Your password is: <strong>{password}</strong></p>
-                        <p>Your registration was successful.</p>
-                    </body>
+                <html lang=""en"">
+                <head>
+                    <meta charset=""UTF-8"">
+                    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
+                    <title>Document</title>
+                    <style>
+                        body {{
+                            font-family: Arial, sans-serif;
+                            margin: 0;
+                            padding: 0;
+                            background-color: #f4f4f4;
+                        }}
+
+                        .contact {{
+                            max-width: 400px;
+                            margin: 50px auto;
+                            padding: 20px;
+                            background-color: #fff;
+                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+                            border-radius: 8px;
+                            text-align: center;
+                        }}
+
+                        .contact .heading {{
+                            text-align: center;
+                            color: #333;
+                            font-size: 24px;
+                            margin-bottom: 20px;
+                        }}
+
+                        .contact .heading span {{
+                            color: #007bff;
+                        }}
+
+                        .input-box {{
+                            text-align: left;
+                        }}
+
+                        .input-box h3 {{
+                            margin: 10px 0;
+                            font-size: 16px;
+                            color: #555;
+                        }}
+
+                        form {{
+                            margin-top: 10px;
+                        }}
+                    </style>
+                </head>
+                <body>
+                    <div class=""contact"" id=""contact"">        
+                        <!-- Heading -->
+                        <h2 class=""heading"">Welcome <span>{username}</span></h2>
+
+                        <!-- Form -->
+                        <form action=""#"">
+                            <div class=""input-box"">
+                                <h3>Username is: {username}</h3>
+                                <h3>Password is: <strong>{password}</strong></h3>
+                                <h3>ChatApp - Register successfully</h3>
+                            </div>
+                        </form>
+                    </div>
+                </body>
                 </html>
                 ";
 
@@ -220,8 +278,6 @@ namespace Client
                 .Replace("/", "_") // Thay đổi "/" thành "_"
                 .Replace("=", ""); // Loại bỏ dấu "="
         }
-
-
         private void OnDataPictureUserReceived(object sender, string imageBase64)
         {
             {
@@ -278,14 +334,5 @@ namespace Client
                 this.performSignin();
             }
         }
-
-        // string Base64UrlEncode(string input)
-        //{
-        //    var bytes = System.Text.Encoding.UTF8.GetBytes(input);
-        //    return Convert.ToBase64String(bytes)
-        //        .Replace("+", "-")
-        //        .Replace("/", "_")
-        //        .Replace("=", "");
-        //}
     }
 }
