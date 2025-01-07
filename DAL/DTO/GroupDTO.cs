@@ -11,5 +11,7 @@ namespace DAL.DTO
         public int GroupID { get; set; }
         public string GroupName { get; set; }
         public string username { get; set; }
+
+        public int MemberCount { get; set; }
     }
 }

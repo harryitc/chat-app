@@ -14,5 +14,10 @@ namespace BUS
         {
             return db.Groups.ToList();
         }
+
+        public int GetgroupMemberCount(int groupID)
+        {
+            return db.GroupMembers.Count(gm => gm.GroupID == groupID);
+        }
     }
 }

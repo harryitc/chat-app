@@ -268,11 +268,11 @@
     <EmbeddedResource Include="Reports\Report2.rdlc">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </EmbeddedResource>
-    <None Include="appsetings.json" />
     <None Include="credentials.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\DAL.AppConfig.datasource" />
     <None Include="Properties\DataSources\DAL.Attachment.datasource" />
     <None Include="Properties\DataSources\DAL.ChatAppDBContext.datasource" />
     <None Include="Properties\DataSources\DAL.Config.EventType.datasource" />
