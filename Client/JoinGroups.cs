@@ -25,7 +25,6 @@ namespace Client
             InitializeComponent();
             this.requestID = u;
             this.KeyPreview = true;
-            this.KeyDown += JoinGroups_KeyDown;
         }
 
         private void JoinGroups_Load(object sender, EventArgs e)
@@ -87,6 +86,12 @@ namespace Client
             {
                 ChatAppDBContext dBContext = new ChatAppDBContext();
                 var find = findGroup(txtGroupID.Text);
+                var findMember = dBContext.GroupMembers.FirstOrDefault(p => p.UserID == requestID.UserID);
+                if (findMember != null)
+                {
+                    MessageBox.Show("You are already in this group!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); 
+                    return;
+                }
                 GroupMember member = new GroupMember
                 {
                     GroupID = find.GroupID,

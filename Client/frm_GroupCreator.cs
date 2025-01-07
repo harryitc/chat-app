@@ -25,7 +25,6 @@ namespace Client
             InitializeComponent();
             UserId = userID;
             this.KeyPreview = true;
-            this.KeyDown += frm_GroupCreator_KeyDown;
         }
 
         private void performCreate()
