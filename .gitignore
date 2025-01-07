@@ -3,3 +3,4 @@ obj
 .vs
 packages
 DAL/appsettings.development.json
+credentials.json

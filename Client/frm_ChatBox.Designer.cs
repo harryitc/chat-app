@@ -40,6 +40,7 @@ namespace Client
             this.btnCreateGroup = new System.Windows.Forms.Button();
             this.btnJoinGroup = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbSbSOTP = new System.Windows.Forms.Label();
             this.lbTitle = new System.Windows.Forms.Label();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.btnClose = new System.Windows.Forms.PictureBox();
@@ -62,7 +63,6 @@ namespace Client
             this.label1 = new System.Windows.Forms.Label();
             this.btnSearchGroup = new System.Windows.Forms.Button();
             this.btnSearchText = new System.Windows.Forms.Button();
-            this.lbSbSOTP = new System.Windows.Forms.Label();
             this.btn_Report = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
@@ -116,7 +116,7 @@ namespace Client
             // 
             this.rtbDialog.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.rtbDialog.Location = new System.Drawing.Point(405, 89);
-            this.rtbDialog.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.rtbDialog.Margin = new System.Windows.Forms.Padding(5);
             this.rtbDialog.Name = "rtbDialog";
             this.rtbDialog.Size = new System.Drawing.Size(923, 518);
             this.rtbDialog.TabIndex = 2;
@@ -126,7 +126,7 @@ namespace Client
             // 
             this.txtMessage.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtMessage.Location = new System.Drawing.Point(449, 654);
-            this.txtMessage.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.txtMessage.Margin = new System.Windows.Forms.Padding(5);
             this.txtMessage.Name = "txtMessage";
             this.txtMessage.Size = new System.Drawing.Size(835, 34);
             this.txtMessage.TabIndex = 1;
@@ -148,7 +148,7 @@ namespace Client
             // 
             this.txtSearchText.Font = new System.Drawing.Font("Segoe UI", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSearchText.Location = new System.Drawing.Point(1080, 50);
-            this.txtSearchText.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.txtSearchText.Margin = new System.Windows.Forms.Padding(5);
             this.txtSearchText.Name = "txtSearchText";
             this.txtSearchText.Size = new System.Drawing.Size(155, 32);
             this.txtSearchText.TabIndex = 0;
@@ -160,7 +160,7 @@ namespace Client
             this.btnCreateGroup.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnCreateGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnCreateGroup.Location = new System.Drawing.Point(19, 652);
-            this.btnCreateGroup.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnCreateGroup.Margin = new System.Windows.Forms.Padding(5);
             this.btnCreateGroup.Name = "btnCreateGroup";
             this.btnCreateGroup.Size = new System.Drawing.Size(143, 34);
             this.btnCreateGroup.TabIndex = 5;
@@ -175,7 +175,7 @@ namespace Client
             this.btnJoinGroup.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnJoinGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnJoinGroup.Location = new System.Drawing.Point(255, 652);
-            this.btnJoinGroup.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnJoinGroup.Margin = new System.Windows.Forms.Padding(5);
             this.btnJoinGroup.Name = "btnJoinGroup";
             this.btnJoinGroup.Size = new System.Drawing.Size(143, 34);
             this.btnJoinGroup.TabIndex = 32;
@@ -192,11 +192,24 @@ namespace Client
             this.panel1.Controls.Add(this.btnLogOut);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.panel1.Margin = new System.Windows.Forms.Padding(5);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(1347, 44);
             this.panel1.TabIndex = 33;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            // 
+            // lbSbSOTP
+            // 
+            this.lbSbSOTP.AutoSize = true;
+            this.lbSbSOTP.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbSbSOTP.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lbSbSOTP.Location = new System.Drawing.Point(238, 9);
+            this.lbSbSOTP.Name = "lbSbSOTP";
+            this.lbSbSOTP.Size = new System.Drawing.Size(203, 32);
+            this.lbSbSOTP.TabIndex = 40;
+            this.lbSbSOTP.Text = "Step by step OTP";
+            this.lbSbSOTP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbSbSOTP.Click += new System.EventHandler(this.lbSbSOTP_Click);
             // 
             // lbTitle
             // 
@@ -333,7 +346,7 @@ namespace Client
             this.btnDevil.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnDevil.Image = ((System.Drawing.Image)(resources.GetObject("btnDevil.Image")));
             this.btnDevil.Location = new System.Drawing.Point(449, 615);
-            this.btnDevil.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnDevil.Margin = new System.Windows.Forms.Padding(5);
             this.btnDevil.Name = "btnDevil";
             this.btnDevil.Size = new System.Drawing.Size(40, 33);
             this.btnDevil.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -455,7 +468,7 @@ namespace Client
             this.btnSearchGroup.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchGroup.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnSearchGroup.Location = new System.Drawing.Point(312, 380);
-            this.btnSearchGroup.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnSearchGroup.Margin = new System.Windows.Forms.Padding(5);
             this.btnSearchGroup.Name = "btnSearchGroup";
             this.btnSearchGroup.Size = new System.Drawing.Size(83, 34);
             this.btnSearchGroup.TabIndex = 38;
@@ -470,7 +483,7 @@ namespace Client
             this.btnSearchText.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnSearchText.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnSearchText.Location = new System.Drawing.Point(1245, 50);
-            this.btnSearchText.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.btnSearchText.Margin = new System.Windows.Forms.Padding(5);
             this.btnSearchText.Name = "btnSearchText";
             this.btnSearchText.Size = new System.Drawing.Size(83, 34);
             this.btnSearchText.TabIndex = 39;
@@ -478,18 +491,6 @@ namespace Client
             this.btnSearchText.UseVisualStyleBackColor = false;
             this.btnSearchText.Click += new System.EventHandler(this.btnSearchText_Click);
             // 
-            // lbSbSOTP
-            // 
-            this.lbSbSOTP.AutoSize = true;
-            this.lbSbSOTP.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbSbSOTP.ForeColor = System.Drawing.Color.WhiteSmoke;
-            this.lbSbSOTP.Location = new System.Drawing.Point(196, 8);
-            this.lbSbSOTP.Name = "lbSbSOTP";
-            this.lbSbSOTP.Size = new System.Drawing.Size(159, 25);
-            this.lbSbSOTP.TabIndex = 40;
-            this.lbSbSOTP.Text = "Step by step OTP";
-            this.lbSbSOTP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.lbSbSOTP.Click += new System.EventHandler(this.lbSbSOTP_Click);
             // btn_Report
             // 
             this.btn_Report.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(137)))), ((int)(((byte)(218)))));
@@ -539,7 +540,7 @@ namespace Client
             this.Controls.Add(this.dgvGroups);
             this.Controls.Add(this.dgvFriends);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "frm_ChatBox";
             this.ShowIcon = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

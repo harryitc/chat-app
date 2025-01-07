@@ -13,6 +13,13 @@ using System.Windows.Forms;
 using BUS;
 using DAL;
 
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Gmail.v1;
+using GmailV1 = Google.Apis.Gmail.v1.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+using MimeKit;
+using System.IO;
 
 namespace Client
 {
@@ -119,6 +126,8 @@ namespace Client
                 QRScan.DataSent += OnDataPictureUserReceived;
                 QRScan.ShowDialog();
 
+                sendEmail(response.Email, response.Username, txt_SigninPassword.Text);
+
                 txt_Email.Clear();
                 txt_SigninUsername.Clear();
                 txt_SigninPassword.Clear();
@@ -132,6 +141,86 @@ namespace Client
                 MessageBox.Show($"{ex.Message}");
             }
         }
+
+        private void sendEmail(string recipientEmail, string username, string password)
+        {
+            try
+            {
+                string[] Scopes = { GmailService.Scope.GmailSend };
+                string ApplicationName = "Gmail API Test";
+
+                // Đọc file JSON từ thông tin xác thực đã tải xuống
+                UserCredential credential;
+
+                using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+                {
+                    string credPath = "token.json";
+                    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                        GoogleClientSecrets.Load(stream).Secrets,
+                        Scopes,
+                        "user",
+                        CancellationToken.None,
+                        new FileDataStore(credPath, true)).Result;
+                    Console.WriteLine("Credential file saved to: " + credPath);
+                }
+
+                // Tạo dịch vụ Gmail API
+                var service = new GmailService(new BaseClientService.Initializer()
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = ApplicationName,
+                });
+
+                // Tạo nội dung email với username và password
+                var email = new MimeMessage();
+                email.From.Add(new MailboxAddress("ADTC", "cuongharryit@gmail.com"));
+                email.To.Add(new MailboxAddress("ChatApp - Register Successfully", recipientEmail));  // Recipient email passed as parameter
+                email.Subject = "ChatApp - Register Successfully";
+
+                // Cấu trúc body email với HTML (username và password)
+                string emailBody = $@"
+                <html>
+                    <body>
+                        <h3>Welcome {username}!</h3>
+                        <p>Your password is: <strong>{password}</strong></p>
+                        <p>Your registration was successful.</p>
+                    </body>
+                </html>
+                ";
+
+                // Cài đặt body email dưới dạng HTML
+                email.Body = new TextPart("html")
+                {
+                    Text = emailBody
+                };
+
+                // Chuyển đổi email sang định dạng Base64
+                var message = new Google.Apis.Gmail.v1.Data.Message
+                {
+                    Raw = Base64UrlEncode(email.ToString())
+                };
+
+                // Gửi email
+                service.Users.Messages.Send(message, "me").Execute();
+                Console.WriteLine("Email sent successfully!");
+                MessageBox.Show("Email sent successfully!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error: " + ex.Message);
+            }
+        }
+
+        // Hàm để mã hóa Base64 URL
+        public static string Base64UrlEncode(string input)
+        {
+            var bytes = Encoding.UTF8.GetBytes(input);
+            return Convert.ToBase64String(bytes)
+                .Replace("+", "-") // Thay đổi "+" thành "-"
+                .Replace("/", "_") // Thay đổi "/" thành "_"
+                .Replace("=", ""); // Loại bỏ dấu "="
+        }
+
 
         private void OnDataPictureUserReceived(object sender, string imageBase64)
         {
@@ -189,5 +278,14 @@ namespace Client
                 this.performSignin();
             }
         }
+
+        // string Base64UrlEncode(string input)
+        //{
+        //    var bytes = System.Text.Encoding.UTF8.GetBytes(input);
+        //    return Convert.ToBase64String(bytes)
+        //        .Replace("+", "-")
+        //        .Replace("/", "_")
+        //        .Replace("=", "");
+        //}
     }
 }
