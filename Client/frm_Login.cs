@@ -122,5 +122,10 @@ namespace Client
                 this.performLogin();
             }
         }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
