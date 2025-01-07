@@ -104,7 +104,7 @@ namespace Client
                 {
                     Username = txt_SigninUsername.Text,
                     Email = txt_Email.Text,
-                    SecretKey = secretKey, 
+                    SecretKey = secretKey,
                     Password = sha.HashPassword(txt_SigninPassword.Text, secretKey, "AESoftware"),
                     ProfilePicture = "",
                     CreatedAt = DateTime.Now,
@@ -178,73 +178,10 @@ namespace Client
                 email.Subject = "ChatApp - Register Successfully";
 
                 // Cấu trúc body email với HTML (username và password)
-                string emailBody = $@"
-                <html lang=""en"">
-                <head>
-                    <meta charset=""UTF-8"">
-                    <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-                    <title>Document</title>
-                    <style>
-                        body {{
-                            font-family: Arial, sans-serif;
-                            margin: 0;
-                            padding: 0;
-                            background-color: #f4f4f4;
-                        }}
+                string emailBody = File.ReadAllText("./Email.template.html");
 
-                        .contact {{
-                            max-width: 400px;
-                            margin: 50px auto;
-                            padding: 20px;
-                            background-color: #fff;
-                            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-                            border-radius: 8px;
-                            text-align: center;
-                        }}
-
-                        .contact .heading {{
-                            text-align: center;
-                            color: #333;
-                            font-size: 24px;
-                            margin-bottom: 20px;
-                        }}
-
-                        .contact .heading span {{
-                            color: #007bff;
-                        }}
-
-                        .input-box {{
-                            text-align: left;
-                        }}
-
-                        .input-box h3 {{
-                            margin: 10px 0;
-                            font-size: 16px;
-                            color: #555;
-                        }}
-
-                        form {{
-                            margin-top: 10px;
-                        }}
-                    </style>
-                </head>
-                <body>
-                    <div class=""contact"" id=""contact"">        
-                        <!-- Heading -->
-                        <h2 class=""heading"">Welcome <span>{username}</span></h2>
-
-                        <!-- Form -->
-                        <form action=""#"">
-                            <div class=""input-box"">
-                                <h3>Username is: {username}</h3>
-                                <h3>Password is: <strong>{password}</strong></h3>
-                                <h3>ChatApp - Register successfully</h3>
-                            </div>
-                        </form>
-                    </div>
-                </body>
-                </html>
-                ";
+                // Chèn dữ liệu động vào template
+                emailBody = emailBody.Replace("{username}", username).Replace("{password}", password);
 
                 // Cài đặt body email dưới dạng HTML
                 email.Body = new TextPart("html")
