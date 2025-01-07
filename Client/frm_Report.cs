@@ -36,7 +36,8 @@ namespace Client
                 {
                     GroupID = item.GroupID,
                     GroupName = item.GroupName,
-                    username = userService.GetUserName(item.CreatedBy)
+                    username = userService.GetUserName(item.CreatedBy),
+                    MemberCount = groupService.GetgroupMemberCount(item.GroupID)
                 };
                 
                 listGroupDTO.Add(groupDTO);
@@ -48,6 +49,40 @@ namespace Client
             this.report_group.LocalReport.DataSources.Add(reportDataSource);
 
             this.report_group.RefreshReport();
+        }
+
+        private void btnClose_MouseHover(object sender, EventArgs e)
+        {
+            btnClose.Image = global::Client.Properties.Resources.Close_Hover;
+        }
+
+        private void btnClose_MouseLeave(object sender, EventArgs e)
+        {
+            btnClose.Image = global::Client.Properties.Resources.Close;
+        }
+
+        private const int WM_NCLBUTTONDOWN = 0xA1;
+        private const int HT_CAPTION = 0x2;
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
+        private static extern bool ReleaseCapture();
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                if (e.Clicks == 1 && e.Y <= this.Height && e.Y >= 0)
+                {
+                    ReleaseCapture();
+                    SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                }
+            }
+        }
+
+        private void btnClose_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.Close();
         }
     }
 }

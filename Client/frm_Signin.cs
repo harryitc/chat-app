@@ -104,7 +104,7 @@ namespace Client
                 {
                     Username = txt_SigninUsername.Text,
                     Email = txt_Email.Text,
-                    SecretKey = secretKey, 
+                    SecretKey = secretKey,
                     Password = sha.HashPassword(txt_SigninPassword.Text, secretKey, "AESoftware"),
                     ProfilePicture = "",
                     CreatedAt = DateTime.Now,
@@ -178,15 +178,10 @@ namespace Client
                 email.Subject = "ChatApp - Register Successfully";
 
                 // Cấu trúc body email với HTML (username và password)
-                string emailBody = $@"
-                <html>
-                    <body>
-                        <h3>Welcome {username}!</h3>
-                        <p>Your password is: <strong>{password}</strong></p>
-                        <p>Your registration was successful.</p>
-                    </body>
-                </html>
-                ";
+                string emailBody = File.ReadAllText("./Email.template.html");
+
+                // Chèn dữ liệu động vào template
+                emailBody = emailBody.Replace("{username}", username).Replace("{password}", password);
 
                 // Cài đặt body email dưới dạng HTML
                 email.Body = new TextPart("html")
@@ -220,8 +215,6 @@ namespace Client
                 .Replace("/", "_") // Thay đổi "/" thành "_"
                 .Replace("=", ""); // Loại bỏ dấu "="
         }
-
-
         private void OnDataPictureUserReceived(object sender, string imageBase64)
         {
             {
@@ -278,14 +271,5 @@ namespace Client
                 this.performSignin();
             }
         }
-
-        // string Base64UrlEncode(string input)
-        //{
-        //    var bytes = System.Text.Encoding.UTF8.GetBytes(input);
-        //    return Convert.ToBase64String(bytes)
-        //        .Replace("+", "-")
-        //        .Replace("/", "_")
-        //        .Replace("=", "");
-        //}
     }
 }
