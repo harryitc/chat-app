@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Contact Us</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            background-color: #f9f9f9;
+            color: #333;
         }
 
         .contact {
-            max-width: 400px;
+            max-width: 600px;
             margin: 50px auto;
             padding: 20px;
             background-color: #fff;
@@ -23,52 +24,55 @@
         }
 
         .contact img {
-            max-width: 100px;
-            margin-bottom: 20px;
+            max-width: 300px;
+            margin-bottom: 15px;
         }
 
-        .contact .heading {
-            text-align: center;
+        .contact h1 {
+            font-size: 30px;
             color: #333;
-            font-size: 24px;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+            font-weight: bold;
         }
 
-        .contact .heading span {
+        .contact p {
+            font-size: 20px;
+            margin: 5px 0;
+        }
+
+        .contact a {
+            text-decoration: none;
             color: #007bff;
         }
 
-        .input-box {
-            text-align: left;
+        .contact a:hover {
+            text-decoration: underline;
         }
 
-        .input-box h3 {
-            margin: 10px 0;
-            font-size: 16px;
-            color: #555;
+        .footer {
+            font-size: 12px;
+            color: #777;
+            margin-top: 15px;
+            line-height: 1.6;
         }
 
-        form {
-            margin-top: 10px;
+        .footer strong {
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <div class="contact" id="contact">
-        <!-- Logo -->
-        <img src="assests/img/finalLogo.jpg" alt="Logo">
-        
-        <!-- Heading -->
-        <h2 class="heading">Welcome <span>User!</span></h2>
+    <div class="contact">
+        <img src="https://i.postimg.cc/02PLTyFY/final-Logo.jpg" alt="Logo-AeSoftware">
+        <h1>Welcome to our ChatApp</h1>
+        <p>Username: <strong>{username}</strong></p>
+        <p>Password: <strong>{password}</strong></p>
+        <p>Thank you for using your Email to register in our ChatApp</p>
 
-        <!-- Form -->
-        <form action="#">
-            <div class="input-box">
-                <h3>Username is: </h3>
-                <h3>Password is: </h3>
-                <h3>ChatApp - Register successfully</h3>
-            </div>
-        </form>
+        <div class="footer">
+            This is AESoftware's Winform Project - From HUTECH University<br>
+            This email message was auto-generated. Please do not respond.<br>
+        </div>
     </div>
 </body>
 </html>
