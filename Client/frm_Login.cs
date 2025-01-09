@@ -26,14 +26,11 @@ namespace Client
             this.KeyPreview = true;
         }
 
-
         private void lblSignin_Click(object sender, EventArgs e)
         {
             new Thread(() => Application.Run(new frm_Signin())).Start();
             this.Close();
         }
-
-
 
         private void performLogin()
         {
@@ -121,11 +118,6 @@ namespace Client
             {
                 this.performLogin();
             }
-        }
-
-        private void btnClose_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
