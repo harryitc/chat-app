@@ -323,7 +323,10 @@ Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.devel
 
 # Hướng dẫn sử dụng
 1. Git clone 
-2. Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.development.json`
+2. Vào thư mục chứa project, mở file `.sql` tên: `ChatAppDB.sql`
+    - Bôi đen tất cả Query và chọn Execute để tạo Database tên: `ChatApp`
+    - Ghi nhớ tên sever của máy bạn, ví dụ: `HARRYITC/SQLEXPRESS`
+3. Mở file `.sln` tên: `chat-app.sln`. Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.development.json`
     - Cấu hình: Chọn `Properties` -> `Copy to Output Directory`: `Copy if newer`
     - Copy toàn bộ cấu hình từ file `appsettings.json` qua file mới vừa tạo.
     - Chỉnh lại tên server theo máy bạn.
@@ -343,4 +346,4 @@ Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.devel
         }
     }
     ```
-3. Build (`Ctrl + Shift + B`) and Run with task `Start Project` (Có thể thủ công tùy bạn)
+4. Build (`Ctrl + Shift + B`) and Run with task `Start Project` (Có thể thủ công tùy bạn)
