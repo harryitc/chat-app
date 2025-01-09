@@ -1,4 +1,6 @@
 USE master
+Go
+
 IF EXISTS (SELECT * FROM SYS.DATABASES WHERE NAME = 'ChatApp')
 	DROP DATABASE ChatApp
 GO
@@ -13,13 +15,13 @@ CREATE TABLE Users (
     UserID INT IDENTITY(1,1) PRIMARY KEY,
     Username NVARCHAR(100) NOT NULL,
     Email NVARCHAR(255) NOT NULL UNIQUE,
-    Password NVARCHAR(255) NOT NULL,
+    Password NVARCHAR(MAX) NOT NULL,
+	SecretKey NVARCHAR(MAX) NOT NULL,
     ProfilePicture NVARCHAR(MAX),
     Status NVARCHAR(50), -- CHECK (Status IN ('online', 'offline', 'busy')),
     CreatedAt DATETIME DEFAULT GETDATE()
-);
-
-go
+)
+GO
 
 CREATE TABLE Groups (
     GroupID INT IDENTITY(1,1) PRIMARY KEY,
@@ -29,9 +31,8 @@ CREATE TABLE Groups (
     CreatedAt DATETIME DEFAULT GETDATE(),
     GroupImage NVARCHAR(MAX),
     FOREIGN KEY (CreatedBy) REFERENCES Users(UserID)
-);
-
-go
+)
+GO
 
 CREATE TABLE GroupMembers (
     MemberID INT IDENTITY(1,1) PRIMARY KEY,
@@ -42,9 +43,8 @@ CREATE TABLE GroupMembers (
     LastSeen DATETIME,
     FOREIGN KEY (GroupID) REFERENCES Groups(GroupID),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
-);
-
-go
+)
+GO
 
 CREATE TABLE GroupMessages (
     MessageID INT IDENTITY(1,1) PRIMARY KEY,
@@ -55,7 +55,8 @@ CREATE TABLE GroupMessages (
     Timestamp DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (GroupID) REFERENCES Groups(GroupID),
     FOREIGN KEY (SenderID) REFERENCES Users(UserID)
-);
+)
+GO
 
 CREATE TABLE Attachments (
     AttachmentID INT IDENTITY(1,1) PRIMARY KEY,
@@ -63,9 +64,8 @@ CREATE TABLE Attachments (
     FilePath NVARCHAR(500) NOT NULL,
     FileType NVARCHAR(50), -- CHECK (FileType IN ('image', 'video', 'document')) NOT NULL,
     FOREIGN KEY (MessageID) REFERENCES GroupMessages(MessageID)
-);
-
-go
+)
+GO
 
 CREATE TABLE GroupNotifications (
     NotificationID INT IDENTITY(1,1) PRIMARY KEY,
@@ -76,9 +76,8 @@ CREATE TABLE GroupNotifications (
     Timestamp DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (GroupID) REFERENCES Groups(GroupID),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
-);
-
-go
+)
+GO
 
 CREATE TABLE ReadReceipts (
     ReceiptID INT IDENTITY(1,1) PRIMARY KEY,
@@ -87,9 +86,8 @@ CREATE TABLE ReadReceipts (
     ReadAt DATETIME DEFAULT GETDATE(),
     FOREIGN KEY (MessageID) REFERENCES GroupMessages(MessageID),
     FOREIGN KEY (UserID) REFERENCES Users(UserID)
-);
-
-go
+)
+GO
 
 CREATE TABLE Friendships (
     FriendshipID INT IDENTITY(1,1) PRIMARY KEY, -- M  ??nh danh quan h?
@@ -100,11 +98,10 @@ CREATE TABLE Friendships (
     FOREIGN KEY (RequesterID) REFERENCES Users(UserID),
     FOREIGN KEY (AddressID) REFERENCES Users(UserID),
     CONSTRAINT UC_Friendship UNIQUE (RequesterID, AddressID) -- ??m b?o kh ng tr ng y u c?u
-);
+)
+GO
 
-
-go
-
+/* Old Data, can't use anymore
 INSERT INTO Users (Username, Email, Password, ProfilePicture, Status)
 VALUES 
 ('admin', 
@@ -167,3 +164,4 @@ VALUES
 (2, 3, 'accepted'),
 (3, 4, 'blocked'),
 (4, 5, 'accepted');
+*/

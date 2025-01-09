@@ -25,7 +25,6 @@ namespace Client
             InitializeComponent();
             this.requestID = u;
             this.KeyPreview = true;
-            this.KeyDown += JoinGroups_KeyDown;
         }
 
         private void JoinGroups_Load(object sender, EventArgs e)
@@ -87,6 +86,12 @@ namespace Client
             {
                 ChatAppDBContext dBContext = new ChatAppDBContext();
                 var find = findGroup(txtGroupID.Text);
+                var findMember = dBContext.GroupMembers.FirstOrDefault(p => p.UserID == requestID.UserID);
+                if (findMember != null)
+                {
+                    MessageBox.Show("You are already in this group!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning); 
+                    return;
+                }
                 GroupMember member = new GroupMember
                 {
                     GroupID = find.GroupID,
@@ -120,7 +125,7 @@ namespace Client
         private const int WM_NCLBUTTONDOWN = 0xA1;
         private const int HT_CAPTION = 0x2;
         [System.Runtime.InteropServices.DllImport("user32.dll")]
-        private static extern int JoinGroup(IntPtr hWnd, int Msg, int wParam, int lParam);
+        private static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool ReleaseCapture();
 
@@ -131,7 +136,7 @@ namespace Client
                 if (e.Clicks == 1 && e.Y <= this.Height && e.Y >= 0)
                 {
                     ReleaseCapture();
-                    JoinGroup(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+                    SendMessage(this.Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
                 }
             }
         }
