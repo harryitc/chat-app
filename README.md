@@ -322,7 +322,7 @@ Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.devel
 # Chat App with Entity Framework
 
 # Hướng dẫn sử dụng
-1. Git clone 
+1. Git clone: `https://github.com/harryitc/chat-app.git`
 2. Vào thư mục chứa project, mở file `.sql` tên: `ChatAppDB.sql`
     - Bôi đen tất cả Query và chọn Execute để tạo Database tên: `ChatApp`
     - Ghi nhớ tên sever của máy bạn, ví dụ: `HARRYITC/SQLEXPRESS`
