@@ -37,9 +37,7 @@ namespace Client
             InitializeComponent();
             this.user = user;
             ConnectToServer(this.serverIp, this.serverPort);
-
             this.KeyPreview = true;
-
             this.TriggerStatusLogin(StatusLogin.ONLINE);
         }
 
@@ -1115,15 +1113,8 @@ namespace Client
             }
         }
         #endregion
-        public static T DeepClone<T>(T obj)
-        {
-            var json = JsonConvert.SerializeObject(obj, new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-            return JsonConvert.DeserializeObject<T>(json);
-        }
 
+        #region Topping
         private void lbSbSOTP_Click(object sender, EventArgs e)
         {
             frm_StepbystepOTP newfrm = new frm_StepbystepOTP();
@@ -1134,5 +1125,7 @@ namespace Client
             frm_Report report = new frm_Report();
             report.Show();
         }
+        #endregion
+
     }
 }

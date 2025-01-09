@@ -156,7 +156,7 @@ namespace Client
                 {
                     string credPath = "token.json";
                     credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
-                        GoogleClientSecrets.Load(stream).Secrets,
+                        GoogleClientSecrets.FromStream(stream).Secrets,
                         Scopes,
                         "user",
                         CancellationToken.None,
