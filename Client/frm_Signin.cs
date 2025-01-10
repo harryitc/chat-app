@@ -173,7 +173,7 @@ namespace Client
 
                 // Tạo nội dung email với username và password
                 var email = new MimeMessage();
-                email.From.Add(new MailboxAddress("ADTC", "cuongharryit@gmail.com"));
+                email.From.Add(new MailboxAddress("ADTC - No Reply", "no-reply@gmail.com"));
                 email.To.Add(new MailboxAddress("ChatApp - Register Successfully", recipientEmail));  // Recipient email passed as parameter
                 email.Subject = "ChatApp - Register Successfully";
 
