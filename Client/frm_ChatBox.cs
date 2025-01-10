@@ -60,10 +60,6 @@ namespace Client
                 // Users
                 ImageUtils.LoadImage(pic_User, user?.ProfilePicture ?? "");
                 lblWelcome.Text = $"{user.Username}";
-                dgvFriends.Columns.Add("UserID", "User ID");
-                dgvFriends.Columns["UserID"].Visible = false; // Ẩn cột UserID
-                dgvFriends.Columns.Add("Username", "Username");
-                dgvFriends.Columns.Add("Status", "Status");
 
                 foreach (var friend in listFriends)
                 {
@@ -73,13 +69,6 @@ namespace Client
                         dgvFriends.Rows.Add(friendFound.UserID, friendFound.Username, friendFound.Status);
                     }
                 }
-
-                dgvGroups.Columns.Add("GroupID", "Group ID");
-                dgvGroups.Columns["GroupID"].Visible = false; // Ẩn cột GroupID
-                dgvGroups.Columns.Add("GroupName", "Group Name");
-                dgvGroups.Columns.Add("role", "Role");
-                dgvGroups.Columns.Add("sl", "Quantity");
-
 
                 //Groups
                 var groupMembers = context.GroupMembers.Where(g => g.UserID == user.UserID).ToList();
@@ -1118,7 +1107,7 @@ namespace Client
         private void lbSbSOTP_Click(object sender, EventArgs e)
         {
             frm_StepbystepOTP newfrm = new frm_StepbystepOTP();
-            newfrm.Show();
+            //newfrm.Show();
         }
         private void btn_Report_Click(object sender, EventArgs e)
         {

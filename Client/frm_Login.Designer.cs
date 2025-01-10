@@ -58,7 +58,7 @@ namespace Client
             this.btnLogin.Font = new System.Drawing.Font("Segoe UI", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnLogin.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.btnLogin.Location = new System.Drawing.Point(81, 339);
-            this.btnLogin.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnLogin.Margin = new System.Windows.Forms.Padding(2);
             this.btnLogin.Name = "btnLogin";
             this.btnLogin.Size = new System.Drawing.Size(105, 34);
             this.btnLogin.TabIndex = 3;
@@ -98,7 +98,7 @@ namespace Client
             this.txtLoginUsername.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLoginUsername.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.txtLoginUsername.Location = new System.Drawing.Point(11, 159);
-            this.txtLoginUsername.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtLoginUsername.Margin = new System.Windows.Forms.Padding(2);
             this.txtLoginUsername.Name = "txtLoginUsername";
             this.txtLoginUsername.Size = new System.Drawing.Size(244, 32);
             this.txtLoginUsername.TabIndex = 1;
@@ -123,7 +123,7 @@ namespace Client
             this.txtLoginPassword.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtLoginPassword.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.txtLoginPassword.Location = new System.Drawing.Point(11, 220);
-            this.txtLoginPassword.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtLoginPassword.Margin = new System.Windows.Forms.Padding(2);
             this.txtLoginPassword.Name = "txtLoginPassword";
             this.txtLoginPassword.Size = new System.Drawing.Size(244, 32);
             this.txtLoginPassword.TabIndex = 2;
@@ -165,7 +165,7 @@ namespace Client
             this.panel1.Controls.Add(this.btnClose);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(554, 38);
             this.panel1.TabIndex = 44;
@@ -190,7 +190,7 @@ namespace Client
             this.picLogo.Cursor = System.Windows.Forms.Cursors.Hand;
             this.picLogo.Image = global::Client.Properties.Resources.finalLogo;
             this.picLogo.Location = new System.Drawing.Point(2, 0);
-            this.picLogo.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.picLogo.Margin = new System.Windows.Forms.Padding(2);
             this.picLogo.Name = "picLogo";
             this.picLogo.Size = new System.Drawing.Size(36, 36);
             this.picLogo.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -202,7 +202,7 @@ namespace Client
             this.btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
             this.btnClose.Image = global::Client.Properties.Resources.Close;
             this.btnClose.Location = new System.Drawing.Point(516, 0);
-            this.btnClose.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.btnClose.Margin = new System.Windows.Forms.Padding(2);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(36, 36);
             this.btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -218,7 +218,7 @@ namespace Client
             this.pictureBox1.Cursor = System.Windows.Forms.Cursors.Hand;
             this.pictureBox1.Image = global::Client.Properties.Resources.finalLogo;
             this.pictureBox1.Location = new System.Drawing.Point(181, 21);
-            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(429, 391);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -244,7 +244,7 @@ namespace Client
             this.txtOtp.Font = new System.Drawing.Font("Segoe UI", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtOtp.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.txtOtp.Location = new System.Drawing.Point(11, 281);
-            this.txtOtp.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.txtOtp.Margin = new System.Windows.Forms.Padding(2);
             this.txtOtp.Name = "txtOtp";
             this.txtOtp.Size = new System.Drawing.Size(244, 32);
             this.txtOtp.TabIndex = 46;
@@ -268,7 +268,7 @@ namespace Client
             this.Controls.Add(this.label11);
             this.Controls.Add(this.pictureBox1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "frm_Login";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Login";
