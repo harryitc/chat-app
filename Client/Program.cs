@@ -16,7 +16,7 @@ namespace Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new frm_Report());
+            Application.Run(new frm_Login());
         }
 
     }
