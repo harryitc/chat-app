@@ -78,6 +78,7 @@ namespace Client.utils
             }
             catch (Exception ex)
             {
+                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //MessageBox.Show($"Lỗi khi tải hình ảnh: {ex.Message}");
                 //Image image = Image.FromStream();
                 //pictureBox.Image = ;
