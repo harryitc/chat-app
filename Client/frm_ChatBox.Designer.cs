@@ -32,6 +32,9 @@ namespace Client
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_ChatBox));
             this.dgvFriends = new System.Windows.Forms.DataGridView();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvGroups = new System.Windows.Forms.DataGridView();
             this.rtbDialog = new System.Windows.Forms.RichTextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
@@ -64,13 +67,10 @@ namespace Client
             this.btnSearchGroup = new System.Windows.Forms.Button();
             this.btnSearchText = new System.Windows.Forms.Button();
             this.btn_Report = new System.Windows.Forms.Button();
-            this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.GroupID = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
             this.panel1.SuspendLayout();
@@ -108,13 +108,35 @@ namespace Client
             this.dgvFriends.Size = new System.Drawing.Size(285, 233);
             this.dgvFriends.TabIndex = 4;
             // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "ID";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            this.Column5.Visible = false;
+            this.Column5.Width = 40;
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "Name";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            this.Column6.Width = 150;
+            // 
+            // Column7
+            // 
+            this.Column7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column7.HeaderText = "Status";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            // 
             // dgvGroups
             // 
             this.dgvGroups.AllowUserToAddRows = false;
             this.dgvGroups.AllowUserToDeleteRows = false;
             this.dgvGroups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvGroups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.Column1,
+            this.GroupID,
             this.Column2,
             this.Column3,
             this.Column4});
@@ -523,13 +545,13 @@ namespace Client
             this.btn_Report.UseVisualStyleBackColor = false;
             this.btn_Report.Click += new System.EventHandler(this.btn_Report_Click);
             // 
-            // Column1
+            // GroupID
             // 
-            this.Column1.HeaderText = "GroupID";
-            this.Column1.Name = "Column1";
-            this.Column1.ReadOnly = true;
-            this.Column1.Visible = false;
-            this.Column1.Width = 40;
+            this.GroupID.HeaderText = "GroupID";
+            this.GroupID.Name = "GroupID";
+            this.GroupID.ReadOnly = true;
+            this.GroupID.Visible = false;
+            this.GroupID.Width = 40;
             // 
             // Column2
             // 
@@ -550,28 +572,6 @@ namespace Client
             this.Column4.HeaderText = "Sl";
             this.Column4.Name = "Column4";
             this.Column4.ReadOnly = true;
-            // 
-            // Column5
-            // 
-            this.Column5.HeaderText = "ID";
-            this.Column5.Name = "Column5";
-            this.Column5.ReadOnly = true;
-            this.Column5.Visible = false;
-            this.Column5.Width = 40;
-            // 
-            // Column6
-            // 
-            this.Column6.HeaderText = "Name";
-            this.Column6.Name = "Column6";
-            this.Column6.ReadOnly = true;
-            this.Column6.Width = 150;
-            // 
-            // Column7
-            // 
-            this.Column7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column7.HeaderText = "Status";
-            this.Column7.Name = "Column7";
-            this.Column7.ReadOnly = true;
             // 
             // frm_ChatBox
             // 
@@ -674,12 +674,12 @@ namespace Client
         private Button btnSearchText;
         private Button btn_Report;
         private Label lbSbSOTP;
-        private DataGridViewTextBoxColumn Column1;
-        private DataGridViewTextBoxColumn Column2;
-        private DataGridViewTextBoxColumn Column3;
-        private DataGridViewTextBoxColumn Column4;
         private DataGridViewTextBoxColumn Column5;
         private DataGridViewTextBoxColumn Column6;
         private DataGridViewTextBoxColumn Column7;
+        private DataGridViewTextBoxColumn GroupID;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column3;
+        private DataGridViewTextBoxColumn Column4;
     }
 }
