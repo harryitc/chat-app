@@ -52,12 +52,12 @@
 - **Gửi tin nhắn**: Người dùng có thể gửi tin nhắn văn bản và hình ảnh trong các nhóm chat.
 - **Quản lý nhóm**: Người dùng có thể tạo nhóm, tham gia nhóm và quản lý các thành viên trong nhóm.
 - **Quản lý bạn bè**: Người dùng có thể gửi lời mời kết bạn, chấp nhận hoặc từ chối lời mời kết bạn.
-- **Báo cáo**: Hỗ trợ tạo báo cáo về các nhóm và thành viên trong nhóm.
+- **Báo cáo**: Hỗ trợ tạo báo cáo về các nhóm và thành viên trong nhóm bằng **Report Viewer**..
 - **Thông báo**: Nhận thông báo khi có tin nhắn mới hoặc khi có hoạt động trong nhóm.
 - **Tìm kiếm**: Tìm kiếm tin nhắn và người dùng trong ứng dụng.
 - **Bảo mật**: Hỗ trợ mã hóa tin nhắn và bảo mật thông tin người dùng.
 - **Giao diện thân thiện**: Giao diện người dùng đơn giản và dễ sử dụng.
-- Báo cáo thống kê tin nhắn sử dụng **Report Viewer**.
+- **Gửi mail**: Đăng ký tài khoản thành công sẽ gửi email đến tài khoản có email đã đăng ký.
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -124,9 +124,6 @@
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
 - [![.NET][.NET]][.NET-url]
 - [![C#][C#]][C#-url]
 - [![SQLServer][SQLServer]][SQLServer-url]
@@ -159,6 +156,7 @@ This is an example of how to list things you need to use the software and how to
   - Entity Framework (Code First)
   - Report Viewer
   - System.Data.SqlClient
+  - Gmail API V1 (Google Cloud)
 
 ### Installation
 
@@ -193,10 +191,15 @@ _Below is an example of how you can instruct your audience on installing and set
       }
     }
     ```
-  - **Lưu ý! Phải bảo đảm cả 2 file `appsettings.*.json` đều có thuộc tính `Copy Always`**. 
-3. Chạy chương trình
-3.1. Build: `Ctrl + Shift + B`
-3.2. Nhấn `Start Project` để chạy multiple project đã cấu hình sẵn (Theo mặc định, bạn cần start **server** trước, sau đó là **Client**).
+  - **Lưu ý! Phải bảo đảm cả 2 file `appsettings.*.json` đều có thuộc tính `Copy Always`**.
+3. Cấu hình gửi Email (Có thể bỏ qua)
+> **Chú ý**: Bước này bạn có thể bỏ qua. Nếu bạn bỏ qua bước này, bạn sẽ cần xóa file `credentials.json` ở thư mục `/Client` (nếu tìm thấy). Sau đó, bạn chạy chương trình (bước 5) sẽ có lỗi như: **`"Lỗi gửi email: Could not file..."`**. Không cần quan tâm tới lỗi này, nó đơn giản chỉ là không thể gửi email được mà thôi - không ảnh hưởng gì tới ứng dụng đang chạy.
+
+...
+
+5. Chạy chương trình
+   1. Build: `Ctrl + Shift + B`
+   2. Nhấn `Start Project` để chạy multiple project đã cấu hình sẵn (Theo mặc định, bạn cần start **server** trước, sau đó là **Client**).
 
 
 ### Project Structure
@@ -209,7 +212,7 @@ _Below is an example of how you can instruct your audience on installing and set
 ├──── appsettings.development.json # Nơi cấu hình Connection String
 ├──── ...
 ├──── Program.cs # Khởi chạy chương trình
-└── Server             # Broadcast dữ liệu đến các clients khác
+└── Server/            # Broadcast dữ liệu đến các clients khác
 ├──── Program.cs # Khởi chạy chương trình
 ├──── ...
 ```
