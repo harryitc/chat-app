@@ -1,5 +1,7 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/harryitc/chat-app/pull/73 -->
+
 <a id="readme-top"></a>
+
 <!--
 *** Thanks for checking out the Best-README-Template. If you have a suggestion
 *** that would make this better, please fork the repo and create a pull request
@@ -7,8 +9,6 @@
 *** Don't forget to give the project a star!
 *** Thanks again! Now go create something AMAZING! :D
 -->
-
-
 
 <!-- PROJECT SHIELDS -->
 <!--
@@ -18,14 +18,14 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+
 [![Contributors][contributors-shield]][contributors-url]
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
 [![Unlicense License][license-shield]][license-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
+<!-- [![Pulls][pulls-shield]][pulls-url] -->
+<!-- [![LinkedIn][linkedin-shield]][linkedin-url] -->
 
 <!-- PROJECT LOGO -->
 <br />
@@ -39,10 +39,7 @@
   <p align="center">
     Ứng dụng Chat App Realtime đơn giản
     <br />
-    <a href="https://github.com/harryitc/chat-app"><strong>Explore the docs »</strong></a>
-    <br />
-    <br />
-    <a href="https://github.com/harryitc/chat-app">View Demo</a>
+    <a href="https://github.com/harryitc/chat-app/tree/master/demo">View Demo</a>
     &middot;
     <a href="https://github.com/harryitc/chat-app/issues/new?labels=bug&template=bug-report---.md">Report Bug</a>
     &middot;
@@ -50,7 +47,16 @@
   </p>
 </div>
 
+## Features
 
+- **Gửi tin nhắn**: Người dùng có thể gửi tin nhắn văn bản và hình ảnh trong các nhóm chat.
+- **Quản lý nhóm**: Người dùng có thể tạo nhóm, tham gia nhóm và quản lý các thành viên trong nhóm.
+- **Quản lý bạn bè**: Người dùng có thể gửi lời mời kết bạn, chấp nhận hoặc từ chối lời mời kết bạn.
+- **Báo cáo**: Hỗ trợ tạo báo cáo về các nhóm và thành viên trong nhóm.
+- **Thông báo**: Nhận thông báo khi có tin nhắn mới hoặc khi có hoạt động trong nhóm.
+- **Tìm kiếm**: Tìm kiếm tin nhắn và người dùng trong ứng dụng.
+- **Bảo mật**: Hỗ trợ mã hóa tin nhắn và bảo mật thông tin người dùng.
+- **Giao diện thân thiện**: Giao diện người dùng đơn giản và dễ sử dụng.
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -78,50 +84,63 @@
   </ol>
 </details>
 
-
+<details>
+  <summary>Demo Project</summary>
+  <img src="/demo/Logo.jpg" alt="Logo" />
+  <br>
+  <img src="/demo/AvatarViewer.jpg" alt="AvatarViewer" />
+  <br>
+  <img src="/demo/ChatAppDemo.jpg" alt="ChatAppDemo" />
+  <br>
+  <img src="/demo/ChatAppMainForm.jpg" alt="ChatAppMainForm" />
+  <br>
+  <img src="/demo/CreateGroup.jpg" alt="CreateGroup" />
+  <br>
+  <img src="/demo/DemoWelcomeEmail.jpg" alt="DemoWelcomeEmail" />
+  <br>
+  <img src="/demo/JoinGroup.jpg" alt="JoinGroup" />
+  <br>
+  <img src="/demo/LoginForm.jpg" alt="LoginForm" />
+  <br>
+  <img src="/demo/NotificationFriendRequest.jpg" alt="NotificationFriendRequest" />
+  <br>
+  <img src="/demo/QrCode.jpg" alt="QrCode" />
+  <br>
+  <img src="/demo/SendAddFriendRequest.jpg" alt="SendAddFriendRequest" />
+  <br>
+  <img src="/demo/ServerNewUserLoginSuccess.jpg" alt="ServerNewUserLoginSuccess" />
+  <br>
+  <img src="/demo/ServerStart.jpg" alt="ServerStart" />
+  <br>
+  <img src="/demo/SigninForm.jpg" alt="SigninForm" />
+</details>
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
-
-[![Product Name Screen Shot][product-screenshot]](https://example.com)
-
-There are many great README templates available on GitHub; however, I didn't find one that really suited my needs so I created this enhanced one. I want to create a README template so amazing that it'll be the last one you ever need -- I think this is it.
-
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
-
+Hệ thống Chat được xây dựng trên nền tảng lập trình Windows Forms cung cấp một giao diện đồ họa thân thiện để người dùng gửi/nhận tin nhắn, chia sẻ file, quản lý nhóm, và thực hiện các hoạt động khác trong thời gian thực
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ### Built With
 
 This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
 
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
+- [![.NET][.NET]][.NET-url]
+- [![C#][C#]][C#-url]
+- [![SQLServer][SQLServer]][SQLServer-url]
+- [![VisualStudio][VisualStudio]][VisualStudio-url]
+
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### Workflow
 
-## Workflow
 <div align="center">
     <img  src="BaoCao/ChatAppWorkflow.png" alt="workflow chat app">
 </div>
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 This is an example of how you may give instructions on setting up your project locally.
@@ -130,7 +149,9 @@ To get a local copy up and running follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* npm
+
+- npm
+
   ```sh
   npm install npm@latest -g
   ```
@@ -141,18 +162,25 @@ _Below is an example of how you can instruct your audience on installing and set
 
 1. Get a free API Key at [https://example.com](https://example.com)
 2. Clone the repo
+
    ```sh
    git clone https://github.com/github_username/repo_name.git
    ```
+
 3. Install NPM packages
+
    ```sh
    npm install
    ```
+
 4. Enter your API in `config.js`
+
    ```js
-   const API_KEY = 'ENTER YOUR API';
+   const API_KEY = "ENTER YOUR API";
    ```
+
 5. Change git remote url to avoid accidental pushes to base project
+
    ```sh
    git remote set-url origin github_username/repo_name
    git remote -v # confirm the changes
@@ -160,51 +188,50 @@ _Below is an example of how you can instruct your audience on installing and set
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 ## NuGet Packages
 
-| Package Name | Version |
-|--------------|---------|
-| EntityFramework | 6.5.1 |
-| Google.Apis | 1.68.0 |
-| Google.Apis.Auth | 1.68.0 |
-| Google.Apis.Core | 1.68.0 |
-| Google.Apis.Gmail.v1 | 1.68.0.3427 |
-| Microsoft.Bcl.AsyncInterfaces | 9.0.0 |
-| Microsoft.Extensions.Configuration | 9.0.0 |
-| Microsoft.Extensions.Configuration.Abstractions | 9.0.0 |
-| Microsoft.Extensions.Configuration.FileExtensions | 9.0.0 |
-| Microsoft.Extensions.Configuration.Json | 9.0.0 |
-| Microsoft.Extensions.FileProviders.Abstractions | 9.0.0 |
-| Microsoft.Extensions.FileProviders.Physical | 9.0.0 |
-| Microsoft.Extensions.FileSystemGlobbing | 9.0.0 |
-| Microsoft.Extensions.Primitives | 9.0.0 |
-| Newtonsoft.Json | 13.0.3 |
-| Otp.NET | 1.4.0 |
-| QRCoder | 1.6.0 |
-| System.Buffers | 4.6.0 |
-| System.CodeDom | 7.0.0 |
-| System.IO.Pipelines | 9.0.0 |
-| System.Management | 7.0.2 |
-| System.Memory | 4.6.0 |
-| System.Numerics.Vectors | 4.6.0 |
-| System.Runtime.CompilerServices.Unsafe | 6.1.0 |
-| System.Text.Encodings.Web | 9.0.0 |
-| System.Text.Json | 9.0.0 |
-| System.Threading.Tasks.Extensions | 4.6.0 |
-| System.ValueTuple | 4.5.0 |
-| Microsoft.EntityFrameworkCore | 6.0.0 |
-| Microsoft.EntityFrameworkCore.SqlServer | 6.0.0 |
-| Microsoft.EntityFrameworkCore.Tools | 6.0.0 |
-| Microsoft.Extensions.DependencyInjection | 6.0.0 |
-| Microsoft.Extensions.Logging | 6.0.0 |
-| BouncyCastle.Cryptography | 2.5.0 |
-| Microsoft.ReportingServices.ReportViewerControl.Winforms | 150.1652.0 |
-| Microsoft.SqlServer.Types | 14.0.314.76 |
-| MimeKit | 4.9.0 |
-
+| Package Name                                             | Version     |
+| -------------------------------------------------------- | ----------- |
+| EntityFramework                                          | 6.5.1       |
+| Google.Apis                                              | 1.68.0      |
+| Google.Apis.Auth                                         | 1.68.0      |
+| Google.Apis.Core                                         | 1.68.0      |
+| Google.Apis.Gmail.v1                                     | 1.68.0.3427 |
+| Microsoft.Bcl.AsyncInterfaces                            | 9.0.0       |
+| Microsoft.Extensions.Configuration                       | 9.0.0       |
+| Microsoft.Extensions.Configuration.Abstractions          | 9.0.0       |
+| Microsoft.Extensions.Configuration.FileExtensions        | 9.0.0       |
+| Microsoft.Extensions.Configuration.Json                  | 9.0.0       |
+| Microsoft.Extensions.FileProviders.Abstractions          | 9.0.0       |
+| Microsoft.Extensions.FileProviders.Physical              | 9.0.0       |
+| Microsoft.Extensions.FileSystemGlobbing                  | 9.0.0       |
+| Microsoft.Extensions.Primitives                          | 9.0.0       |
+| Newtonsoft.Json                                          | 13.0.3      |
+| Otp.NET                                                  | 1.4.0       |
+| QRCoder                                                  | 1.6.0       |
+| System.Buffers                                           | 4.6.0       |
+| System.CodeDom                                           | 7.0.0       |
+| System.IO.Pipelines                                      | 9.0.0       |
+| System.Management                                        | 7.0.2       |
+| System.Memory                                            | 4.6.0       |
+| System.Numerics.Vectors                                  | 4.6.0       |
+| System.Runtime.CompilerServices.Unsafe                   | 6.1.0       |
+| System.Text.Encodings.Web                                | 9.0.0       |
+| System.Text.Json                                         | 9.0.0       |
+| System.Threading.Tasks.Extensions                        | 4.6.0       |
+| System.ValueTuple                                        | 4.5.0       |
+| Microsoft.EntityFrameworkCore                            | 6.0.0       |
+| Microsoft.EntityFrameworkCore.SqlServer                  | 6.0.0       |
+| Microsoft.EntityFrameworkCore.Tools                      | 6.0.0       |
+| Microsoft.Extensions.DependencyInjection                 | 6.0.0       |
+| Microsoft.Extensions.Logging                             | 6.0.0       |
+| BouncyCastle.Cryptography                                | 2.5.0       |
+| Microsoft.ReportingServices.ReportViewerControl.Winforms | 150.1652.0  |
+| Microsoft.SqlServer.Types                                | 14.0.314.76 |
+| MimeKit                                                  | 4.9.0       |
 
 <!-- USAGE EXAMPLES -->
+
 ## Usage
 
 Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
@@ -213,9 +240,8 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- ROADMAP -->
+
 ## Roadmap
 
 - [x] Add Changelog
@@ -223,34 +249,36 @@ _For more examples, please refer to the [Documentation](https://example.com)_
 - [ ] Add Additional Templates w/ Examples
 - [ ] Add "components" document to easily copy & paste sections of the readme
 - [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
+  - [ ] Chinese
+  - [ ] Spanish
 
 See the [open issues](https://github.com/harryitc/chat-app/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 ## Introduction
+
 This is a chat application built using C# and .NET Framework. The application allows users to send messages, create groups, join groups, and manage friends.
 
 ## Project Structure
+
 The project consists of the following main components:
+
 - **Client**: Contains the client-side code, including the user interface and user-related functionalities.
 - **Server**: Contains the server-side code, handling requests from the client and managing data.
 - **BUS**: Contains business services, handling the application's logic.
 - **DAL**: Contains data access layers, interacting with the database.
 
 ## Key Features
+
 - **Send Messages**: Users can send text and image messages in chat groups.
 - **Group Management**: Users can create groups, join groups, and manage group members.
 - **Friend Management**: Users can send friend requests, accept or decline friend requests.
 - **Reports**: Supports generating reports about groups and group members.
 - **Notify**: Event Realtime
 
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -264,7 +292,7 @@ Don't forget to give the project a star! Thanks again!
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-### Top contributors:
+### Top contributors
 
 <a href="https://github.com/harryitc/chat-app/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=harryitc/chat-app" alt="contrib.rocks image" />
@@ -272,48 +300,44 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- LICENSE -->
+
 ## License
 
 Distributed under the Unlicense License. See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- CONTACT -->
+
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+Your Name - [@your_twitter](https://twitter.com/your_username) - <email@example.com>
 
 Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- ACKNOWLEDGMENTS -->
+
 ## Acknowledgments
 
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
+- [Choose an Open Source License](https://choosealicense.com)
+- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
+- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
+- [Malven's Grid Cheatsheet](https://grid.malven.co/)
+- [Img Shields](https://shields.io)
+- [GitHub Pages](https://pages.github.com)
+- [Font Awesome](https://fontawesome.com)
+- [React Icons](https://react-icons.github.io/react-icons/search)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/harryitc/chat-app.svg?style=for-the-badge
 [contributors-url]: https://github.com/harryitc/chat-app/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/harryitc/chat-app?style=for-the-badge
@@ -322,88 +346,89 @@ Use this space to list resources you find helpful and would like to give credit 
 [stars-url]: https://github.com/harryitc/chat-app/stargazers
 [issues-shield]: https://img.shields.io/github/issues/harryitc/chat-app?style=for-the-badge
 [issues-url]: https://github.com/harryitc/chat-app/issues
+[pulls-shield]: https://img.shields.io/github/pulls/harryitc/chat-app?style=for-the-badge
+[pulls-url]: https://github.com/harryitc/chat-app/pulls
 [license-shield]: https://img.shields.io/github/license/harryitc/chat-app?style=for-the-badge
 [license-url]: https://github.com/harryitc/chat-app/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+[product-screenshot]: demo/DemoChatApp.jpg
+
+[.NET]: https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white
+[.NET-url]: https://dotnet.microsoft.com/en-us/
+[C#]: https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white
+[C#-url]: https://learn.microsoft.com/en-us/dotnet/csharp/
+[SQLServer]: https://img.shields.io/badge/Microsoft%20SQL%20Server-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white
+[SQLServer-url]: https://www.microsoft.com/en-us/sql-server
+[VisualStudio]: https://img.shields.io/badge/Visual%20Studio-5C2D91.svg?style=for-the-badge&logo=visual-studio&logoColor=white
+[VisualStudio-url]: https://visualstudio.microsoft.com/
+
 Beta
 0 / 0
 used queries
 1
 
-
 # Chat App with Entity Framework
 
 ## Cấu hình server
+
 Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.development.json`
+
 - Cấu hình: Chọn `Properties` -> `Copy to Output Directory`: `Copy if newer`
 - Copy toàn bộ cấu hình từ file `appsettings.json` qua file mới vừa tạo.
 - Chỉnh lại tên server theo máy bạn.
 - Ví dụ:
+
 ```json
 {
-    "exclude": [
-        "**/bin",
-        "**/bower_components",
-        "**/jspm_packages",
-        "**/node_modules",
-        "**/obj",
-        "**/platforms"
-    ],
-    "ConnectionStrings": {
-        "ChatApp": "data source=HARRYITC/SQLEXPRESS;initial catalog=ChatApp;integrated security=True;trustservercertificate=True;MultipleActiveResultSets=True;App=EntityFramework"
-    }
+  "exclude": [
+    "**/bin",
+    "**/bower_components",
+    "**/jspm_packages",
+    "**/node_modules",
+    "**/obj",
+    "**/platforms"
+  ],
+  "ConnectionStrings": {
+    "ChatApp": "data source=HARRYITC/SQLEXPRESS;initial catalog=ChatApp;integrated security=True;trustservercertificate=True;MultipleActiveResultSets=True;App=EntityFramework"
+  }
 }
 ```
 
 # Hướng dẫn sử dụng
+
 1. Install
+
 ```bash
 git clone https://github.com/harryitc/chat-app.git
 ```
 
 2. Build (`Ctrl + Shift + B`) and Run with task `Start Project` (Có thể thủ công tùy bạn)
 
-
 # Chat App with Entity Framework
 
 # Hướng dẫn sử dụng
-1. Git clone 
+
+1. Git clone
 2. Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.development.json`
-    - Cấu hình: Chọn `Properties` -> `Copy to Output Directory`: `Copy if newer`
-    - Copy toàn bộ cấu hình từ file `appsettings.json` qua file mới vừa tạo.
-    - Chỉnh lại tên server theo máy bạn.
-    - Ví dụ:
-    ```json
-    {
-        "exclude": [
-            "**/bin",
-            "**/bower_components",
-            "**/jspm_packages",
-            "**/node_modules",
-            "**/obj",
-            "**/platforms"
-        ],
-        "ConnectionStrings": {
-            "ChatApp": "data source=HARRYITC/SQLEXPRESS;initial catalog=ChatApp;integrated security=True;trustservercertificate=True;MultipleActiveResultSets=True;App=EntityFramework"
-        }
-    }
-    ```
+
+   - Cấu hình: Chọn `Properties` -> `Copy to Output Directory`: `Copy if newer`
+   - Copy toàn bộ cấu hình từ file `appsettings.json` qua file mới vừa tạo.
+   - Chỉnh lại tên server theo máy bạn.
+   - Ví dụ:
+
+   ```json
+   {
+     "exclude": [
+       "**/bin",
+       "**/bower_components",
+       "**/jspm_packages",
+       "**/node_modules",
+       "**/obj",
+       "**/platforms"
+     ],
+     "ConnectionStrings": {
+       "ChatApp": "data source=HARRYITC/SQLEXPRESS;initial catalog=ChatApp;integrated security=True;trustservercertificate=True;MultipleActiveResultSets=True;App=EntityFramework"
+     }
+   }
+   ```
+
 3. Build (`Ctrl + Shift + B`) and Run with task `Start Project` (Có thể thủ công tùy bạn)
