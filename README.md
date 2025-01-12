@@ -158,6 +158,7 @@ This is an example of how to list things you need to use the software and how to
 - **Thư viện sử dụng**: 
   - Entity Framework (Code First)
   - Report Viewer
+  - System.Data.SqlClient
 
 ### Installation
 
@@ -257,53 +258,6 @@ _Below is an example of how you can instruct your audience on installing and set
 | Microsoft.SqlServer.Types                                | 14.0.314.76 |
 | MimeKit                                                  | 4.9.0       |
 
-<!-- USAGE EXAMPLES -->
-
-## Usage
-
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-<!-- ROADMAP -->
-
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-  - [ ] Chinese
-  - [ ] Spanish
-
-See the [open issues](https://github.com/harryitc/chat-app/issues) for a full list of proposed features (and known issues).
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## Introduction
-
-This is a chat application built using C# and .NET Framework. The application allows users to send messages, create groups, join groups, and manage friends.
-
-## Project Structure
-
-The project consists of the following main components:
-
-- **Client**: Contains the client-side code, including the user interface and user-related functionalities.
-- **Server**: Contains the server-side code, handling requests from the client and managing data.
-- **BUS**: Contains business services, handling the application's logic.
-- **DAL**: Contains data access layers, interacting with the database.
-
-## Key Features
-
-- **Send Messages**: Users can send text and image messages in chat groups.
-- **Group Management**: Users can create groups, join groups, and manage group members.
-- **Friend Management**: Users can send friend requests, accept or decline friend requests.
-- **Reports**: Supports generating reports about groups and group members.
-- **Notify**: Event Realtime
-
 <!-- CONTRIBUTING -->
 
 ## Contributing
@@ -327,40 +281,16 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-<!-- LICENSE -->
-
-## License
-
-Distributed under the Unlicense License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- CONTACT -->
 
 ## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - <email@example.com>
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Bạn có thắc mắc điều gì? Liên hệ:
+Phan Ngọc Cường - <cuongharryit@gmail.com>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- ACKNOWLEDGMENTS -->
-
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-- [Choose an Open Source License](https://choosealicense.com)
-- [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-- [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-- [Malven's Grid Cheatsheet](https://grid.malven.co/)
-- [Img Shields](https://shields.io)
-- [GitHub Pages](https://pages.github.com)
-- [Font Awesome](https://fontawesome.com)
-- [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
