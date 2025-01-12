@@ -57,6 +57,7 @@
 - **Tìm kiếm**: Tìm kiếm tin nhắn và người dùng trong ứng dụng.
 - **Bảo mật**: Hỗ trợ mã hóa tin nhắn và bảo mật thông tin người dùng.
 - **Giao diện thân thiện**: Giao diện người dùng đơn giản và dễ sử dụng.
+- Báo cáo thống kê tin nhắn sử dụng **Report Viewer**.
 
 <!-- TABLE OF CONTENTS -->
 <details>
@@ -118,7 +119,8 @@
 <!-- ABOUT THE PROJECT -->
 
 ## About The Project
-Hệ thống Chat được xây dựng trên nền tảng lập trình Windows Forms cung cấp một giao diện đồ họa thân thiện để người dùng gửi/nhận tin nhắn, chia sẻ file, quản lý nhóm, và thực hiện các hoạt động khác trong thời gian thực
+Ứng dụng **Chat Application** là một hệ thống nhắn tin thời gian thực được xây dựng bằng **C#** và **Entity Framework** theo phương pháp **Code First**. Ứng dụng này hỗ trợ người dùng giao tiếp thông qua giao diện thân thiện, đồng thời lưu trữ dữ liệu tin nhắn trong cơ sở dữ liệu. Ngoài ra, hệ thống sử dụng **Report Viewer** để tạo và hiển thị các báo cáo.
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Built With
@@ -147,48 +149,73 @@ This is an example of how you may give instructions on setting up your project l
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
-
 This is an example of how to list things you need to use the software and how to install them.
 
-- npm
-
-  ```sh
-  npm install npm@latest -g
-  ```
+- **Hệ điều hành**: Windows 10 trở lên.
+- **IDE**: Viusal Studio 2022 trở lên.
+- **Phiên bản .NET**: .NET Framework 4.7.0.
+- **Cơ sở dữ liệu**: SQL Server 2022 (cao hơn hoặc thay đổi theo cấu hình của bạn).
+- **Thư viện sử dụng**: 
+  - Entity Framework (Code First)
+  - Report Viewer
 
 ### Installation
 
 _Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
 
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
+1. Clone the repo
 
    ```sh
-   git clone https://github.com/github_username/repo_name.git
+   git clone https://github.com/harryitc/chat-app.git
    ```
 
-3. Install NPM packages
+2. Cấu hình cơ sở dữ liệu
+- Tạo cơ sở dữ liệu mới trong SQL Server (Script có tên `ChatAppDB.sql`).
+- Cập  nhật Connection String với máy của bạn ở `appsettings.development.json`: 
+  - Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.development.json`
+  - Cấu hình: Chọn `Properties` -> `Copy to Output Directory`: `Copy Always`
+  - Copy toàn bộ cấu hình từ file `appsettings.json` qua file mới vừa tạo.
+  - Chỉnh lại tên server theo máy bạn.
+  - Ví dụ:
+    ```json
+    {
+      "exclude": [
+        "**/bin",
+        "**/bower_components",
+        "**/jspm_packages",
+        "**/node_modules",
+        "**/obj",
+        "**/platforms"
+      ],
+      "ConnectionStrings": {
+        "ChatApp": "data source=HARRYITC\\SQLEXPRESS;initial catalog=ChatApp;integrated security=True;trustservercertificate=True;MultipleActiveResultSets=True;App=EntityFramework"
+      }
+    }
+    ```
+  - **Lưu ý! Phải bảo đảm cả 2 file `appsettings.*.json` đều có thuộc tính `Copy Always`**. 
+3. Chạy chương trình
+3.1. Build: `Ctrl + Shift + B`
+3.2. Nhấn `Start Project` để chạy multiple project đã cấu hình sẵn (Theo mặc định, bạn cần start **server** trước, sau đó là **Client**).
 
-   ```sh
-   npm install
-   ```
 
-4. Enter your API in `config.js`
+### Project Structure
+```bash
+/ChatApp
+├── DAL/               # Data Access Layer
+├── BUS/               # Business Logic Layer
+├── Client/            # Giao diện người dùng (Windows Forms + Report Viewer)
+├──── appsettings.json # Mẫu cấu hình (không được chỉnh sửa)
+├──── appsettings.development.json # Nơi cấu hình Connection String
+├──── ...
+├──── Program.cs # Khởi chạy chương trình
+└── Server             # Broadcast dữ liệu đến các clients khác
+├──── Program.cs # Khởi chạy chương trình
+├──── ...
+```
 
-   ```js
-   const API_KEY = "ENTER YOUR API";
-   ```
+<!-- <p align="right">(<a href="#readme-top">back to top</a>)</p> -->
 
-5. Change git remote url to avoid accidental pushes to base project
-
-   ```sh
-   git remote set-url origin github_username/repo_name
-   git remote -v # confirm the changes
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-## NuGet Packages
+### NuGet Packages
 
 | Package Name                                             | Version     |
 | -------------------------------------------------------- | ----------- |
@@ -360,75 +387,3 @@ Use this space to list resources you find helpful and would like to give credit 
 [SQLServer-url]: https://www.microsoft.com/en-us/sql-server
 [VisualStudio]: https://img.shields.io/badge/Visual%20Studio-5C2D91.svg?style=for-the-badge&logo=visual-studio&logoColor=white
 [VisualStudio-url]: https://visualstudio.microsoft.com/
-
-Beta
-0 / 0
-used queries
-1
-
-# Chat App with Entity Framework
-
-## Cấu hình server
-
-Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.development.json`
-
-- Cấu hình: Chọn `Properties` -> `Copy to Output Directory`: `Copy if newer`
-- Copy toàn bộ cấu hình từ file `appsettings.json` qua file mới vừa tạo.
-- Chỉnh lại tên server theo máy bạn.
-- Ví dụ:
-
-```json
-{
-  "exclude": [
-    "**/bin",
-    "**/bower_components",
-    "**/jspm_packages",
-    "**/node_modules",
-    "**/obj",
-    "**/platforms"
-  ],
-  "ConnectionStrings": {
-    "ChatApp": "data source=HARRYITC/SQLEXPRESS;initial catalog=ChatApp;integrated security=True;trustservercertificate=True;MultipleActiveResultSets=True;App=EntityFramework"
-  }
-}
-```
-
-# Hướng dẫn sử dụng
-
-1. Install
-
-```bash
-git clone https://github.com/harryitc/chat-app.git
-```
-
-2. Build (`Ctrl + Shift + B`) and Run with task `Start Project` (Có thể thủ công tùy bạn)
-
-# Chat App with Entity Framework
-
-# Hướng dẫn sử dụng
-
-1. Git clone
-2. Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.development.json`
-
-   - Cấu hình: Chọn `Properties` -> `Copy to Output Directory`: `Copy if newer`
-   - Copy toàn bộ cấu hình từ file `appsettings.json` qua file mới vừa tạo.
-   - Chỉnh lại tên server theo máy bạn.
-   - Ví dụ:
-
-   ```json
-   {
-     "exclude": [
-       "**/bin",
-       "**/bower_components",
-       "**/jspm_packages",
-       "**/node_modules",
-       "**/obj",
-       "**/platforms"
-     ],
-     "ConnectionStrings": {
-       "ChatApp": "data source=HARRYITC/SQLEXPRESS;initial catalog=ChatApp;integrated security=True;trustservercertificate=True;MultipleActiveResultSets=True;App=EntityFramework"
-     }
-   }
-   ```
-
-3. Build (`Ctrl + Shift + B`) and Run with task `Start Project` (Có thể thủ công tùy bạn)
