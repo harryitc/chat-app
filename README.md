@@ -136,7 +136,7 @@ This section should list any major frameworks/libraries used to bootstrap your p
 ### Workflow
 
 <div align="center">
-    <img  src="BaoCao/ChatAppWorkflow.png" alt="workflow chat app">
+    <img  src="/Workflow/ChatAppWorkflow.png" alt="workflow chat app">
 </div>
 
 <!-- GETTING STARTED -->
