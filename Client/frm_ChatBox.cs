@@ -37,9 +37,7 @@ namespace Client
             InitializeComponent();
             this.user = user;
             ConnectToServer(this.serverIp, this.serverPort);
-
             this.KeyPreview = true;
-
             this.TriggerStatusLogin(StatusLogin.ONLINE);
         }
 
@@ -62,10 +60,6 @@ namespace Client
                 // Users
                 ImageUtils.LoadImage(pic_User, user?.ProfilePicture ?? "");
                 lblWelcome.Text = $"{user.Username}";
-                dgvFriends.Columns.Add("UserID", "User ID");
-                dgvFriends.Columns["UserID"].Visible = false; // Ẩn cột UserID
-                dgvFriends.Columns.Add("Username", "Username");
-                dgvFriends.Columns.Add("Status", "Status");
 
                 foreach (var friend in listFriends)
                 {
@@ -75,13 +69,6 @@ namespace Client
                         dgvFriends.Rows.Add(friendFound.UserID, friendFound.Username, friendFound.Status);
                     }
                 }
-
-                dgvGroups.Columns.Add("GroupID", "Group ID");
-                dgvGroups.Columns["GroupID"].Visible = false; // Ẩn cột GroupID
-                dgvGroups.Columns.Add("GroupName", "Group Name");
-                dgvGroups.Columns.Add("role", "Role");
-                dgvGroups.Columns.Add("sl", "Quantity");
-
 
                 //Groups
                 var groupMembers = context.GroupMembers.Where(g => g.UserID == user.UserID).ToList();
@@ -1115,24 +1102,19 @@ namespace Client
             }
         }
         #endregion
-        public static T DeepClone<T>(T obj)
-        {
-            var json = JsonConvert.SerializeObject(obj, new JsonSerializerSettings
-            {
-                ReferenceLoopHandling = ReferenceLoopHandling.Ignore
-            });
-            return JsonConvert.DeserializeObject<T>(json);
-        }
 
+        #region Topping
         private void lbSbSOTP_Click(object sender, EventArgs e)
         {
             frm_StepbystepOTP newfrm = new frm_StepbystepOTP();
-            newfrm.Show();
+            //newfrm.Show();
         }
         private void btn_Report_Click(object sender, EventArgs e)
         {
             frm_Report report = new frm_Report();
             report.Show();
         }
+        #endregion
+
     }
 }
