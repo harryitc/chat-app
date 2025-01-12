@@ -9,19 +9,22 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Comunicator.Models;
+using DAL;
+using BUS;
+using OtpNet;
+
 
 namespace Client
 {
     public partial class frm_Login : Form
     {
         ChatAppDBContext db = new ChatAppDBContext();
+        private readonly AuthService auth = new AuthService();
         public frm_Login()
         {
             InitializeComponent();
             this.KeyPreview = true;
         }
-
 
         private void lblSignin_Click(object sender, EventArgs e)
         {
@@ -29,12 +32,11 @@ namespace Client
             this.Close();
         }
 
-
         private void performLogin()
         {
             try
             {
-                if (string.IsNullOrWhiteSpace(txtLoginUsername.Text) 
+                if (string.IsNullOrWhiteSpace(txtLoginUsername.Text)
                     || string.IsNullOrWhiteSpace(txtLoginPassword.Text))
                 {
                     MessageBox.Show("Please fill out the form!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -42,20 +44,21 @@ namespace Client
                 }
 
                 //Check if there's a user in the database.
-                var user = db.Users.FirstOrDefault(u => u.Username == txtLoginUsername.Text &&
-                                                       u.Password == txtLoginPassword.Text);
-                if (user != null)
+                var user = db.Users.FirstOrDefault(u => u.Username == txtLoginUsername.Text );
+                
+                if (!auth.CheckAuth(user, txtOtp.Text, txtLoginPassword.Text))
                 {
-                    MessageBox.Show($"Welcome, {user.Username}!", "Login Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                     //Redirect the user to the chat box form.
-                    new Thread(() => Application.Run(new frm_ChatBox(user))).Start();
-                    this.Close();
+                    MessageBox.Show("Username, password or OTP Token is incorrect!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    
                 }
                 else
                 {
-                    MessageBox.Show("Username or password is incorrect!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
+                    //MessageBox.Show($"Welcome, {user.Username}!", "Login Successfully", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                    new Thread(() => Application.Run(new frm_ChatBox(user))).Start();
+                    this.Close();
+                }    
             }
             catch (Exception ex) { MessageBox.Show($"{ex.Message}"); }
         }

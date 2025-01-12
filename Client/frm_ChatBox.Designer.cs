@@ -32,6 +32,9 @@ namespace Client
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_ChatBox));
             this.dgvFriends = new System.Windows.Forms.DataGridView();
+            this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column7 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgvGroups = new System.Windows.Forms.DataGridView();
             this.rtbDialog = new System.Windows.Forms.RichTextBox();
             this.txtMessage = new System.Windows.Forms.TextBox();
@@ -40,6 +43,7 @@ namespace Client
             this.btnCreateGroup = new System.Windows.Forms.Button();
             this.btnJoinGroup = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.lbSbSOTP = new System.Windows.Forms.Label();
             this.lbTitle = new System.Windows.Forms.Label();
             this.picLogo = new System.Windows.Forms.PictureBox();
             this.btnClose = new System.Windows.Forms.PictureBox();
@@ -62,6 +66,11 @@ namespace Client
             this.label1 = new System.Windows.Forms.Label();
             this.btnSearchGroup = new System.Windows.Forms.Button();
             this.btnSearchText = new System.Windows.Forms.Button();
+            this.btn_Report = new System.Windows.Forms.Button();
+            this.GroupID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column2 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvFriends)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
             this.panel1.SuspendLayout();
@@ -86,6 +95,10 @@ namespace Client
             this.dgvFriends.AllowUserToAddRows = false;
             this.dgvFriends.AllowUserToDeleteRows = false;
             this.dgvFriends.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvFriends.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.Column5,
+            this.Column6,
+            this.Column7});
             this.dgvFriends.Location = new System.Drawing.Point(13, 70);
             this.dgvFriends.Margin = new System.Windows.Forms.Padding(2);
             this.dgvFriends.Name = "dgvFriends";
@@ -95,11 +108,38 @@ namespace Client
             this.dgvFriends.Size = new System.Drawing.Size(285, 233);
             this.dgvFriends.TabIndex = 4;
             // 
+            // Column5
+            // 
+            this.Column5.HeaderText = "ID";
+            this.Column5.Name = "Column5";
+            this.Column5.ReadOnly = true;
+            this.Column5.Visible = false;
+            this.Column5.Width = 40;
+            // 
+            // Column6
+            // 
+            this.Column6.HeaderText = "Name";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
+            this.Column6.Width = 150;
+            // 
+            // Column7
+            // 
+            this.Column7.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column7.HeaderText = "Status";
+            this.Column7.Name = "Column7";
+            this.Column7.ReadOnly = true;
+            // 
             // dgvGroups
             // 
             this.dgvGroups.AllowUserToAddRows = false;
             this.dgvGroups.AllowUserToDeleteRows = false;
             this.dgvGroups.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dgvGroups.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.GroupID,
+            this.Column2,
+            this.Column3,
+            this.Column4});
             this.dgvGroups.Location = new System.Drawing.Point(14, 340);
             this.dgvGroups.Margin = new System.Windows.Forms.Padding(2);
             this.dgvGroups.Name = "dgvGroups";
@@ -109,7 +149,6 @@ namespace Client
             this.dgvGroups.Size = new System.Drawing.Size(284, 187);
             this.dgvGroups.TabIndex = 3;
             this.dgvGroups.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGroups_CellClick);
-            this.dgvGroups.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvGroups_CellContentClick);
             // 
             // rtbDialog
             // 
@@ -183,6 +222,7 @@ namespace Client
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.lbSbSOTP);
             this.panel1.Controls.Add(this.lbTitle);
             this.panel1.Controls.Add(this.picLogo);
             this.panel1.Controls.Add(this.btnClose);
@@ -194,6 +234,20 @@ namespace Client
             this.panel1.Size = new System.Drawing.Size(1010, 36);
             this.panel1.TabIndex = 33;
             this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            // 
+            // lbSbSOTP
+            // 
+            this.lbSbSOTP.AutoSize = true;
+            this.lbSbSOTP.Font = new System.Drawing.Font("Segoe UI", 14.25F, ((System.Drawing.FontStyle)((System.Drawing.FontStyle.Bold | System.Drawing.FontStyle.Italic))), System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbSbSOTP.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.lbSbSOTP.Location = new System.Drawing.Point(195, 8);
+            this.lbSbSOTP.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lbSbSOTP.Name = "lbSbSOTP";
+            this.lbSbSOTP.Size = new System.Drawing.Size(159, 25);
+            this.lbSbSOTP.TabIndex = 40;
+            this.lbSbSOTP.Text = "Step by step OTP";
+            this.lbSbSOTP.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.lbSbSOTP.Click += new System.EventHandler(this.lbSbSOTP_Click);
             // 
             // lbTitle
             // 
@@ -271,6 +325,7 @@ namespace Client
             this.picGroup.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.picGroup.TabIndex = 35;
             this.picGroup.TabStop = false;
+            this.picGroup.Click += new System.EventHandler(this.picGroup_Click);
             // 
             // btnNoti
             // 
@@ -334,6 +389,7 @@ namespace Client
             this.btnDevil.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnDevil.TabIndex = 2;
             this.btnDevil.TabStop = false;
+            this.btnDevil.Click += new System.EventHandler(this.btnDevil_Click);
             // 
             // txtReceiver
             // 
@@ -355,6 +411,7 @@ namespace Client
             this.btnCry.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnCry.TabIndex = 2;
             this.btnCry.TabStop = false;
+            this.btnCry.Click += new System.EventHandler(this.btnCry_Click);
             // 
             // btnLaugh
             // 
@@ -367,6 +424,7 @@ namespace Client
             this.btnLaugh.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLaugh.TabIndex = 2;
             this.btnLaugh.TabStop = false;
+            this.btnLaugh.Click += new System.EventHandler(this.btnLaugh_Click);
             // 
             // btnLove
             // 
@@ -392,6 +450,7 @@ namespace Client
             this.btnLike.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.btnLike.TabIndex = 2;
             this.btnLike.TabStop = false;
+            this.btnLike.Click += new System.EventHandler(this.btnLike_Click);
             // 
             // btnPicture
             // 
@@ -454,7 +513,7 @@ namespace Client
             this.btnSearchGroup.TabIndex = 38;
             this.btnSearchGroup.Text = "Search";
             this.btnSearchGroup.UseVisualStyleBackColor = false;
-            this.btnSearchGroup.Click += new System.EventHandler(this.btnSearchText_Click_1);
+            this.btnSearchGroup.Click += new System.EventHandler(this.btnSearchGroup_Click);
             // 
             // btnSearchText
             // 
@@ -469,7 +528,50 @@ namespace Client
             this.btnSearchText.TabIndex = 39;
             this.btnSearchText.Text = "Search";
             this.btnSearchText.UseVisualStyleBackColor = false;
-            this.btnSearchText.Click += new System.EventHandler(this.button1_Click);
+            this.btnSearchText.Click += new System.EventHandler(this.btnSearchText_Click);
+            // 
+            // btn_Report
+            // 
+            this.btn_Report.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(114)))), ((int)(((byte)(137)))), ((int)(((byte)(218)))));
+            this.btn_Report.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btn_Report.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Bold);
+            this.btn_Report.ForeColor = System.Drawing.Color.WhiteSmoke;
+            this.btn_Report.Location = new System.Drawing.Point(667, 38);
+            this.btn_Report.Margin = new System.Windows.Forms.Padding(2);
+            this.btn_Report.Name = "btn_Report";
+            this.btn_Report.Size = new System.Drawing.Size(67, 30);
+            this.btn_Report.TabIndex = 40;
+            this.btn_Report.Text = "Export";
+            this.btn_Report.UseVisualStyleBackColor = false;
+            this.btn_Report.Click += new System.EventHandler(this.btn_Report_Click);
+            // 
+            // GroupID
+            // 
+            this.GroupID.HeaderText = "GroupID";
+            this.GroupID.Name = "GroupID";
+            this.GroupID.ReadOnly = true;
+            this.GroupID.Visible = false;
+            this.GroupID.Width = 40;
+            // 
+            // Column2
+            // 
+            this.Column2.HeaderText = "GroupName";
+            this.Column2.Name = "Column2";
+            this.Column2.ReadOnly = true;
+            // 
+            // Column3
+            // 
+            this.Column3.HeaderText = "Role";
+            this.Column3.Name = "Column3";
+            this.Column3.ReadOnly = true;
+            this.Column3.Width = 75;
+            // 
+            // Column4
+            // 
+            this.Column4.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column4.HeaderText = "Sl";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
             // 
             // frm_ChatBox
             // 
@@ -477,6 +579,7 @@ namespace Client
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(54)))), ((int)(((byte)(57)))), ((int)(((byte)(62)))));
             this.ClientSize = new System.Drawing.Size(1010, 565);
+            this.Controls.Add(this.btn_Report);
             this.Controls.Add(this.lbNoti);
             this.Controls.Add(this.btnSearchText);
             this.Controls.Add(this.btnSearchGroup);
@@ -569,5 +672,14 @@ namespace Client
         private TextBox txtReceiver;
         private Button btnSearchGroup;
         private Button btnSearchText;
+        private Button btn_Report;
+        private Label lbSbSOTP;
+        private DataGridViewTextBoxColumn Column5;
+        private DataGridViewTextBoxColumn Column6;
+        private DataGridViewTextBoxColumn Column7;
+        private DataGridViewTextBoxColumn GroupID;
+        private DataGridViewTextBoxColumn Column2;
+        private DataGridViewTextBoxColumn Column3;
+        private DataGridViewTextBoxColumn Column4;
     }
 }

@@ -10,13 +10,27 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using Comunicator.Models;
+using BUS;
+using DAL;
+
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Gmail.v1;
+using GmailV1 = Google.Apis.Gmail.v1.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
+using MimeKit;
+using System.IO;
 
 namespace Client
 {
     public partial class frm_Signin : Form
     {
         ChatAppDBContext db = new ChatAppDBContext();
+        private readonly OtpService otp = new OtpService();
+        private readonly SHAService sha = new SHAService();
+
+        private int userID;
+
         public frm_Signin()
         {
             InitializeComponent();
@@ -85,18 +99,34 @@ namespace Client
                 }
 
                 //Create a new user in the database.
+                string secretKey = otp.GenerateSecretKey();
                 var newUser = new User
                 {
                     Username = txt_SigninUsername.Text,
                     Email = txt_Email.Text,
-                    Password = txt_SigninPassword.Text,
+                    SecretKey = secretKey,
+                    Password = sha.HashPassword(txt_SigninPassword.Text, secretKey, "AESoftware"),
+                    ProfilePicture = "",
                     CreatedAt = DateTime.Now,
                 };
 
-                db.Users.Add(newUser);
+                var response = db.Users.Add(newUser);
                 db.SaveChanges();
 
-                MessageBox.Show("Sign up successful! You can now login.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.userID = response.UserID;
+
+                frm_ImageView frm_ImageView = new frm_ImageView(response.ProfilePicture, "avatar");
+                frm_ImageView.DataSent += OnDataPictureUserReceived;
+                frm_ImageView.ShowDialog();
+
+                MessageBox.Show("Sign up successful!\nHere is your OTP QRCode, using Authenticator to scan it.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                var QRCodeImage = otp.GenerateQRCode(response);
+                frm_ImageView QRScan = new frm_ImageView(QRCodeImage, "qrCode");
+                QRScan.DataSent += OnDataPictureUserReceived;
+                QRScan.ShowDialog();
+
+                sendEmail(response.Email, response.Username, txt_SigninPassword.Text);
 
                 txt_Email.Clear();
                 txt_SigninUsername.Clear();
@@ -109,6 +139,89 @@ namespace Client
             catch (Exception ex)
             {
                 MessageBox.Show($"{ex.Message}");
+            }
+        }
+
+        private void sendEmail(string recipientEmail, string username, string password)
+        {
+            try
+            {
+                string[] Scopes = { GmailService.Scope.GmailSend };
+                string ApplicationName = "Gmail API Test";
+
+                // Đọc file JSON từ thông tin xác thực đã tải xuống
+                UserCredential credential;
+
+                using (var stream = new FileStream("credentials.json", FileMode.Open, FileAccess.Read))
+                {
+                    string credPath = "token.json";
+                    credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                        GoogleClientSecrets.FromStream(stream).Secrets,
+                        Scopes,
+                        "user",
+                        CancellationToken.None,
+                        new FileDataStore(credPath, true)).Result;
+                    Console.WriteLine("Credential file saved to: " + credPath);
+                }
+
+                // Tạo dịch vụ Gmail API
+                var service = new GmailService(new BaseClientService.Initializer()
+                {
+                    HttpClientInitializer = credential,
+                    ApplicationName = ApplicationName,
+                });
+
+                // Tạo nội dung email với username và password
+                var email = new MimeMessage();
+                email.From.Add(new MailboxAddress("ADTC - No Reply", "no-reply@gmail.com"));
+                email.To.Add(new MailboxAddress("ChatApp - Register Successfully", recipientEmail));  // Recipient email passed as parameter
+                email.Subject = "ChatApp - Register Successfully";
+
+                // Cấu trúc body email với HTML (username và password)
+                string emailBody = File.ReadAllText("./Email.template.html");
+
+                // Chèn dữ liệu động vào template
+                emailBody = emailBody.Replace("{username}", username).Replace("{password}", password);
+
+                // Cài đặt body email dưới dạng HTML
+                email.Body = new TextPart("html")
+                {
+                    Text = emailBody
+                };
+
+                // Chuyển đổi email sang định dạng Base64
+                var message = new Google.Apis.Gmail.v1.Data.Message
+                {
+                    Raw = Base64UrlEncode(email.ToString())
+                };
+
+                // Gửi email
+                service.Users.Messages.Send(message, "me").Execute();
+                Console.WriteLine("Email sent successfully!");
+                MessageBox.Show("Email sent successfully!");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Không thể gửi Email: " + ex.Message);
+            }
+        }
+
+        // Hàm để mã hóa Base64 URL
+        public static string Base64UrlEncode(string input)
+        {
+            var bytes = Encoding.UTF8.GetBytes(input);
+            return Convert.ToBase64String(bytes)
+                .Replace("+", "-") // Thay đổi "+" thành "-"
+                .Replace("/", "_") // Thay đổi "/" thành "_"
+                .Replace("=", ""); // Loại bỏ dấu "="
+        }
+        private void OnDataPictureUserReceived(object sender, string imageBase64)
+        {
+            {
+                var user = db.Users.FirstOrDefault(p => p.UserID == this.userID);
+                db.Users.Attach(user);
+                user.ProfilePicture = imageBase64;
+                db.SaveChanges();
             }
         }
 
@@ -129,7 +242,7 @@ namespace Client
 
         private void btnClose_MouseClick(object sender, MouseEventArgs e)
         {
-            this.Close();   
+            this.Close();
         }
 
         private const int WM_NCLBUTTONDOWN = 0xA1;

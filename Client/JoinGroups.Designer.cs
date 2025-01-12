@@ -159,6 +159,7 @@
             this.label5.Size = new System.Drawing.Size(93, 21);
             this.label5.TabIndex = 3;
             this.label5.Text = "Join Group";
+            this.label5.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
             // 
             // JoinGroups
             // 
