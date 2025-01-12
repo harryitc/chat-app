@@ -31,13 +31,13 @@
 <br />
 <div align="center">
   <a href="https://github.com/harryitc/chat-app">
-    <img src="Client/assests/img/finalLogo.jpg" alt="Logo" width="200" height="200">
+    <img src="/demo/Logo.jpg" alt="Logo" width="200" height="200">
   </a>
 
   <h3 align="center">Chat App</h3>
 
   <p align="center">
-    An awesome README template to jumpstart your projects!
+    Ứng dụng Chat App Realtime đơn giản
     <br />
     <a href="https://github.com/harryitc/chat-app"><strong>Explore the docs »</strong></a>
     <br />
@@ -161,6 +161,48 @@ _Below is an example of how you can instruct your audience on installing and set
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
+## NuGet Packages
+
+| Package Name | Version |
+|--------------|---------|
+| EntityFramework | 6.5.1 |
+| Google.Apis | 1.68.0 |
+| Google.Apis.Auth | 1.68.0 |
+| Google.Apis.Core | 1.68.0 |
+| Google.Apis.Gmail.v1 | 1.68.0.3427 |
+| Microsoft.Bcl.AsyncInterfaces | 9.0.0 |
+| Microsoft.Extensions.Configuration | 9.0.0 |
+| Microsoft.Extensions.Configuration.Abstractions | 9.0.0 |
+| Microsoft.Extensions.Configuration.FileExtensions | 9.0.0 |
+| Microsoft.Extensions.Configuration.Json | 9.0.0 |
+| Microsoft.Extensions.FileProviders.Abstractions | 9.0.0 |
+| Microsoft.Extensions.FileProviders.Physical | 9.0.0 |
+| Microsoft.Extensions.FileSystemGlobbing | 9.0.0 |
+| Microsoft.Extensions.Primitives | 9.0.0 |
+| Newtonsoft.Json | 13.0.3 |
+| Otp.NET | 1.4.0 |
+| QRCoder | 1.6.0 |
+| System.Buffers | 4.6.0 |
+| System.CodeDom | 7.0.0 |
+| System.IO.Pipelines | 9.0.0 |
+| System.Management | 7.0.2 |
+| System.Memory | 4.6.0 |
+| System.Numerics.Vectors | 4.6.0 |
+| System.Runtime.CompilerServices.Unsafe | 6.1.0 |
+| System.Text.Encodings.Web | 9.0.0 |
+| System.Text.Json | 9.0.0 |
+| System.Threading.Tasks.Extensions | 4.6.0 |
+| System.ValueTuple | 4.5.0 |
+| Microsoft.EntityFrameworkCore | 6.0.0 |
+| Microsoft.EntityFrameworkCore.SqlServer | 6.0.0 |
+| Microsoft.EntityFrameworkCore.Tools | 6.0.0 |
+| Microsoft.Extensions.DependencyInjection | 6.0.0 |
+| Microsoft.Extensions.Logging | 6.0.0 |
+| BouncyCastle.Cryptography | 2.5.0 |
+| Microsoft.ReportingServices.ReportViewerControl.Winforms | 150.1652.0 |
+| Microsoft.SqlServer.Types | 14.0.314.76 |
+| MimeKit | 4.9.0 |
+
 
 <!-- USAGE EXAMPLES -->
 ## Usage
@@ -188,6 +230,24 @@ See the [open issues](https://github.com/harryitc/chat-app/issues) for a full li
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+
+
+## Introduction
+This is a chat application built using C# and .NET Framework. The application allows users to send messages, create groups, join groups, and manage friends.
+
+## Project Structure
+The project consists of the following main components:
+- **Client**: Contains the client-side code, including the user interface and user-related functionalities.
+- **Server**: Contains the server-side code, handling requests from the client and managing data.
+- **BUS**: Contains business services, handling the application's logic.
+- **DAL**: Contains data access layers, interacting with the database.
+
+## Key Features
+- **Send Messages**: Users can send text and image messages in chat groups.
+- **Group Management**: Users can create groups, join groups, and manage group members.
+- **Friend Management**: Users can send friend requests, accept or decline friend requests.
+- **Reports**: Supports generating reports about groups and group members.
+- **Notify**: Event Realtime
 
 
 <!-- CONTRIBUTING -->
@@ -314,19 +374,19 @@ Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.devel
 ```
 
 # Hướng dẫn sử dụng
-1. Git clone 
+1. Install
+```bash
+git clone https://github.com/harryitc/chat-app.git
+```
 
-3. Build (`Ctrl + Shift + B`) and Run with task `Start Project` (Có thể thủ công tùy bạn)
+2. Build (`Ctrl + Shift + B`) and Run with task `Start Project` (Có thể thủ công tùy bạn)
 
 
 # Chat App with Entity Framework
 
 # Hướng dẫn sử dụng
 1. Git clone 
-2. Vào thư mục chứa project, mở file `.sql` tên: `ChatAppDB.sql`
-    - Bôi đen tất cả Query và chọn Execute để tạo Database tên: `ChatApp`
-    - Ghi nhớ tên sever của máy bạn, ví dụ: `HARRYITC/SQLEXPRESS`
-3. Mở file `.sln` tên: `chat-app.sln`. Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.development.json`
+2. Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.development.json`
     - Cấu hình: Chọn `Properties` -> `Copy to Output Directory`: `Copy if newer`
     - Copy toàn bộ cấu hình từ file `appsettings.json` qua file mới vừa tạo.
     - Chỉnh lại tên server theo máy bạn.
@@ -346,4 +406,4 @@ Vào thư mục `DAL` -> Tạo file cấu hình `.json` tên: `appsettings.devel
         }
     }
     ```
-4. Build (`Ctrl + Shift + B`) and Run with task `Start Project` (Có thể thủ công tùy bạn)
+3. Build (`Ctrl + Shift + B`) and Run with task `Start Project` (Có thể thủ công tùy bạn)
