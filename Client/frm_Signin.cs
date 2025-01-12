@@ -202,7 +202,7 @@ namespace Client
             }
             catch (Exception ex)
             {
-                MessageBox.Show("Error: " + ex.Message);
+                MessageBox.Show("Không thể gửi Email: " + ex.Message);
             }
         }
 
